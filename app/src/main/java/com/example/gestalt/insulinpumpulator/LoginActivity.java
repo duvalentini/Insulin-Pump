@@ -3,6 +3,7 @@ package com.example.gestalt.insulinpumpulator;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -45,6 +46,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+
+    /**
+     * Message name from tutorial that I was following, used in sending the app to the main page.
+     */
+    public final static String EXTRA_MESSAGE = "com.insulinpumpulator.tutorialMessage.";
+
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -201,6 +208,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return password.length() > 4;
     }
 
+    /**
+        Sends you to the main page activity.
+     */
+    public void sendToMain(View view){
+        Intent intent = new Intent(this, MainPageActivity.class);
+        EditText editText = (EditText) findViewById(R.id.password);
+        String message = editText.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+    }
     /**
      * Shows the progress UI and hides the login form.
      */
