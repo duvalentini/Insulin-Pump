@@ -1,59 +1,69 @@
 package com.example.gestalt.insulinpumpulator;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 
-public class MainPageActivity extends AppCompatActivity {
-
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-    private Fragment scenarioSelection;
-    private Fragment avatarSelection;
-    private Button scenarioSelectionButton;
-    private Button avatarSelectionButton;
+public class MainPageActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
-        fragmentManager = getFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+        // Check that the activity is using the layout version with
+        // the fragment_container FrameLayout
+        if (findViewById(R.id.fragment_section) != null) {
 
-        scenarioSelection = new Fragment();
-        avatarSelection = new Fragment();
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
 
-        scenarioSelectionButton = (Button) findViewById(R.id.scenario_select);
-        avatarSelectionButton = (Button) findViewById(R.id.avatarSelectionFragment);
+            // Create a new Fragment to be placed in the activity layout
+            AvatarSelectionFragment firstFragment = new AvatarSelectionFragment();
 
-        scenarioSelectionButton.setOnClickListener(new View.OnClickListener() {
+            // In case this activity was started with special instructions from an
+            // Intent, pass the Intent's extras to the fragment as arguments
+            firstFragment.setArguments(getIntent().getExtras());
 
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_section, firstFragment).commit();
+        }
+        Button scenarioSelect = (Button) findViewById(R.id.scenario_select);
+        scenarioSelect.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                fragmentTransaction.add(R.id.scenarioSelectionFragment, scenarioSelection);
-                fragmentTransaction.commit();
+            public void onClick(View v) {
+                //Switch Fragment out
+                System.out.println("Scenario select pressed");
             }
         });
-
-        avatarSelectionButton.setOnClickListener(new View.OnClickListener() {
-
+        Button connections = (Button) findViewById(R.id.bConnections);
+        connections.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                fragmentTransaction.add(R.id.avatarSelectionFragment, avatarSelection);
-                fragmentTransaction.commit();
+            public void onClick(View v) {
+                //Switch fragment out
+                System.out.println("Connections pressed");
             }
         });
-    }
-
-    Intent intent = getIntent();
-
-    public void logout(View view){
-        this.finish();
+        Button customize = (Button) findViewById(R.id.bCustomize);
+        customize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Switch fragment out
+                System.out.println("Customize pressed");
+            }
+        });
+        Button accountInfo = (Button) findViewById(R.id.bAccountInfo);
+        accountInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Switch fragment out
+                System.out.println("Account info pressed");
+            }
+        });
     }
 }

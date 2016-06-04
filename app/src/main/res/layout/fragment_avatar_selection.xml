@@ -1,18 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:text="Scernario Selection Screen!!!!!!!!"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <Button
-        android:text="Back"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/back_button_AS" />
+        android:text="@string/boop"
+        android:id="@+id/do_something"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".333333333333" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/avatar_selection"
+        android:id="@+id/title"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".333333333333"
+        android:textAlignment="center" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/doop"
+        android:id="@+id/do_something_else"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".333333333333" />
 </LinearLayout>

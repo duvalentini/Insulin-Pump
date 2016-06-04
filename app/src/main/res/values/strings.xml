@@ -13,11 +13,21 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name ="nextpage"> "This takes you to the next activity."</string>
-    <string name ="button_send"> "send!" </string>
-    <string name ="scenario_select"> "Scenario Select" </string>
-    <string name = "connections"> "Connections"</string>
-    <string name = "customization"> "Customization</string>
-    <string name = "account_information"> "Account Information</string>
-    <string name = "back">"Logout"</string>
+    <string name="nextpage"> "This takes you to the next activity."</string>
+    <string name="button_send"> "send!" </string>
+    <string name="scenario_select"> "Scenario Select" </string>
+    <string name="connections"> "Connections"</string>
+    <string name="customization"> "Customization</string>
+    <string name="account_information"> "Account Information</string>
+    <string name="back">"Logout"</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_scenario_playthrough">ScenarioPlaythrough</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="boop">Boop</string>
+    <string name="avatar_selection">Avatar Selection</string>
+    <string name="doop">Doop</string>
 </resources>
