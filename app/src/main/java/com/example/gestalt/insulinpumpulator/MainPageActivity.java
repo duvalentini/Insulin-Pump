@@ -1,23 +1,25 @@
 package com.example.gestalt.insulinpumpulator;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 public class MainPageActivity extends FragmentActivity {
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+    private int[] _buttonIDs = {R.id.bAccountInfo, R.id.bConnections, R.id.bCustomize, R.id.scenario_select};
+
+    private void selectView(int viewID) {
+        for (int i : _buttonIDs) {
+            Button b = (Button) findViewById(i);
+            if (i == viewID) {
+                b.setEnabled(false);
+            } else if (!b.isEnabled()) {
+                b.setEnabled(true);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class MainPageActivity extends FragmentActivity {
         scenarioSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectView(R.id.scenario_select);
+
                 //Switch Fragment out
                 // Create new fragment and give it an argument specifying the article it should show
                 ScenarioSelectionFragment newFragment = new ScenarioSelectionFragment();
@@ -60,7 +64,7 @@ public class MainPageActivity extends FragmentActivity {
                 // Replace whatever is in the fragment_container view with this fragment,
                 // and add the transaction to the back stack so the user can navigate back
                 transaction.replace(R.id.fragment_section, newFragment);
-                transaction.addToBackStack(null);
+//                transaction.addToBackStack(null);
 
                 // Commit the transaction
                 transaction.commit();
@@ -71,6 +75,7 @@ public class MainPageActivity extends FragmentActivity {
         connections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectView(R.id.bConnections);
                 //Switch fragment out
                 System.out.println("Connections pressed");
             }
@@ -79,7 +84,22 @@ public class MainPageActivity extends FragmentActivity {
         customize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Switch fragment out
+                selectView(R.id.bCustomize);
+                //Switch Fragment out
+                // Create new fragment and give it an argument specifying the article it should show
+                AvatarSelectionFragment newFragment = new AvatarSelectionFragment();
+
+                //No arguments to set as of yet
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.fragment_section, newFragment);
+//                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
                 System.out.println("Customize pressed");
             }
         });
@@ -87,52 +107,11 @@ public class MainPageActivity extends FragmentActivity {
         accountInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectView(R.id.bAccountInfo);
                 //Switch fragment out
                 System.out.println("Account info pressed");
             }
         });
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "MainPage Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.example.gestalt.insulinpumpulator/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "MainPage Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.example.gestalt.insulinpumpulator/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
+        selectView(R.id.bAccountInfo);
     }
 }
