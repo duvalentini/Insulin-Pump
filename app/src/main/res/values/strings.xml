@@ -21,13 +21,12 @@
     <string name="account_information"> "Account Information</string>
     <string name="back">"Logout"</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="title_activity_scenario_playthrough">ScenarioPlaythrough</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="boop">Boop</string>
     <string name="avatar_selection">Avatar Selection</string>
     <string name="doop">Doop</string>
+    <string name="scenario_selection">Scenario Selection</string>
+    <string name="back_button_SS">Back</string>
 </resources>

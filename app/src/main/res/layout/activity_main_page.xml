@@ -12,37 +12,43 @@
     android:columnCount="1"
     android:orientation="vertical">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="@string/scenario_select"
+                    android:id="@+id/scenario_select"
+                    android:layout_weight=".25" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="@string/connections"
+                    android:id="@+id/bConnections"
+                    android:layout_weight=".25" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="@string/customization"
+                    android:id="@+id/bCustomize"
+                    android:layout_weight=".25" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="@string/account_information"
+                    android:id="@+id/bAccountInfo"
+                    android:layout_weight=".25" />
+        </LinearLayout>
+
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/fragment_section"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/scenario_select"
-            android:id="@+id/scenario_select"
-            android:layout_weight=".5" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connections"
-            android:id="@+id/bConnections"
-            android:layout_weight=".5" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/customization"
-            android:id="@+id/bCustomize"
-            android:layout_weight=".5" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/account_information"
-            android:id="@+id/bAccountInfo"
-            android:layout_weight=".5" />
 
 </LinearLayout>
