@@ -1,29 +1,8 @@
 package com.example.gestalt.insulinpumpulator;
 
-
-
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import com.amazonaws.mobile.AWSMobileClient;
-import com.amazonaws.mobile.user.signin.SignInManager;
-import com.amazonaws.mobile.user.IdentityManager;
-import com.amazonaws.mobile.user.IdentityProvider;
-
-import com.amazonaws.mobile.user.signin.GoogleSignInProvider;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -49,6 +28,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,20 +37,14 @@ import static android.Manifest.permission.READ_CONTACTS;
 
 
 /**
- * A login screen that offers login via email/password.
+ * A registration screen.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class RegistrationActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * Message name from tutorial that I was following, used in sending the app to the main page.
-     */
-    public final static String EXTRA_MESSAGE = "com.insulinpumpulator.tutorialMessage.";
-
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -82,19 +57,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-    private final static String LOG_TAG = LoginActivity.class.getSimpleName();
-    private SignInManager signInManager;
-
-    /**
-     * Permission Request Code (Must be < 256).
-     */
-    private static final int GET_ACCOUNTS_PERMISSION_REQUEST_CODE = 93;
-
-    /**
-     * The Google OnClick listener, since we must override it to get permissions on Marshmallow and above.
-     */
-    private View.OnClickListener googleOnClickListener;
-
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -105,8 +67,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AWSMobileClient.initializeMobileClientIfNecessary(getApplicationContext());
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_registration);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -123,49 +84,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        signInManager = SignInManager.getInstance(this);
-
-        signInManager.setResultsHandler(this, new SignInResultsHandler());
-
-        // Initialize sign-in buttons.
-        googleOnClickListener =
-                signInManager.initializeSignInButton(GoogleSignInProvider.class, findViewById(R.id.g_login_button));
-
-        if (googleOnClickListener != null) {
-            // if the onClick listener was null, initializeSignInButton will have removed the view.
-            this.findViewById(R.id.g_login_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    final Activity thisActivity = LoginActivity.this;
-                    if (ContextCompat.checkSelfPermission(thisActivity,
-                            Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(LoginActivity.this,
-                                new String[]{Manifest.permission.GET_ACCOUNTS},
-                                GET_ACCOUNTS_PERMISSION_REQUEST_CODE);
-                        return;
-                    }
-
-                    // call the Google onClick listener.
-                    googleOnClickListener.onClick(view);
-                }
-            });
-        }
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
         // New user? Sign up now! button
-        Button mEmailSignUpButton = (Button) findViewById(R.id.email_sign_up_button);
+        Button mEmailSignUpButton = (Button) findViewById(R.id.email_sign_up_short_button);
         mEmailSignUpButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(view.getContext(), RegistrationActivity.class);
-                view.getContext().startActivity(myIntent);
+                //attemptLogin();
+                // Attempt Registration wth Cognito
+                Toast.makeText(getApplicationContext(), "Soon this will register a user with Amazon Cognito", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -203,7 +129,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return false;
     }
 
-
     /**
      * Callback received when a permissions request has been completed.
      */
@@ -214,79 +139,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 populateAutoComplete();
             }
-        }
-        if (requestCode == GET_ACCOUNTS_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                this.findViewById(R.id.g_login_button).callOnClick();
-            } else {
-                Log.i(LOG_TAG, "Permissions not granted for Google sign-in. :(");
-            }
-        }
-    }
-    /**
-     * SignInResultsHandler handles the final result from sign in. Making it static is a best
-     * practice since it may outlive the SplashActivity's life span.
-     */
-    private class SignInResultsHandler implements IdentityManager.SignInResultsHandler {
-        /**
-         * Receives the successful sign-in result and starts the main activity.
-         * @param provider the identity provider used for sign-in.
-         */
-        @Override
-        public void onSuccess(final IdentityProvider provider) {
-            Log.d(LOG_TAG, String.format("User sign-in with %s succeeded",
-                    provider.getDisplayName()));
-
-            // The sign-in manager is no longer needed once signed in.
-            SignInManager.dispose();
-
-            Toast.makeText(LoginActivity.this, String.format("Sign-in with %s succeeded.",
-                    provider.getDisplayName()), Toast.LENGTH_LONG).show();
-
-            // Load user name and image.
-            AWSMobileClient.defaultMobileClient()
-                    .getIdentityManager().loadUserInfoAndImage(provider, new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(LOG_TAG, "Launching Main Activity...");
-                    startActivity(new Intent(LoginActivity.this, MainPageActivity.class)
-                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                    // finish should always be called on the main thread.
-                    finish();
-                }
-            });
-        }
-
-        /**
-         * Recieves the sign-in result indicating the user canceled and shows a toast.
-         * @param provider the identity provider with which the user attempted sign-in.
-         */
-        @Override
-        public void onCancel(final IdentityProvider provider) {
-            Log.d(LOG_TAG, String.format("User sign-in with %s canceled.",
-                    provider.getDisplayName()));
-
-            Toast.makeText(LoginActivity.this, String.format("Sign-in with %s canceled.",
-                    provider.getDisplayName()), Toast.LENGTH_LONG).show();
-        }
-
-        /**
-         * Receives the sign-in result that an error occurred signing in and shows a toast.
-         * @param provider the identity provider with which the user attempted sign-in.
-         * @param ex the exception that occurred.
-         */
-        @Override
-        public void onError(final IdentityProvider provider, final Exception ex) {
-            Log.e(LOG_TAG, String.format("User Sign-in failed for %s : %s",
-                    provider.getDisplayName(), ex.getMessage()), ex);
-
-            final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
-            errorDialogBuilder.setTitle("Sign-In Error");
-            errorDialogBuilder.setMessage(
-                    String.format("Sign-in with %s failed.\n%s", provider.getDisplayName(), ex.getMessage()));
-            errorDialogBuilder.setNeutralButton("Ok", null);
-            errorDialogBuilder.show();
         }
     }
 
@@ -353,16 +205,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
-        Sends you to the main page activity.
-     */
-    public void sendToMain(View view){
-        Intent intent = new Intent(this, MainPageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.password);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
-    /**
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
@@ -408,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // Select only email addresses.
                 ContactsContract.Contacts.Data.MIMETYPE +
                         " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                                                                     .CONTENT_ITEM_TYPE},
+                .CONTENT_ITEM_TYPE},
 
                 // Show primary email addresses first. Note that there won't be
                 // a primary email address if the user hasn't specified one.
@@ -446,13 +288,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(RegistrationActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
     }
-
-
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -509,9 +349,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
-
-
     }
-
 }
-
