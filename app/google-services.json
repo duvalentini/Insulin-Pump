@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "581753661381",
+    "project_id": "insulinpumpulator-1334"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581753661381:android:e698deb18260762a",
+        "android_client_info": {
+          "package_name": "com.example.gestalt.insulinpumpulator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "581753661381-323vpsrvnijvnbsku6882g0sjf89jnr1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gestalt.insulinpumpulator",
+            "certificate_hash": "89DAE0242327ADC0EA799633F847B642EF8741C8"
+          }
+        },
+        {
+          "client_id": "581753661381-u3929pfgi7k6joscs713djtiiou76im9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARbxRszXyRX4TCtRgPpooocbfZVxkN9N0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
