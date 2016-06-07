@@ -171,6 +171,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        System.out.println("RESULT2 = " + result);
+        System.out.println("RESULT STATUS = " + result.getStatus());
+        System.out.println("RESULT ACCOUNT = " + result.getSignInAccount());
+        int statusCode = result.getStatus().getStatusCode();
+        System.out.println("STATUS CODE = " + statusCode);
+
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -215,8 +221,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
-                //.requestIdToken(getString(R.string.client_id))
-                .requestIdToken("581753661381-323vpsrvnijvnbsku6882g0sjf89jnr1.apps.googleusercontent.com")
+                .requestIdToken(getString(R.string.client_id))
+                //.requestIdToken("581753661381-u3929pfgi7k6joscs713djtiiou76im9.apps.googleusercontent.com")
                 .build();
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
