@@ -3,6 +3,7 @@ package com.example.gestalt.insulinpumpulator;
 
 
 import android.Manifest;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -16,16 +17,38 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.plus.Account;
+
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobile.user.signin.SignInManager;
 import com.amazonaws.mobile.user.IdentityManager;
 import com.amazonaws.mobile.user.IdentityProvider;
 
 import com.amazonaws.mobile.user.signin.GoogleSignInProvider;
+import com.amazonaws.regions.Regions;
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -58,8 +81,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -68,6 +96,15 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.plus.Account;
+
+import com.amazonaws.services.cognitoidentity.*;
+import com.amazonaws.services.cognitoidentity.model.*;
+import com.amazonaws.services.securitytoken.*;
+import com.amazonaws.services.securitytoken.model.*;
+import com.amazonaws.auth.*;
+import com.google.android.gms.plus.Plus;
+import com.amazonaws.services.*;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -99,8 +136,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+    ////////////////////
+    private GoogleLoginTask mGoogleAuthTask = null;
     private final static String LOG_TAG = LoginActivity.class.getSimpleName();
     private SignInManager signInManager;
+
+    private CognitoUserSession cognitoUserSession1;
 
     /**
      * Permission Request Code (Must be < 256).
@@ -119,7 +160,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
-    private GoogleApiClient mGoogleApiClient ;
+    private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN = 1;
     private String TAG = "LoginActivity";
 
@@ -178,10 +219,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         System.out.println("STATUS CODE = " + statusCode);
 
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             Toast.makeText(getApplicationContext(), "USER WAS SUCCESSFULLY SIGNED IN :)", Toast.LENGTH_LONG).show();
+
+            ////////////////////// CALL NEW TASK HERE
+            mGoogleAuthTask = new GoogleLoginTask(result);
+            mGoogleAuthTask.execute((Void) null);
+
+            Intent myIntent = new Intent(this, MainPageActivity.class);
+            this.startActivity(myIntent);
+
+            /////// TOOK OUT CODE HERE /////////////////
+
+
+
             //updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
@@ -221,8 +271,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
-                .requestIdToken(getString(R.string.client_id))
+                //.requestIdToken(getString(R.string.client_id))
                 //.requestIdToken("581753661381-u3929pfgi7k6joscs713djtiiou76im9.apps.googleusercontent.com")
+                .requestIdToken("581753661381-5b3ge2pr10avvdbl7lfhf5k64h6cl9ht.apps.googleusercontent.com")
                 .build();
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
@@ -605,6 +656,277 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             // TODO: register the new account here.
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAuthTask = null;
+            showProgress(false);
+
+            if (success) {
+                finish();
+            } else {
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+            showProgress(false);
+        }
+
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    public class GoogleLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+        //private final String mEmail;
+        //private final String mPassword;
+        private final GoogleSignInResult mResult;
+
+        GoogleLoginTask(GoogleSignInResult result) {
+            //mEmail = email;
+            //mPassword = password;
+            mResult = result;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            //////////////////////////////////////////////
+
+            // Signed in successfully, show authenticated UI.
+//            GoogleSignInAccount acct = mResult.getSignInAccount();
+            //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+//            Toast.makeText(getApplicationContext(), "USER WAS SUCCESSFULLY SIGNED IN :)", Toast.LENGTH_LONG).show();
+
+            // Initialize the Amazon Cognito credentials provider
+            final CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getApplicationContext(),
+                    "us-east-1:d4ea7b2f-a140-47a4-b2cc-2b5698e4e9ad", // Identity Pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+
+            GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+            GooglePlayServicesUtil.getRemoteContext(getApplicationContext());
+            //AccountManager am = AccountManager.get(this);
+            AccountManager am = AccountManager.get(getApplicationContext());
+            //com.google.android.gms.plus.Account[] accounts = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
+            android.accounts.Account[] accounts = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
+            try {
+                //String token = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
+                //        "audience:server:client_id:581753661381-u3929pfgi7k6joscs713djtiiou76im9.apps.googleusercontent.com");
+
+                //String token = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
+                //        "audience:server:client_id:581753661381-323vpsrvnijvnbsku6882g0sjf89jnr1.apps.googleusercontent.com");
+
+                //String token = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
+                //        "audience:server:client_id:960858442806248e063b18bd87fd4d8e8d8a4434");
+
+                String xxxtoken = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
+                        "audience:server:client_id:581753661381-5b3ge2pr10avvdbl7lfhf5k64h6cl9ht.apps.googleusercontent.com");
+
+
+                System.out.println("ACCOUNTS[0] = " + accounts[0]);
+                System.out.println("CONTEXT = " + getApplicationContext());
+
+                //String xxxtoken = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
+                //        "audience:server:client_id:581753661381-u3v67daj80ktje5nhvsd6nuqc36363i7.apps.googleusercontent.com");
+
+                GoogleSignInAccount acct = mResult.getSignInAccount();
+                String token = acct.getIdToken();
+                System.out.println("ID Token: " + token);
+
+                System.out.println("JUST GOT THE TOKEN = " + xxxtoken);
+
+                System.out.println("NAME = " + acct.getDisplayName());
+
+
+
+                Map<String, String> logins = new HashMap<String, String>();
+                logins.put("accounts.google.com", token);
+                //credentialsProvider.refresh();
+                credentialsProvider.setLogins(logins);
+                System.out.println("CREDENTIALS PROVIDER = " + credentialsProvider);
+                System.out.println("LOGINS = " + logins);
+
+                // seems right
+                String cachedID = credentialsProvider.getCachedIdentityId();
+                System.out.println("CACHED_IDENTITY_ID = " + cachedID);
+                String identityIdd = credentialsProvider.getIdentityId();
+                System.out.println("IDENTITY_IDDDDDDD = " + identityIdd);
+
+
+                ///////////////////////////////////////////////////////////////////
+                //// COGNITO
+
+
+                // setup AWS service configuration. Choosing default configuration
+                ClientConfiguration clientConfiguration = new ClientConfiguration();
+
+                // Create a CognitoUserPool object to refer to your user pool
+                CognitoUserPool userPool = new CognitoUserPool(getApplicationContext(), "us-east-1_7O3aRmLQU", "3a6lfc0s4eks3rfv3h9lg4v01r", "occr7f0q9vmbgl1bl6sf4ief7u6kqqd66npmf5m5ci4qj7qal3c", clientConfiguration);
+                // (context, poolID, clientID, clientsecret, clientconfig)
+
+                // Create a CognitoUserAttributes object and add user attributes
+                CognitoUserAttributes userAttributes = new CognitoUserAttributes();
+
+                // Add the user attributes. Attributes are added as key-value pairs
+                // Adding user's given name.
+                // Note that the key is "given_name" which is the OIDC claim for given name
+                userAttributes.addAttribute("name", acct.getDisplayName());
+
+                // Adding user's email address
+                userAttributes.addAttribute("email", acct.getEmail());
+
+                SignUpHandler signupCallback = new SignUpHandler() {
+
+                    @Override
+                    public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+                        // Sign-up was successful
+                        System.out.println("User sign up success!");
+
+                        // Check if this user (cognitoUser) has to be confirmed
+                        if(!userConfirmed) {
+                            // This user has to be confirmed and a confirmation code was sent to the user
+                            // cognitoUserCodeDeliveryDetails will indicate where the confirmation code was sent
+                            // Get the confirmation code from user
+                            System.out.println("User is not confirmed");
+                        }
+                        else {
+                            // The user has already been confirmed
+                            System.out.println("User is confirmed");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Exception exception) {
+                        // Sign-up failed, check exception for the cause
+                        System.out.println("User sign up failed!");
+                        exception.printStackTrace();
+                    }
+                };
+
+                /////////////////////////////
+                final String password = "abcabc";
+
+                System.out.println("Signing up user in background...");
+
+                String email = acct.getEmail();
+                String id = email.substring(0, email.indexOf('@'));
+                System.out.println("COGNITOOOOOOOO ID = " + id);
+
+
+                // Sign up this user
+                userPool.signUpInBackground(id, password, userAttributes, null, signupCallback);
+
+                // Implement callback handler for get details call
+                GetDetailsHandler getDetailsHandler = new GetDetailsHandler() {
+                    @Override
+                    public void onSuccess(CognitoUserDetails cognitoUserDetails) {
+                        // The user detail are in cognitoUserDetails
+                    }
+
+                    @Override
+                    public void onFailure(Exception exception) {
+                        // Fetch user details failed, check exception for the cause
+                    }
+                };
+
+                //CognitoUser user = userPool.getUser(userId);
+                CognitoUser cognitoUser = userPool.getCurrentUser();
+
+                // Fetch the user details
+                cognitoUser.getDetailsInBackground(getDetailsHandler);
+
+
+
+                // Callback handler for the sign-in process
+                AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
+
+                    @Override
+                    public void onSuccess(CognitoUserSession cognitoUserSession) {
+                        // Sign-in was successful, cognitoUserSession will contain tokens for the user
+                        // Get id token from CognitoUserSession.
+                        String idToken = cognitoUserSession.getIdToken().getJWTToken();
+
+                        // Create a credentials provider, or use the existing provider.
+                        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(getApplicationContext(), "us-east-1:d4ea7b2f-a140-47a4-b2cc-2b5698e4e9ad", Regions.US_EAST_1);
+
+                        // Set up as a credentials provider.
+                        Map<String, String> logins = new HashMap<String, String>();
+                        logins.put("cognito-idp.us-east-1.amazonaws.com/us-east-1_7O3aRmLQU", cognitoUserSession.getIdToken().getJWTToken());
+                        credentialsProvider.setLogins(logins);
+                    }
+
+                    @Override
+                    public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
+                        // The API needs user sign-in credentials to continue
+                        AuthenticationDetails authenticationDetails = new AuthenticationDetails(userId, password, null);
+
+                        // Pass the user sign-in credentials to the continuation
+                        authenticationContinuation.setAuthenticationDetails(authenticationDetails);
+
+                        // Allow the sign-in to continue
+                        authenticationContinuation.continueTask();
+                    }
+
+                    @Override
+                    public void getMFACode(MultiFactorAuthenticationContinuation multiFactorAuthenticationContinuation) {
+                        // Multi-factor authentication is required, get the verification code from user
+//                        multiFactorAuthenticationContinuation.setMfaCode(mfaVerificationCode);
+                        // Allow the sign-in process to continue
+                        multiFactorAuthenticationContinuation.continueTask();
+                    }
+
+                    @Override
+                    public void onFailure(Exception exception) {
+                        // Sign-in failed, check exception for the cause
+                    }
+                };
+
+                // Sign-in the user
+                cognitoUser.getSessionInBackground(authenticationHandler);
+
+
+
+//                cognitoUser.getSessionInBackground(new AuthenticationHandler() {
+//                    @Override
+//                    public void onSuccess(CognitoUserSession session) {
+//                        String idToken = session.getIdToken().getJWTToken();
+//
+//                        Map<String, String> logins = new HashMap<String, String>();
+//                        logins.put("cognito-idp.us-east-1.amazonaws.com/us-east-1_MdlbQcbJE", session.getIdToken().getJWTToken());
+//                        credentialsProvider.setLogins(logins);
+//                    }
+
+                    // Other unimplemented methods
+
+//                });
+
+
+                // TODO: At this point you should save this identifier so you won’t
+                // have to make this call the next time a user connects
+
+                System.out.println("XXXXXXXXXXXXXXXX");
+            }
+            catch (UserRecoverableAuthException e) {
+                System.out.println("AAAAAAAAAAAAAAAAAAAA");
+//                startActivityForResult(e.getIntent(), 888);
+                e.printStackTrace();
+            } catch (GoogleAuthException | IOException e) {
+                System.out.println("BBBBBBBBBBBBBBBBBBBB");
+                e.printStackTrace();
+            }
+
+            // TODO: register the new account here.
+
             return true;
         }
 

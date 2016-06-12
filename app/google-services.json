@@ -13,7 +13,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "581753661381-323vpsrvnijvnbsku6882g0sjf89jnr1.apps.googleusercontent.com",
+          "client_id": "581753661381-5b3ge2pr10avvdbl7lfhf5k64h6cl9ht.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.gestalt.insulinpumpulator",
@@ -21,7 +21,11 @@
           }
         },
         {
-          "client_id": "581753661381-u3929pfgi7k6joscs713djtiiou76im9.apps.googleusercontent.com",
+          "client_id": "581753661381-5b3ge2pr10avvdbl7lfhf5k64h6cl9ht.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "581753661381-5b3ge2pr10avvdbl7lfhf5k64h6cl9ht.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

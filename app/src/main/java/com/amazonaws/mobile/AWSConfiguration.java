@@ -23,8 +23,8 @@ public class AWSConfiguration {
     public static final Regions AMAZON_COGNITO_REGION =
         Regions.US_EAST_1;
     public static final String  AMAZON_COGNITO_IDENTITY_POOL_ID =
-        "us-east-1:7c900735-9ef5-4851-89d7-f37a5814b78c";
+        "us-east-1:d4ea7b2f-a140-47a4-b2cc-2b5698e4e9ad";
     // Google Client ID for Web application
     public static final String GOOGLE_CLIENT_ID =
-        "813846432570-e6t972mm3u8mb08l8lt3a4t8vedr9e55.apps.googleusercontent.com";
+        "581753661381-5b3ge2pr10avvdbl7lfhf5k64h6cl9ht.apps.googleusercontent.com";
 }
