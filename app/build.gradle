@@ -21,6 +21,14 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
+    signingConfigs {
+        debug {
+            storeFile file('./debug.keystore')
+            //keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storePassword 'android'
+        }
+    }
 }
 
 dependencies {
