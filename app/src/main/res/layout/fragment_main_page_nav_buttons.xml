@@ -1,0 +1,33 @@
+<LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="@string/scenario_select"
+        android:id="@+id/scenario_select"
+        android:layout_weight="1" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="@string/connections"
+        android:id="@+id/bConnections"
+        android:layout_weight="1" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="@string/customization"
+        android:id="@+id/bCustomize"
+        android:layout_weight="1" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="@string/account_information"
+        android:id="@+id/bAccountInfo"
+        android:layout_weight="1" />
+</LinearLayout>

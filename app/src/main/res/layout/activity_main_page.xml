@@ -12,39 +12,21 @@
     android:columnCount="1"
     android:orientation="vertical">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/main_page_title"
+            android:id="@+id/main_page_title"
+            android:layout_gravity="center_horizontal" />
 
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:text="@string/scenario_select"
-                    android:id="@+id/scenario_select"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:text="@string/connections"
-                    android:id="@+id/bConnections"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:text="@string/customization"
-                    android:id="@+id/bCustomize"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:text="@string/account_information"
-                    android:id="@+id/bAccountInfo"
-                    android:layout_weight="1" />
-        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:id="@+id/insulin_pump_image"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/insulin_pump"
+            android:contentDescription="@string/example_insulin_pump_image" />
 
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/fragment_section"
