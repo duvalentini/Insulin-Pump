@@ -679,6 +679,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Regions.US_EAST_1 // Region
             );
 
+            credentialsProvider.clear();
+            credentialsProvider.clearCredentials();
+
 
             GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
             GooglePlayServicesUtil.getRemoteContext(getApplicationContext());

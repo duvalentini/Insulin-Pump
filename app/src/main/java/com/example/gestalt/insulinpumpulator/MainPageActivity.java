@@ -1,11 +1,32 @@
 package com.example.gestalt.insulinpumpulator;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobile.user.IdentityManager;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+
+import com.amazonaws.services.dynamodbv2.*;
+import com.amazonaws.services.*;
+
+import com.amazonaws.services.dynamodbv2.model.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+
 
 public class MainPageActivity extends FragmentActivity {
 
@@ -24,10 +45,11 @@ public class MainPageActivity extends FragmentActivity {
     }
 
     //for dynamoDB, will move later
-//    private IdentityManager identityManager;
-//    private CognitoCachingCredentialsProvider credentialsProvider;
-//    private DynamoDBMapper mapper;
-//    private Book book;
+    private IdentityManager identityManager;
+    private CognitoCachingCredentialsProvider credentialsProvider;
+    private DynamoDBMapper mapper;
+    private Book book;
+    private DBTask mDBTask = null;
 
 
     @Override
@@ -57,13 +79,7 @@ public class MainPageActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_section, firstFragment).commit();
         }
 
-//        //for dynamoDB, will put somewhere else later
-//        credentialsProvider = identityManager.getCredentialsProvider();
-//        AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
-//        mapper = new DynamoDBMapper(ddbClient);
-//
-//        book = new Book();
-//        book.setIsbn("1234567890");
+//////////////////////////////////////
 
         //leave this commented out
 //        book.setHardCover(false);
@@ -102,13 +118,14 @@ public class MainPageActivity extends FragmentActivity {
             public void onClick(View v) {
                 selectView(R.id.bConnections);
 
-                //dynamoDB test, will remove later
-          //      mapper.save(book);
+                mDBTask = new DBTask();
+                mDBTask.execute((Void) null);
 
                 //Switch fragment out
                 System.out.println("Connections pressed");
             }
         });
+
         Button customize = (Button) findViewById(R.id.bCustomize);
         customize.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,4 +195,71 @@ public class MainPageActivity extends FragmentActivity {
         super.onDestroy();
         Log.d(msg, "The onDestroy() event");
     }
+
+    public class DBTask extends AsyncTask<Void, Void, Boolean> {
+
+        DBTask() {}
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            //for dynamoDB, will put somewhere else later
+            // setup AWS service configuration. Choosing default configuration
+
+            final CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getApplicationContext(),
+                    "us-east-1:d4ea7b2f-a140-47a4-b2cc-2b5698e4e9ad", // Identity Pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+            //ClientConfiguration clientConfiguration = new ClientConfiguration();
+            //identityManager = new IdentityManager(this, clientConfiguration);
+            //credentialsProvider = identityManager.getCredentialsProvider();
+            AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
+            ddbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
+            mapper = new DynamoDBMapper(ddbClient);
+
+            AmazonDynamoDB dynamoDB;
+
+            Map<String, AttributeValue> map = new HashMap<>();
+
+            AttributeValue attributeValue = new AttributeValue("6666666");
+
+            map.put("ISBN", attributeValue);
+
+            ddbClient.putItem("Books", map);
+
+
+//        DynamoDBTable table = dynamoDB
+//                getTable("Movies");
+
+            book = new Book();
+            book.setIsbn("666666666");
+
+            //dynamoDB test, will remove later
+//            mapper.save(book);
+            mapper.batchSave(Arrays.asList(book));
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+
+            if (success) {
+                //finish();
+            } else {
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+
+
+    }
+
 }
