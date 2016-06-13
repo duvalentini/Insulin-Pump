@@ -23,6 +23,13 @@ public class MainPageActivity extends FragmentActivity {
         }
     }
 
+    //for dynamoDB, will move later
+//    private IdentityManager identityManager;
+//    private CognitoCachingCredentialsProvider credentialsProvider;
+//    private DynamoDBMapper mapper;
+//    private Book book;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +56,22 @@ public class MainPageActivity extends FragmentActivity {
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_section, firstFragment).commit();
         }
+
+//        //for dynamoDB, will put somewhere else later
+//        credentialsProvider = identityManager.getCredentialsProvider();
+//        AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
+//        mapper = new DynamoDBMapper(ddbClient);
+//
+//        book = new Book();
+//        book.setIsbn("1234567890");
+
+        //leave this commented out
+//        book.setHardCover(false);
+//        book.setTitle("Great Expectations");
+//        book.setAuthor("Charles Dickens");
+//        book.setPrice(1299);
+
+
         Button scenarioSelect = (Button) findViewById(R.id.scenario_select);
         scenarioSelect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +101,10 @@ public class MainPageActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 selectView(R.id.bConnections);
+
+                //dynamoDB test, will remove later
+          //      mapper.save(book);
+
                 //Switch fragment out
                 System.out.println("Connections pressed");
             }
