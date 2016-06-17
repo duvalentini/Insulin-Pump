@@ -8,6 +8,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -54,7 +55,12 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Mult
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -69,6 +75,7 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +115,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private final static String LOG_TAG = LoginActivity.class.getSimpleName();
     private SignInManager signInManager;
 
-    private CognitoUserSession cognitoUserSession1;
+    // For dynamoDB
+    private IdentityManager identityManager;
+    private CognitoCachingCredentialsProvider credentialsProvider;
+    private DynamoDBMapper mapper;
+    private User mUser;
+    private DBTask mDBTask = null;
+    private GoogleSignInAccount acct;
+    private String identityId;
 
     /**
      * Permission Request Code (Must be < 256).
@@ -192,8 +206,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mGoogleAuthTask = new GoogleLoginTask(result);
             mGoogleAuthTask.execute((Void) null);
 
-            Intent myIntent = new Intent(this, MainPageActivity.class);
-            this.startActivity(myIntent);
+//            Intent myIntent = new Intent(this, MainPageActivity.class);
+//            this.startActivity(myIntent);
 
             /////// TOOK OUT CODE HERE /////////////////
 
@@ -709,7 +723,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //String xxxtoken = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
                 //        "audience:server:client_id:581753661381-u3v67daj80ktje5nhvsd6nuqc36363i7.apps.googleusercontent.com");
 
-                GoogleSignInAccount acct = mResult.getSignInAccount();
+                acct = mResult.getSignInAccount();
                 String token = acct.getIdToken();
                 System.out.println("ID Token: " + token);
 
@@ -729,8 +743,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // seems right
                 String cachedID = credentialsProvider.getCachedIdentityId();
                 System.out.println("CACHED_IDENTITY_ID = " + cachedID);
-                String identityIdd = credentialsProvider.getIdentityId();
-                System.out.println("IDENTITY_IDDDDDDD = " + identityIdd);
+                identityId = credentialsProvider.getIdentityId();
+                System.out.println("IDENTITY_ID = " + identityId);
 
 
                 ///////////////////////////////////////////////////////////////////
@@ -741,7 +755,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 ClientConfiguration clientConfiguration = new ClientConfiguration();
 
                 // Create a CognitoUserPool object to refer to your user pool
-                CognitoUserPool userPool = new CognitoUserPool(getApplicationContext(), "us-east-1_7O3aRmLQU", "3a6lfc0s4eks3rfv3h9lg4v01r", "occr7f0q9vmbgl1bl6sf4ief7u6kqqd66npmf5m5ci4qj7qal3c", clientConfiguration);
+                CognitoUserPool userPool = new CognitoUserPool(getApplicationContext(), "us-east-1_Vvz5YVUdO", "345b9s65qbq8lfs6p9785abc0r", "124psqofkdimiehhijlabjttfqg0t01ni7vatt3v8qleqdnml86e", clientConfiguration);
                 // (context, poolID, clientID, clientsecret, clientconfig)
 
                 // Create a CognitoUserAttributes object and add user attributes
@@ -754,6 +768,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 // Adding user's email address
                 userAttributes.addAttribute("email", acct.getEmail());
+
+                // Adding user's identityID
+                userAttributes.addAttribute("custom:IdentityID", identityId);
 
                 SignUpHandler signupCallback = new SignUpHandler() {
 
@@ -906,17 +923,88 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                //finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
+
+            // Save user info to the database
+            System.out.println("CALLING DB TASK NOW");
+            mDBTask = new DBTask();
+            mDBTask.execute((Void) null);
         }
 
         @Override
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+
+
+    }
+
+    public class DBTask extends AsyncTask<Void, Void, Boolean> {
+
+        DBTask() {
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            //for dynamoDB, will put somewhere else later
+            // setup AWS service configuration. Choosing default configuration
+
+            final CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getApplicationContext(),
+                    "us-east-1:d4ea7b2f-a140-47a4-b2cc-2b5698e4e9ad", // Identity Pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+            //ClientConfiguration clientConfiguration = new ClientConfiguration();
+            //identityManager = new IdentityManager(this, clientConfiguration);
+            //credentialsProvider = identityManager.getCredentialsProvider();
+            AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
+            ddbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
+            mapper = new DynamoDBMapper(ddbClient);
+
+            Map<String, AttributeValue> map = new HashMap<>();
+            AttributeValue attributeValue = new AttributeValue("6666666");
+            map.put("ISBN", attributeValue);
+            ddbClient.putItem("Books", map);
+
+            // Set the user info
+            mUser = new User();
+            mUser.setIdentityID(identityId);
+            mUser.setEmail(acct.getEmail());
+            mUser.setName(acct.getDisplayName());
+            String email = acct.getEmail();
+            String username = email.substring(0, email.indexOf('@'));
+            mUser.setUsername(username);
+
+            // Save the user info to the db
+            mapper.batchSave(Arrays.asList(mUser));
+
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            if (success) {
+                finish();
+            } else {
+            }
+
+            System.out.println("CALLING MAINPAGEACTIVITY INTENT NOW");
+            Intent myIntent = new Intent(getApplicationContext(), MainPageActivity.class);
+            startActivity(myIntent);
+        }
+
+        @Override
+        protected void onCancelled() {
+
         }
 
 
