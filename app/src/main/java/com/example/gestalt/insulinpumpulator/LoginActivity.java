@@ -848,7 +848,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         // Set up as a credentials provider.
                         Map<String, String> logins = new HashMap<String, String>();
-                        logins.put("cognito-idp.us-east-1.amazonaws.com/us-east-1_7O3aRmLQU", cognitoUserSession.getIdToken().getJWTToken());
+                        logins.put("cognito-idp.us-east-1.amazonaws.com/us-east-1_Vvz5YVUdO", cognitoUserSession.getIdToken().getJWTToken());
                         credentialsProvider.setLogins(logins);
                     }
 

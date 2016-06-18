@@ -4,6 +4,18 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
+
+    <string name="prompt_pump_type">Pump Type</string>
+    <string name="prompt_insulin_carb_ratio">Insulin/Carb Ratio</string>
+    <string name="prompt_sensitivity">Sensitivity</string>
+    <string name="prompt_target_blood_sugar">Target Blood Sugar</string>
+    <string name="prompt_active_insulin_time">Active Insulin Time</string>
+    <string name="prompt_basal_rate">Basal Rate</string>
+    <string name="action_update_pump_settings">Update Pump Settings</string>
+    <string name="action_add_basal_rate">Add Another Basal Rate</string>
+    <string name="pump_settings">Pump Settings</string>
+
+
     <string name="action_log_in">Log in</string>
     <string name="action_sign_up">New user? Sign up now!</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -33,7 +45,7 @@
     <string name="scenario_selection">Scenario Selection</string>
     <string name="back_button_SS">Back</string>
     <string name="example_insulin_pump_image">Example insulin pump image</string>
-    <string name="main_page_title">Welcome! =D</string>
+    <string name="main_page_title">Welcome!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
