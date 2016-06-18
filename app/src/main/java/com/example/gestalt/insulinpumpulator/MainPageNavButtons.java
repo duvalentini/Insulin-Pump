@@ -82,11 +82,13 @@ public class MainPageNavButtons extends Fragment {
                 System.out.println("Scenario select pressed");
             }
         });
+
         Button connections = (Button) view.findViewById(R.id.bConnections);
         connections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Switch fragment out
+
                 System.out.println("Connections pressed");
             }
         });
@@ -109,6 +111,19 @@ public class MainPageNavButtons extends Fragment {
                 System.out.println("Account info pressed");
             }
         });
+
+        Button pumpSettings = (Button) view.findViewById(R.id.bPumpSettings);
+        pumpSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Switch fragment out
+                PumpSettingsFragment newFragment = new PumpSettingsFragment();
+                ((MainPageActivity) getActivity()).swapFragment(newFragment);
+
+                System.out.println("Pump Settings pressed");
+            }
+        });
+
         return view;
     }
 

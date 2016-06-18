@@ -38,9 +38,6 @@ public class MainPageActivity extends FragmentActivity implements MainPageNavBut
     private IdentityManager identityManager;
     private CognitoCachingCredentialsProvider credentialsProvider;
     private DynamoDBMapper mapper;
-    private Book book;
-    private DBTask mDBTask = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +74,7 @@ public class MainPageActivity extends FragmentActivity implements MainPageNavBut
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack so the user can navigate back
 
-        //dynamoDB test, will remove later
-//        if (fragment.getId() == R.id.bConnections) {
-//            //      mapper.save(book);
-//        }
+
         transaction.replace(R.id.fragment_section, fragment);
         transaction.addToBackStack(null);
 
@@ -126,71 +120,6 @@ public class MainPageActivity extends FragmentActivity implements MainPageNavBut
         Log.d(msg, "The onDestroy() event");
     }
 
-    public class DBTask extends AsyncTask<Void, Void, Boolean> {
-
-        DBTask() {}
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            //for dynamoDB, will put somewhere else later
-            // setup AWS service configuration. Choosing default configuration
-
-            final CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                    getApplicationContext(),
-                    "us-east-1:d4ea7b2f-a140-47a4-b2cc-2b5698e4e9ad", // Identity Pool ID
-                    Regions.US_EAST_1 // Region
-            );
-
-            //ClientConfiguration clientConfiguration = new ClientConfiguration();
-            //identityManager = new IdentityManager(this, clientConfiguration);
-            //credentialsProvider = identityManager.getCredentialsProvider();
-            AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
-            ddbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
-            mapper = new DynamoDBMapper(ddbClient);
-
-            AmazonDynamoDB dynamoDB;
-
-            Map<String, AttributeValue> map = new HashMap<>();
-
-            AttributeValue attributeValue = new AttributeValue("6666666");
-
-            map.put("ISBN", attributeValue);
-
-            ddbClient.putItem("Books", map);
-
-
-//        DynamoDBTable table = dynamoDB
-//                getTable("Movies");
-
-            book = new Book();
-            book.setIsbn("666666666");
-
-            //dynamoDB test, will remove later
-//            mapper.save(book);
-            mapper.batchSave(Arrays.asList(book));
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-
-
-            if (success) {
-                //finish();
-            } else {
-
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-
-        }
-
-
-    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
