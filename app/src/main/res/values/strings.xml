@@ -45,7 +45,7 @@
     <string name="scenario_selection">Scenario Selection</string>
     <string name="back_button_SS">Back</string>
     <string name="example_insulin_pump_image">Example insulin pump image</string>
-    <string name="main_page_title">Welcome! =D</string>
+    <string name="main_page_title">Welcome!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
