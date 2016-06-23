@@ -44,6 +44,9 @@ public abstract class AInsulinPumpMenu {
     public String getMenuName(){
         return menuName;
     }
+    public AInsulinPumpMenu enter(){
+        return subMenus.get(current);
+    }
 
 
 
