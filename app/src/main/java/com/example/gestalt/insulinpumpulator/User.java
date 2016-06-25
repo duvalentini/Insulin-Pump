@@ -13,6 +13,7 @@ public class User {
     private String email;
     private String name;
     private String identityID;
+    private String soundFile;
 
     @DynamoDBHashKey(attributeName = "Username")
     public String getUsername() {
@@ -49,6 +50,11 @@ public class User {
     public void setIdentityID(String identityID) {
         this.identityID = identityID;
     }
+
+    @DynamoDBHashKey(attributeName = "SoundFile")
+    public String getSoundFile() { return soundFile; }
+
+    public void setSoundFile(String soundFile) { this.soundFile = soundFile; }
 
 }
 

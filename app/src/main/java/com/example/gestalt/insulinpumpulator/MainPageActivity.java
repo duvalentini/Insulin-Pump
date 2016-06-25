@@ -1,6 +1,5 @@
 package com.example.gestalt.insulinpumpulator;
 
-import android.os.AsyncTask;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,41 +7,17 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobile.user.IdentityManager;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-
-import com.amazonaws.services.dynamodbv2.*;
-import com.amazonaws.services.*;
-
-import com.amazonaws.services.dynamodbv2.model.*;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-
-
 
 public class MainPageActivity extends FragmentActivity implements MainPageNavButtons.OnFragmentInteractionListener {
 
 
     private String msg = "Android : ";
 
-    //for dynamoDB, will move later
-    private IdentityManager identityManager;
-    private CognitoCachingCredentialsProvider credentialsProvider;
-    private DynamoDBMapper mapper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -81,9 +56,6 @@ public class MainPageActivity extends FragmentActivity implements MainPageNavBut
         // Commit the transaction
         transaction.commit();
         }
-
-
-
 
     /** Called when the activity is about to become visible. */
     @Override
