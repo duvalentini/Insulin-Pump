@@ -1,7 +1,6 @@
 package com.example.gestalt.insulinpumpulator;
 
 import android.content.Context;
-import android.view.SubMenu;
 
 /**
  * Created by Joshua on 6/18/2016.
@@ -51,8 +50,96 @@ class BolusMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.bwizard));
             current =0;
-            subMenus.add(new EmptyMenu(this,c));
+            subMenus.add(new EnterBG(this,c));
         }
+        class EnterBG extends AInsulinPumpMenu{
+
+            public EnterBG(AInsulinPumpMenu p, Context c){
+                parent = p;
+                pump = p.pump;
+                con = c;
+                menuName = (c.getResources().getString(R.string.bwizard));
+                current =0;
+                enterField=0;
+                subMenus.add(new EnterFood(this,c));
+            }
+
+            @Override
+            public void up() {
+                if(enterField==0){
+                    enterField=90;
+                }
+                else if(enterField ==85){
+                    enterField=0;
+                }
+                else if(enterField==500){
+                    enterField =30;
+                }
+                else{
+                    enterField+=5;
+                }
+            }
+            @Override
+            public void down(){
+                if(enterField==90){
+                    enterField=0;
+                }
+                else if(enterField ==0){
+                    enterField =85;
+                }
+                else if(enterField==30){
+                    enterField =500;
+                }
+                else{
+                    enterField -=5;
+                }
+            }
+
+            @Override
+            public AInsulinPumpMenu enter(){
+                pump.setBolasBG((int)enterField);
+                return subMenus.get(0);
+            }
+            class EnterFood extends AInsulinPumpMenu{
+
+                public EnterFood(AInsulinPumpMenu p, Context c){
+                    parent = p;
+                    pump = p.pump;
+                    con = c;
+                    menuName = (c.getResources().getString(R.string.bwizard));
+                    current =0;
+                    enterField =0;
+                }
+
+                @Override
+                public void down() {
+                    if(enterField ==0){
+                        enterField =300;
+                    }
+                    else{
+                        enterField -=3;
+                    }
+                }
+
+                @Override
+                public void up() {
+                    if(enterField ==300){
+                        enterField =0;
+                    }
+                    else{
+                        enterField +=3;
+                    }
+                }
+
+                @Override
+                public AInsulinPumpMenu enter() {
+                    pump.setGramsCarbs((int)enterField);
+                    pump.bolasWiz();
+                    return pump.getTopMenu();
+                }
+            }
+        }
+
     }
     class ManualBolus extends AInsulinPumpMenu{
         public ManualBolus (AInsulinPumpMenu p, Context c){
@@ -74,7 +161,48 @@ class BolusMenu extends AInsulinPumpMenu{
                 con =c;
                 menuName = (c.getResources().getString(R.string.normbolus));
                 current =0;
-                subMenus.add(new EmptyMenu(this,c));
+                subMenus.add(new NormEnter(this,c));
+            }
+            class NormEnter extends AInsulinPumpMenu{
+                public NormEnter(AInsulinPumpMenu p, Context c){
+                    parent =p;
+                    pump = p.pump;
+                    con =c;
+                    menuName = (c.getResources().getString(R.string.normbolus));
+                    current =0;
+                    enterField=0;
+                    subMenus.add(new EmptyMenu(this,c));
+                }
+                @Override
+                public double getEnterField(){
+                    return enterField/3.0;
+                }
+
+                @Override
+                public void up(){
+                    if(enterField==45){
+                        enterField=0;
+                    }
+                    else{
+                        enterField++;
+                    }
+                }
+                @Override
+                public void down(){
+                    if(enterField==0){
+                        enterField=45;
+                    }
+                    else{
+                        enterField--;
+                    }
+                }
+
+                @Override
+                public AInsulinPumpMenu enter() {
+                    pump.setBolusUnits(enterField/3.0);
+                    pump.manualBolas();
+                    return pump.getTopMenu();
+                }
             }
         }
         class SquareWaveBolus extends AInsulinPumpMenu{
@@ -253,8 +381,37 @@ class SuspendMenu extends AInsulinPumpMenu{
         con = c;
         current =0;
         menuName = (c.getResources().getString(R.string.suspend));
-        current =0;
-        subMenus.add(new EmptyMenu(this,c));
+        subMenus.add(new SuspendConfirm(this,c));
+    }
+    class SuspendConfirm extends AInsulinPumpMenu{
+        public SuspendConfirm(AInsulinPumpMenu p, Context c){
+            parent =p;
+            pump = p.pump;
+            con = c;
+            current =0;
+            menuName = (con.getResources().getString(R.string.suspend));
+        }
+        @Override
+        public AInsulinPumpMenu enter(){
+            pump.suspend();
+            if(pump.isSuspended()){
+                menuName = con.getResources().getString(R.string.suspended);
+                return this;
+            }
+           else{
+                menuName = (con.getResources().getString(R.string.suspend));
+                return pump.getTopMenu();
+
+            }
+        }
+        @Override
+        public void up(){
+
+        }
+        @Override
+        public void down(){
+
+        }
     }
 
 
@@ -349,7 +506,70 @@ class BasalMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.settempbasal));
             current =0;
-            subMenus.add(new EmptyMenu(this,c));
+            subMenus.add(new TempDuration(this,c));
+        }
+        class TempDuration extends AInsulinPumpMenu{
+            public TempDuration(AInsulinPumpMenu p, Context c){
+                parent = p;
+                pump = p.pump;
+                con = c;
+                menuName = (c.getResources().getString(R.string.settempbasal));
+                current =0;
+                subMenus.add(new TempPercent(this,c));
+                enterField=0;
+            }
+            @Override
+            public void up(){
+                enterField+=.5;
+                if(enterField>24){
+                    enterField=0;
+                }
+            }
+            @Override
+            public void down(){
+                enterField-=.5;
+                if(enterField<0){
+                    enterField=24;
+                }
+            }
+            @Override
+            public AInsulinPumpMenu enter(){
+                pump.setBasalDuration(enterField);
+                return subMenus.get(0);
+            }
+
+            class TempPercent extends AInsulinPumpMenu{
+                public TempPercent(AInsulinPumpMenu p, Context c){
+                    parent = p;
+                    pump = p.pump;
+                    con = c;
+                    menuName = (c.getResources().getString(R.string.settempbasal));
+                    current =0;
+                    subMenus.add(new EmptyMenu(this,c));
+                    enterField=100;
+                }
+                @Override
+                public void up(){
+                    enterField+=5;
+                    if(enterField>200){
+                        enterField=0;
+                    }
+                }
+                @Override
+                public void down(){
+                    enterField-=5;
+                    if(enterField<0){
+                        enterField=200;
+                    }
+                }
+                @Override
+                public AInsulinPumpMenu enter(){
+                    pump.setBasalPercent((int)enterField);
+                    pump.activateTempBasal();
+                    return pump.getTopMenu();
+                }
+
+            }
         }
     }
     class SelectPatterns extends AInsulinPumpMenu{

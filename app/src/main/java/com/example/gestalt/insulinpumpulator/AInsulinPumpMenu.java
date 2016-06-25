@@ -15,6 +15,10 @@ public abstract class AInsulinPumpMenu {
     protected AInsulinPump pump;
     protected String menuName;
     protected Context con;
+    protected double enterField;
+    public double getEnterField(){
+        return enterField;
+    }
 
    public AInsulinPumpMenu confirm(){
        return subMenus.get(current);

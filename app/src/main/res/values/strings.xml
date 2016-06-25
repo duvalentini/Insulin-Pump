@@ -54,6 +54,7 @@
     <string name="mainmenu">Main Menu</string>
     <string name="bolus">Bolus</string>
     <string name="suspend">Suspend</string>
+    <string name="suspended">Pump Suspended</string>
     <string name="sensor">Sensor</string>
     <string name="basal">Basal</string>
     <string name="prime">Prime</string>
