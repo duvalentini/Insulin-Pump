@@ -37,6 +37,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobile.AWSMobileClient;
@@ -119,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private IdentityManager identityManager;
     private CognitoCachingCredentialsProvider credentialsProvider;
     private DynamoDBMapper mapper;
-    private User mUser;
+    public static User mUser;
     private DBTask mDBTask = null;
     private GoogleSignInAccount acct;
     private String identityId;
@@ -968,13 +970,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             ddbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
             mapper = new DynamoDBMapper(ddbClient);
 
-            Map<String, AttributeValue> map = new HashMap<>();
-            AttributeValue attributeValue = new AttributeValue("6666666");
-            map.put("ISBN", attributeValue);
-            ddbClient.putItem("Books", map);
+            // TODO: Set the mapper above to only update if attribute doesn't exist
+
+            // TODO: enclose in a try catch for in case the user is new?
+            try {
+                mUser = mapper.load(User.class, identityId);
+                System.out.println("THE USER WAS LOADED FROM DB SUCCESSFULLY");
+            }
+            catch (AmazonServiceException ase) {
+                System.err.println("Could not complete operation");
+                System.err.println("Error Message:  " + ase.getMessage());
+                System.err.println("HTTP Status:    " + ase.getStatusCode());
+                System.err.println("AWS Error Code: " + ase.getErrorCode());
+                System.err.println("Error Type:     " + ase.getErrorType());
+                System.err.println("Request ID:     " + ase.getRequestId());
+                mUser = new User();
+
+            } catch (AmazonClientException ace) {
+                System.err.println("Internal error occured communicating with DynamoDB");
+                System.out.println("Error Message:  " + ace.getMessage());
+                mUser = new User();
+            }
 
             // Set the user info
-            mUser = new User();
             mUser.setIdentityID(identityId);
             mUser.setEmail(acct.getEmail());
             mUser.setName(acct.getDisplayName());
@@ -984,6 +1002,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             // Save the user info to the db
             mapper.batchSave(Arrays.asList(mUser));
+
+            // Pull the pump settings if they exist
+
 
 
             return true;

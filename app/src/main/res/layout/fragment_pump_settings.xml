@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/pump_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -41,14 +41,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/target_blood_sugar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_target_blood_sugar"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
                     android:maxLines="1"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -56,12 +57,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/insulin_carb_ratio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_insulin_carb_ratio"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:singleLine="true"/>
 
@@ -71,12 +72,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/active_insulin_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_active_insulin_time"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:singleLine="true"/>
 
@@ -86,12 +87,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/sensitivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_sensitivity"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:singleLine="true"/>
 
@@ -101,12 +102,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/basal_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_basal_rate"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:singleLine="true"/>
 
@@ -133,14 +134,12 @@
                 android:id="@+id/add_basal_rate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:text="@string/action_add_basal_rate"/>
 
             <Button
                 android:id="@+id/update_pump_settings_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:text="@string/action_update_pump_settings"
                 android:textStyle="bold"/>
 
