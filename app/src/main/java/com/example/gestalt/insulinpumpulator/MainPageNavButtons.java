@@ -1,10 +1,10 @@
 package com.example.gestalt.insulinpumpulator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +28,9 @@ public class MainPageNavButtons extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // reaccessing dynamoDB
+    private User mUser;
 
     private OnFragmentInteractionListener mListener;
 
@@ -107,7 +110,12 @@ public class MainPageNavButtons extends Fragment {
         accountInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //not working yet
                 //Switch fragment out
+                //System.out.println("Account info pressed");
+                Intent myIntent = new Intent(getActivity(), S3Activity.class);
+                startActivity(myIntent);
+                getActivity().finish();
                 System.out.println("Account info pressed");
             }
         });

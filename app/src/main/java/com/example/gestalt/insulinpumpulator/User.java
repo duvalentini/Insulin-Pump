@@ -23,6 +23,7 @@ public class User {
     private float activeInsulinTime;
     private float sensitivity;
     private List<Float> basalRates;
+    private String soundFile;
 
     @DynamoDBHashKey(attributeName = "IdentityID")
     public String getIdentityID() {
@@ -91,5 +92,11 @@ public class User {
     public List<Float> getBasalRates() { return basalRates; }
 
     public void setBasalRates(List<Float> basalRates) { this.basalRates = basalRates; }
+
+    @DynamoDBAttribute(attributeName = "SoundFile")
+    public String getSoundFile() { return soundFile; }
+
+    public void setSoundFile(String soundFile) { this.soundFile = soundFile; }
+
 }
 
