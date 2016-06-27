@@ -1,14 +1,12 @@
 package com.example.gestalt.insulinpumpulator;
 
 
-
 import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -37,6 +35,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobile.AWSMobileClient;
@@ -56,11 +56,12 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.s3.AmazonS3;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -119,10 +120,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private IdentityManager identityManager;
     private CognitoCachingCredentialsProvider credentialsProvider;
     private DynamoDBMapper mapper;
-    private User mUser;
+    public static User mUser;
     private DBTask mDBTask = null;
     private GoogleSignInAccount acct;
     private String identityId;
+
+    //s3 connection
+    private AmazonS3 s3;
+    public static TransferUtility s3TransferUtility;
 
     /**
      * Permission Request Code (Must be < 256).
@@ -967,14 +972,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
             ddbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
             mapper = new DynamoDBMapper(ddbClient);
+            // TODO: Set the mapper above to only update if attribute doesn't exist
 
-            Map<String, AttributeValue> map = new HashMap<>();
-            AttributeValue attributeValue = new AttributeValue("6666666");
-            map.put("ISBN", attributeValue);
-            ddbClient.putItem("Books", map);
+
+            try {
+                // Pull the pump settings if they exist
+                mUser = mapper.load(User.class, identityId);
+                System.out.println("THE USER WAS LOADED FROM DB SUCCESSFULLY");
+            }
+            catch (AmazonServiceException ase) {
+                System.err.println("Could not complete operation");
+                System.err.println("Error Message:  " + ase.getMessage());
+                System.err.println("HTTP Status:    " + ase.getStatusCode());
+                System.err.println("AWS Error Code: " + ase.getErrorCode());
+                System.err.println("Error Type:     " + ase.getErrorType());
+                System.err.println("Request ID:     " + ase.getRequestId());
+                mUser = new User();
+
+            } catch (AmazonClientException ace) {
+                System.err.println("Internal error occured communicating with DynamoDB");
+                System.out.println("Error Message:  " + ace.getMessage());
+                mUser = new User();
+            }
 
             // Set the user info
-            mUser = new User();
             mUser.setIdentityID(identityId);
             mUser.setEmail(acct.getEmail());
             mUser.setName(acct.getDisplayName());
@@ -982,9 +1003,39 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String username = email.substring(0, email.indexOf('@'));
             mUser.setUsername(username);
 
-            // Save the user info to the db
-            mapper.batchSave(Arrays.asList(mUser));
+            try {
+                // Save the user info to the db
+                mapper.batchSave(Arrays.asList(mUser));
+            }
+            catch (AmazonServiceException ase) {
+                System.err.println("Could not complete operation");
+                System.err.println("Error Message:  " + ase.getMessage());
+                System.err.println("HTTP Status:    " + ase.getStatusCode());
+                System.err.println("AWS Error Code: " + ase.getErrorCode());
+                System.err.println("Error Type:     " + ase.getErrorType());
+                System.err.println("Request ID:     " + ase.getRequestId());
 
+            } catch (AmazonClientException ace) {
+                System.err.println("Internal error occured communicating with DynamoDB");
+                System.out.println("Error Message:  " + ace.getMessage());
+            }
+
+
+            //creating s3 setup
+            //  s3 = new AmazonS3Client(credentialsProvider);
+            /* don't think need this */
+            //   s3.setRegion(Region.getRegion(Regions.US_WEST_2));
+
+            //setting up transfer utility for uploading to s3
+            //   s3TransferUtility = new TransferUtility(s3, getApplicationContext());
+
+            //uploading file to s3
+         //   File fileUp = new File("/Users/aloverfield/Documents/AndroidApp/InsulinPumpulator/app/src/main/assets/test_file.txt");
+         //   File fileDown = new File("/InsulinPumpulator/app/src/main/assets/down_test_file.txt");
+         //   TransferObserver observer = s3TransferUtility.download("user-audio-files", "s3textdownload.txt", fileDown);
+
+
+          //  transferObserverListener(observer);
 
             return true;
         }
