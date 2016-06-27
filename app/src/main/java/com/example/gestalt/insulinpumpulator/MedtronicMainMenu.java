@@ -110,6 +110,10 @@ class BolusMenu extends AInsulinPumpMenu{
                     current =0;
                     enterField =0;
                 }
+                @Override
+                public String getMenuName(){
+                    return menuName +" : "+enterField;
+                }
 
                 @Override
                 public void down() {
@@ -176,6 +180,11 @@ class BolusMenu extends AInsulinPumpMenu{
                 @Override
                 public double getEnterField(){
                     return enterField/3.0;
+                }
+
+                @Override
+                public String getMenuName(){
+                    return menuName +" : "+getEnterField();
                 }
 
                 @Override
@@ -519,6 +528,10 @@ class BasalMenu extends AInsulinPumpMenu{
                 enterField=0;
             }
             @Override
+            public String getMenuName(){
+                return menuName +" : "+enterField;
+            }
+            @Override
             public void up(){
                 enterField+=.5;
                 if(enterField>24){
@@ -547,6 +560,10 @@ class BasalMenu extends AInsulinPumpMenu{
                     current =0;
                     subMenus.add(new EmptyMenu(this,c));
                     enterField=100;
+                }
+                @Override
+                public String getMenuName(){
+                    return menuName +" : "+enterField;
                 }
                 @Override
                 public void up(){

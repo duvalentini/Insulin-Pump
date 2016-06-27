@@ -122,6 +122,18 @@ public abstract class AInsulinPump {
     public void confirm(){
         currentMenu.confirm();
     }
+    public void back(){
+        AInsulinPumpMenu alpha = currentMenu.back();
+        if(alpha!=null){
+            currentMenu = alpha;
+        }
+    }
+    public void up(){
+        currentMenu.up();
+    }
+    public void down(){
+        currentMenu.down();
+    }
 
     public void suspend(){
         suspended= !suspended;
