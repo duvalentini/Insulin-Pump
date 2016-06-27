@@ -1,7 +1,6 @@
 package com.example.gestalt.insulinpumpulator;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +17,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 
 /**
@@ -26,8 +27,8 @@ import java.io.File;
 
 public class S3Activity extends AppCompatActivity {
 
-    File fileToUpload = new File("test_file.txt");
-    File fileToDownload = new File(Environment.getExternalStorageDirectory().toString() + "/s3textdownload.txt");
+    File fileToUpload; 
+    File fileToDownload;
     AmazonS3 s3;
     TransferUtility transferUtility;
 
@@ -45,18 +46,35 @@ public class S3Activity extends AppCompatActivity {
         // callback method to call the setTransferUtility method
         setTransferUtility();
 
-        if(fileToUpload.exists()) {
-            System.out.println("upload file exists");
+        String test = "This is a test string for the test file to be uploaded to S3.";
+
+        try {
+            //saving the file as a xml
+            FileOutputStream fOut = openFileOutput("test_file.txt", getApplicationContext().MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+            osw.write(test);
+            osw.flush();
+            osw.close();
         }
-        else {
-            System.out.println("upload doesnt exist");
+        catch (Throwable e) {
+            Log.d("Exception","Exception:"+ e);
         }
-        if(fileToDownload.exists()) {
-            System.out.println("download file exists");
+
+        fileToUpload = getFileStreamPath("test_file.txt");
+
+        try {
+            //saving the file as a xml
+            FileOutputStream fOut = openFileOutput("test_download.txt", getApplicationContext().MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+            osw.write("");
+            osw.flush();
+            osw.close();
         }
-        else {
-            System.out.println("download doesnt exist");
+        catch (Throwable e) {
+            Log.d("Exception","Exception:"+ e);
         }
+
+        fileToDownload = getFileStreamPath("test_download.txt");
 
         upload = (Button) findViewById(R.id.upload_s3);
         download = (Button) findViewById(R.id.download_s3);
