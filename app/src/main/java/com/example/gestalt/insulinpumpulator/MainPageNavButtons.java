@@ -115,6 +115,7 @@ public class MainPageNavButtons extends Fragment {
                 //System.out.println("Account info pressed");
                 Intent myIntent = new Intent(getActivity(), S3Activity.class);
                 startActivity(myIntent);
+                // TODO: don't finish the activity, it should stay in the background
                 getActivity().finish();
                 System.out.println("Account info pressed");
             }
