@@ -1,5 +1,7 @@
 package com.example.gestalt.insulinpumpulator;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +13,12 @@ public abstract class AInsulinPumpMenu {
     protected int current;
     protected AInsulinPumpMenu parent;
     protected AInsulinPump pump;
+    protected String menuName;
+    protected Context con;
+    protected double enterField;
+    public double getEnterField(){
+        return enterField;
+    }
 
    public AInsulinPumpMenu confirm(){
        return subMenus.get(current);
@@ -35,6 +43,13 @@ public abstract class AInsulinPumpMenu {
     }
     public AInsulinPumpMenu back(){
         return parent;
+    }
+
+    public String getMenuName(){
+        return menuName;
+    }
+    public AInsulinPumpMenu enter(){
+        return subMenus.get(current);
     }
 
 

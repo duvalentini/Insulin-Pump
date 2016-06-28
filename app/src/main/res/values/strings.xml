@@ -49,4 +49,105 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name ="blankmenu">This Menu has not been implemented</string>
+    //Pump Main Menu Strings
+    <string name="mainmenu">Main Menu</string>
+    <string name="bolus">Bolus</string>
+    <string name="suspend">Suspend</string>
+    <string name="suspended">Pump Suspended</string>
+    <string name="sensor">Sensor</string>
+    <string name="basal">Basal</string>
+    <string name="prime">Prime</string>
+    <string name="utilities">Utilities</string>
+    <!--Pump Bolus Menu Strings-->
+    <string name="bwizard">Use Bolus Wizard</string>
+    <string name="manualbolus">Manual Bolus</string>
+    <string name="bhistory">Bolus History</string>
+    <string name="bwizsetup">Bolus Wizard Setup</string>
+    <string name="maxbolus">Max Bolus</string>
+    <string name="dualsquarebolus">Dual/Square Bolus</string>
+    <string name="easybolus">Easy Bolus</string>
+    <string name="bgreminder">BG Reminder</string>
+    <!--Manual Bolus Menu Strings-->
+    <string name="normbolus">Normal Bolus</string>
+    <string name="squarebolus">Square Wave Bolus</string>
+    <string name="dualbolus">Dual Wave Bolus</string>
+    <!--Wizard Setup Strings-->
+    <string name="editsettings">Edit Settings</string>
+    <string name="revsettings">Review Settings</string>
+    <!--Dual/Square Menu Strings-->
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <!--Easy Bolus Menu strings-->
+    <string name="onset">On/Set</string>
+    <!--Sensor Menu-->
+    <string name="sensorsetup">Sensor Setup</string>
+    <!--/Sensor Setup Menu-->
+    <string name="sensorstatus">Sensor:</string>
+    <string name="highglucose">High Glucose:</string>
+    <string name="highsnooze">High Snooze:</string>
+    <string name="lowglucose">Low Glucose:</string>
+    <string name="lowsnooze">Low Snooze:</string>
+    <string name="alarmsnooze">Alarm Snooze:</string>
+    <string name="calreminder">Cal Reminder:</string>
+    <string name="bgunits">BG Units:</string>
+    <string name="transmitterid">Transmtr ID:</string>
+    <string name="nisseddata">Missed Data:</string>
+    <!--Basal Menu-->
+    <string name="settempbasal">Set/Edit Temp Basal</string>
+    <string name="selectpatterns">Select Patterns</string>
+    <string name="setbasal">Set/Edit Basal</string>
+    <string name="basalreview">Basal Review</string>
+    <string name="maxbasal">Max Basal Rate</string>
+    <string name="patterns">Patterns</string>
+    <string name="tempbasaltype">Temp Basal Type</string>
+    <!--Select Patterns Menu-->
+    <string name="standard">Standard</string>
+    <string name="patterna">Pattern A</string>
+    <string name="patternb">Pattern B</string>
+    <!--Set Temp Basal Menu-->
+    <string name="insulinrate">Insulin Rate (U/Hr)</string>
+    <string name="percentbasal">Percent of Basal</string>
+    <!--Prime Menu Strings-->
+    <string name="fixedprime">Fixed Prime</string>
+    <string name="rewind">Rewind</string>
+    <string name="primehistory">Prime History</string>
+    <!--Utilities Menu Strings-->
+    <string name="lockkeypad">Lock Keypad</string>
+    <string name="alarm">Alarm</string>
+    <string name="dailytotals">Daily Totals</string>
+    <string name="timedate">Time/Date</string>
+    <string name="alarmclock">Alarm Clock</string>
+    <string name="meteroptions">Meter Options</string>
+    <string name="remoteoptions">Remote Options</string>
+    <string name="block">Block</string>
+    <string name="selftest">Selftest</string>
+    <string name="usersettings">User Settings</string>
+    <string name="language">Language</string>
+    <!--Alarm Menu-->
+    <string name="alarmhistory">Alarm History</string>
+    <string name="alerttype">Alert Type</string>
+    <string name="autooff">Auto Off</string>
+    <string name="lowresevoir">Low Resv Warning</string>
+    <string name="beeplong">Beep Long</string>
+    <string name="beepmedium">Beep Medium</string>
+    <string name="beepshort">Beep Short</string>
+    <string name="vibrate">Vibrate</string>
+    <!--low resevoir warning-->
+    <string name="insulinunits">Insulin Units</string>
+    <string name="time">Time</string>
+    <!--Daily totals-->
+    <string name="dailyaverage">Daily Average</string>
+    <!--Time Date-->
+    <string name="hour12">12 Hour Setup</string>
+    <string name="hour24">24 Hour Setup</string>
+    <!--Alarm Clock options-->
+    <string name="addalarm">Add Alarm</string>
+    <string name="deletealarm">Delete Alarm</string>
+    <string name="reviewalarms">Review Alarms</string>
+    <!--Meter Options-->
+    <string name="addid">Add ID</string>
+    <string name="deleteid">Delete ID</string>
+    <string name="reviewid">Review ID</string>
+
 </resources>
