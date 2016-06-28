@@ -27,7 +27,7 @@ import java.io.OutputStreamWriter;
 
 public class S3Activity extends AppCompatActivity {
 
-    File fileToUpload; 
+    File fileToUpload;
     File fileToDownload;
     AmazonS3 s3;
     TransferUtility transferUtility;
