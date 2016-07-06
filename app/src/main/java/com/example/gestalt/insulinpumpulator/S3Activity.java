@@ -27,13 +27,13 @@ import java.io.OutputStreamWriter;
 
 public class S3Activity extends AppCompatActivity {
 
-    File fileToUpload;
-    File fileToDownload;
-    AmazonS3 s3;
-    TransferUtility transferUtility;
+    private File fileToUpload;
+    private File fileToDownload;
+    private AmazonS3 s3;
+    private TransferUtility transferUtility;
 
-    Button upload;
-    Button download;
+    private Button upload;
+    private Button download;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +150,7 @@ public class S3Activity extends AppCompatActivity {
         System.out.println("IN SET FILE TO UPLOAD");
 
 
-//        transferObserverListener(transferObserver);
+        transferObserverListener(transferObserver);
     }
 
     /**

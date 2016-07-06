@@ -14,6 +14,13 @@
     <string name="action_update_pump_settings">Update Pump Settings</string>
     <string name="action_add_basal_rate">Add Another Basal Rate</string>
     <string name="pump_settings">Pump Settings</string>
+    <string name="action_record_response">Click to record</string>
+    <string name="action_play_response">Play back</string>
+    <string name="action_save_audio_response">Save (recording)</string>
+    <string name="action_save_text_response">Save (text)</string>
+    <string name="audio_responses">Audio Response:</string>
+    <string name="text_responses">Text Response:</string>
+    <string name="prompt_text_response">How did you do?</string>
 
 
     <string name="action_log_in">Log in</string>
