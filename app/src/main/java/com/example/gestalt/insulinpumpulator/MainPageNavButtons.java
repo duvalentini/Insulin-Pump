@@ -136,6 +136,17 @@ public class MainPageNavButtons extends Fragment {
                 System.out.println("Pump Settings pressed");
             }
         });
+        Button testPump = (Button) view.findViewById((R.id.pump_test));
+        testPump.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Switch fragment out
+                PumpTestFragment newFragment = new PumpTestFragment();
+                ((MainPageActivity) getActivity()).swapFragment(newFragment);
+
+                System.out.println("Pump test pressed");
+            }
+        });
 
         return view;
     }

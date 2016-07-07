@@ -51,6 +51,12 @@ public abstract class AInsulinPumpMenu {
     public AInsulinPumpMenu enter(){
         return subMenus.get(current);
     }
+    public ArrayList<AInsulinPumpMenu> getSubMenus(){
+        return subMenus;
+    }
+    public int getCurrent(){
+        return current;
+    }
 
 
 
