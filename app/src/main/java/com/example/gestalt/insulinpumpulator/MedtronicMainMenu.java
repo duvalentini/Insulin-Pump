@@ -2,6 +2,8 @@ package com.example.gestalt.insulinpumpulator;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
 /**
  * Created by Joshua on 6/18/2016.
  */
@@ -10,6 +12,7 @@ public class MedtronicMainMenu extends AInsulinPumpMenu {
 
     public MedtronicMainMenu(AInsulinPump pu, Context c) {
         pump = pu;
+        subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new BolusMenu(this, c));
         subMenus.add(new SuspendMenu(this, c));
         subMenus.add(new SensorMenu(this, c));
@@ -33,6 +36,7 @@ class BolusMenu extends AInsulinPumpMenu{
         con = c;
         current =0;
         menuName = (c.getResources().getString(R.string.bolus));
+        subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new UseBWizard(this, c));
         subMenus.add(new ManualBolus(this,c));
         subMenus.add(new BolusHistory(this,c));
@@ -50,6 +54,7 @@ class BolusMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.bwizard));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EnterBG(this,c));
         }
         class EnterBG extends AInsulinPumpMenu{
@@ -61,6 +66,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 menuName = (c.getResources().getString(R.string.bwizard));
                 current =0;
                 enterField=0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EnterFood(this,c));
             }
 
@@ -109,6 +115,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     menuName = (c.getResources().getString(R.string.bwizard));
                     current =0;
                     enterField =0;
+                    subMenus = new ArrayList<AInsulinPumpMenu>();
                 }
                 @Override
                 public String getMenuName(){
@@ -152,6 +159,7 @@ class BolusMenu extends AInsulinPumpMenu{
             con = c;
             current =0;
             menuName = (c.getResources().getString(R.string.manualbolus));
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new NormalBolus(this,c));
             subMenus.add(new SquareWaveBolus(this,c));
             subMenus.add(new DualWaveBolus(this,c));
@@ -165,6 +173,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con =c;
                 menuName = (c.getResources().getString(R.string.normbolus));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new NormEnter(this,c));
             }
             class NormEnter extends AInsulinPumpMenu{
@@ -175,6 +184,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     menuName = (c.getResources().getString(R.string.normbolus));
                     current =0;
                     enterField=0;
+                    subMenus = new ArrayList<AInsulinPumpMenu>();
                     subMenus.add(new EmptyMenu(this,c));
                 }
                 @Override
@@ -221,6 +231,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con =c;
                 menuName = (c.getResources().getString(R.string.squarebolus));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
@@ -231,6 +242,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con =c;
                 menuName = (c.getResources().getString(R.string.dualbolus));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
@@ -244,6 +256,7 @@ class BolusMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.bhistory));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -253,6 +266,7 @@ class BolusMenu extends AInsulinPumpMenu{
             pump = p.pump;
             con = c;
             menuName = (c.getResources().getString(R.string.bwizsetup));
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new WizEditSettings(this,c));
             subMenus.add(new WizReviewSettings(this,c));
             current =0;
@@ -263,6 +277,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 pump = p.pump;
                 con = c;
                 menuName = (c.getResources().getString(R.string.editsettings));
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 current =0;
                 subMenus.add(new EmptyMenu(this,c));
             }
@@ -274,6 +289,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.revsettings));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
@@ -285,6 +301,7 @@ class BolusMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.maxbolus));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -294,6 +311,7 @@ class BolusMenu extends AInsulinPumpMenu{
             pump = p.pump;
             con = c;
             menuName = (c.getResources().getString(R.string.dualsquarebolus));
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new DualOn(this,c));
             subMenus.add(new DualOff(this,c));
 
@@ -305,6 +323,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.on));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
@@ -315,6 +334,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.off));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
@@ -326,6 +346,7 @@ class BolusMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.easybolus));
             current =0;//This needs to be check normal value.
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EasyOff(this, c));
             subMenus.add(new EasyOnSet(this, c));
         }
@@ -336,6 +357,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.off));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
@@ -346,6 +368,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.onset));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
@@ -357,6 +380,7 @@ class BolusMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.bgreminder));
             current = 0;//take in current setting if possible
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new BgOff(this, c));
             subMenus.add(new BgOn(this, c));
         }
@@ -367,6 +391,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.off));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
@@ -377,6 +402,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.on));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
@@ -390,6 +416,7 @@ class SuspendMenu extends AInsulinPumpMenu{
         con = c;
         current =0;
         menuName = (c.getResources().getString(R.string.suspend));
+        subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new SuspendConfirm(this,c));
     }
     class SuspendConfirm extends AInsulinPumpMenu{
@@ -398,6 +425,7 @@ class SuspendMenu extends AInsulinPumpMenu{
             pump = p.pump;
             con = c;
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             menuName = (con.getResources().getString(R.string.suspend));
         }
         @Override
@@ -433,6 +461,7 @@ class SensorMenu extends AInsulinPumpMenu{
         pump = p.pump;
         con = c;
         current =0;
+        subMenus = new ArrayList<AInsulinPumpMenu>();
         menuName = (c.getResources().getString(R.string.sensor));
         subMenus.add(new SensorSetup(this, c));
     }
@@ -443,6 +472,7 @@ class SensorMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.sensorsetup));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new SensorEdit(this, c));
             subMenus.add(new SensorReview(this, c));
             //needs Settings added if sensor is turned on.
@@ -454,6 +484,7 @@ class SensorMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.editsettings));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new SensorOn(this, c));
                 subMenus.add(new SensorOff(this, c));
             }//needs extra settings if sensor is turned on.
@@ -465,6 +496,7 @@ class SensorMenu extends AInsulinPumpMenu{
                     con = c;
                     menuName = (c.getResources().getString(R.string.on));
                     current =0;
+                    subMenus = new ArrayList<AInsulinPumpMenu>();
                     subMenus.add(new EmptyMenu(this,c));
                 }
             }
@@ -475,6 +507,7 @@ class SensorMenu extends AInsulinPumpMenu{
                     con = c;
                     menuName = (c.getResources().getString(R.string.off));
                     current =0;
+                    subMenus = new ArrayList<AInsulinPumpMenu>();
                     subMenus.add(new EmptyMenu(this,c));
                 }
             }
@@ -487,6 +520,7 @@ class SensorMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.revsettings));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EmptyMenu(this,c));
             }// needs extra settings added.
         }
@@ -500,6 +534,7 @@ class BasalMenu extends AInsulinPumpMenu{
         con = c;
         current =0;
         menuName = (c.getResources().getString(R.string.basal));
+        subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new EditTempBasal(this, c));
         subMenus.add(new SelectPatterns(this, c));
         subMenus.add(new EditBasal(this,c));
@@ -515,6 +550,7 @@ class BasalMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.settempbasal));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new TempDuration(this,c));
         }
         class TempDuration extends AInsulinPumpMenu{
@@ -524,6 +560,7 @@ class BasalMenu extends AInsulinPumpMenu{
                 con = c;
                 menuName = (c.getResources().getString(R.string.settempbasal));
                 current =0;
+                subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new TempPercent(this,c));
                 enterField=0;
             }
@@ -558,6 +595,7 @@ class BasalMenu extends AInsulinPumpMenu{
                     con = c;
                     menuName = (c.getResources().getString(R.string.settempbasal));
                     current =0;
+                    subMenus = new ArrayList<AInsulinPumpMenu>();
                     subMenus.add(new EmptyMenu(this,c));
                     enterField=100;
                 }
@@ -596,6 +634,7 @@ class BasalMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.selectpatterns));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -606,6 +645,7 @@ class BasalMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.setbasal));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -616,6 +656,7 @@ class BasalMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.basalreview));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -626,6 +667,7 @@ class BasalMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.maxbasal));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -636,6 +678,7 @@ class BasalMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.patterns));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -646,6 +689,7 @@ class BasalMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.tempbasaltype));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -659,6 +703,7 @@ class PrimeMenu extends AInsulinPumpMenu{
         con = c;
         current =0;
         menuName = (c.getResources().getString(R.string.prime));
+        subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new FixedPrime(this,c));
         subMenus.add(new Rewind(this,c));
         subMenus.add(new PrimeHistory(this,c));
@@ -670,6 +715,7 @@ class PrimeMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.fixedprime));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -680,6 +726,7 @@ class PrimeMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.rewind));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -690,6 +737,7 @@ class PrimeMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.primehistory));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -701,6 +749,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
         pump = p.pump;
         con = c;
         current =0;
+        subMenus = new ArrayList<AInsulinPumpMenu>();
         menuName = (c.getResources().getString(R.string.utilities));
         subMenus.add(new LockKeypad(this,c));
         subMenus.add(new Alarm(this, c));
@@ -722,6 +771,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.lockkeypad));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -732,6 +782,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.alarm));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -742,6 +793,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.dailytotals));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -752,6 +804,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.timedate));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -762,6 +815,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.alarmclock));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -772,6 +826,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.meteroptions));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -782,6 +837,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.remoteoptions));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -792,6 +848,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.block));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -802,6 +859,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.selftest));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -812,6 +870,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.usersettings));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }
@@ -822,6 +881,7 @@ class UtilitiesMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.language));
             current =0;
+            subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this,c));
         }
     }

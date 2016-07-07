@@ -1,5 +1,7 @@
 package com.example.gestalt.insulinpumpulator;
 
+import java.util.ArrayList;
+
 /**
  * Created by Joshua on 6/18/2016.
  */
@@ -120,7 +122,10 @@ public abstract class AInsulinPump {
 
     }
     public void confirm(){
-        currentMenu.confirm();
+        AInsulinPumpMenu temp =currentMenu.confirm();
+        if(temp!=null){
+            currentMenu = temp;
+        }
     }
     public void back(){
         AInsulinPumpMenu alpha = currentMenu.back();
@@ -134,12 +139,27 @@ public abstract class AInsulinPump {
     public void down(){
         currentMenu.down();
     }
+    public String getMenuName(){
+        return currentMenu.getMenuName();
+    }
+
+    public ArrayList<String> getSubMenuNames(){
+        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<AInsulinPumpMenu> subs = currentMenu.getSubMenus();
+        for(int i=0;i<subs.size();i++){
+            names.add(subs.get(i).getMenuName());
+        }
+        return names;
+    }
 
     public void suspend(){
         suspended= !suspended;
     }
     public boolean isSuspended(){
         return suspended;
+    }
+    public int getSubCurrent(){
+        return currentMenu.getCurrent();
     }
 
 }
