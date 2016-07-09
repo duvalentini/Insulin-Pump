@@ -55,6 +55,9 @@ public abstract class AInsulinPump {
     protected double addedInsulin;//insulin from bolas that hasn't been added to blood, is added in 2 things, half at 15 mins, half at 30 mins
     protected double foodgrams;
     protected double timeSinceBolas;
+    protected double trueCarbFactor;
+    protected double trueInsulinFactor;
+    protected double bloodSugarCarbRatio;
     //end blood glucose settings
 
     protected boolean suspended;
@@ -68,6 +71,11 @@ public abstract class AInsulinPump {
     public void passTime(int minutes){
         boolean addInsulin = false;
         //recalculate blood glucose, active insulin and foodGrams
+        //does not include basal rate at this moment.
+        bloodGlucose = bloodGlucose +(trueInsulinFactor*(activeInsulin*(1-Math.pow(2.0,(minutes/60)/INHL))/(Math.log10(2)/INHL)) + (trueCarbFactor*(foodgrams*(1-Math.pow(2.0,(minutes/60)*2.5))/(Math.log10(2)*2.5))));//does not include basal rate
+        foodgrams = (foodgrams*(Math.pow(2.0,(minutes/60)*2.5)));
+        activeInsulin = (activeInsulin*(Math.pow(2.0,(minutes/60)/INHL)));
+
         if(timeSinceBolas<30){
             addInsulin = true;
             if(minutes>(30-timeSinceBolas)){//if time passed greater than total time for insulin to be added, dump all left
@@ -119,7 +127,10 @@ public abstract class AInsulinPump {
         tempB = false;
         INHL = (AIT-.5)/5;
         suspended = false;
-
+        bloodSugarCarbRatio = ISEN/ICR;
+        bloodGlucose = 110;
+        trueInsulinFactor = (ISEN * 1/INHL *Math.log10(2.0))/(1-Math.pow(2.0,-AIT*INHL));
+        trueCarbFactor = (bloodSugarCarbRatio *2.5 *Math.log10(2)/(1-Math.pow(2.0,-2.5)));
     }
     public void confirm(){
         AInsulinPumpMenu temp =currentMenu.confirm();
