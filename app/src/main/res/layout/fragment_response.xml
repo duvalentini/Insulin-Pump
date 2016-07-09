@@ -13,7 +13,8 @@
     <ScrollView
         android:id="@+id/pump_settings_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
         android:layout_marginBottom="100dp">
 
         <LinearLayout
@@ -80,6 +81,50 @@
                 android:text="@string/action_save_text_response"/>
 
 
+            <TextView
+                android:id="@+id/previous_audio_responses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/previous_audio_responses"
+                android:textSize="20sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="0dp"
+                />
+
+            <ListView
+                android:id="@+id/audio_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </ListView>
+
+            <TextView
+                android:id="@+id/previous_text_responses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/previous_text_responses"
+                android:textSize="20sp"
+                android:layout_marginBottom="0dp"
+                />
+
+            <ListView
+                android:id="@+id/text_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+
+
+
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/AAAAAAAAAAAAAAAAA"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+    </LinearLayout>
+
 </LinearLayout>

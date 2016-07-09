@@ -179,13 +179,14 @@ public class S3Activity extends AppCompatActivity {
      * @param transferObserver
      */
 
-    public void transferObserverListener(TransferObserver transferObserver){
+    public void transferObserverListener(final TransferObserver transferObserver){
 
         transferObserver.setTransferListener(new TransferListener(){
 
             @Override
             public void onStateChanged(int id, TransferState state) {
                 Log.e("statechange", state+"");
+
             }
 
             @Override

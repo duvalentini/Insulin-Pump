@@ -2,9 +2,11 @@ package com.example.gestalt.insulinpumpulator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.app.Activity;
 import android.widget.LinearLayout;
@@ -25,15 +29,24 @@ import android.content.Context;
 import android.util.Log;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapperConfig;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 
@@ -43,8 +56,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.File;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by Matt Carney on 6/18/16.
@@ -69,11 +88,28 @@ public class ResponseFragment extends Fragment{
 
     private File audioFileToUpload;
     private File textFileToUpload;
-    FileDescriptor fd;
     private AmazonS3 s3;
     private TransferUtility transferUtility;
 
     private TextInputEditText text;
+
+    private ArrayList<String> audioFiles;
+    private ArrayList<String> textFiles;
+
+    private ArrayAdapter<String> audioAdapter;
+    private ArrayAdapter<String> textAdapter;
+
+    private ListView audioList;
+    private ListView textList;
+
+    private File audioFileToDownload;
+    private File textFileToDownload;
+
+    private DynamoDBMapper mapper;
+    private DBTask mDBTask = null;
+
+    private boolean downloading;
+    private CountDownLatch latch;
 
 
     @Override
@@ -89,19 +125,32 @@ public class ResponseFragment extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_response, container, false);
 
-        // Create output audio file
-//        try {
-//            FileOutputStream fOut = getActivity().openFileOutput("test.mp3", getActivity().MODE_PRIVATE);
-//            FileOutputStream fOut = getActivity().openFileOutput(Environment.getExternalStorageDirectory()
-//                    .getAbsolutePath() + "/test.mp3", getActivity().MODE_PRIVATE);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        // Get references to ListViews
+        audioList = (ListView) view.findViewById(R.id.audio_list);
+        textList = (ListView) view.findViewById(R.id.text_list);
+
+        // Get user's previous responses
+        audioFiles = LoginActivity.mUser.getAudioFiles();
+        if (audioFiles == null) {
+            audioFiles = new ArrayList<>();
+        }
+        textFiles = LoginActivity.mUser.getTextFiles();
+        if (textFiles == null) {
+            textFiles = new ArrayList<>();
+        }
+
+        // Set up audio adapter
+        audioAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, audioFiles);
+        audioList.setAdapter(audioAdapter);
+
+        // Set up text adapter
+        textAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, textFiles);
+        textList.setAdapter(textAdapter);
+
+
         audioFileToUpload = getActivity().getFileStreamPath("test.mp3");
-//        fileToUpload = getActivity().getFileStreamPath(Environment.getExternalStorageDirectory()
-//                .getAbsolutePath() + "/test.mp3");
 
         mRecordButton = (Button) view.findViewById(R.id.record_response);
         mRecordButton.setText("Start recording");
@@ -130,7 +179,7 @@ public class ResponseFragment extends Fragment{
             public void onClick(View v) {
                 System.out.println("Play Pressed");
 
-                onPlay(mStartPlaying);
+                onPlay(mStartPlaying, audioFileToUpload);
                 if (mStartPlaying) {
                     mPlayButton.setText("Stop playing");
                 } else {
@@ -165,6 +214,14 @@ public class ResponseFragment extends Fragment{
                 );
 
                 transferObserverListener(transferObserver);
+
+                // Save file name
+                audioFiles.add(name + currentDateandTime + ".mp3");
+                // Update UI
+                updateUI();
+                // Run the DB AsyncTask to save the values to the database
+                mDBTask = new DBTask();
+                mDBTask.execute((Void) null);
 
                 Toast.makeText(getActivity().getApplicationContext(), "Your recording has been saved!", Toast.LENGTH_LONG).show();
 
@@ -203,13 +260,92 @@ public class ResponseFragment extends Fragment{
 
                 transferObserverListener(transferObserver);
 
+                // Save file name
+                textFiles.add(name + currentDateandTime + ".txt");
+                // Update UI
+                updateUI();
+                // Run the DB AsyncTask to save the values to the database
+                mDBTask = new DBTask();
+                mDBTask.execute((Void) null);
+
                 Toast.makeText(getActivity().getApplicationContext(), "Your text response has been saved!", Toast.LENGTH_LONG).show();
 
             }
         });
 
+        ////////////////////////////////////////////////////////////////
+        // MY RESPONSES STUFF
+        ////////////////////////////////////////////////////////////////
+
+        audioList.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int i, long l) {
+
+                String fileName = ((TextView) v.findViewById(audioList.getChildAt(i).getId())).getText().toString();
+                System.out.println("FILENAME = " + fileName);
+
+                audioFileToDownload = getActivity().getFileStreamPath("temp.mp3");
+                audioFileToDownload.delete();
+
+                if (mPlayer != null) {
+                    mPlayer.release();
+                    mPlayer = null;
+                }
+
+                TransferObserver transferObserver = transferUtility.download(
+                        "user-audio-files",     /* The bucket to download from */
+                        fileName,    /* The key for the object to download */
+                        audioFileToDownload        /* The file to download the object to */
+                );
+
+                transferAudioDownloadObserverListener(transferObserver);
+
+
+            }
+        });
+
+        textList.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int i, long l) {
+                System.out.println("Text Item Clicked");
+
+                String fileName = ((TextView) v.findViewById(textList.getChildAt(i).getId())).getText().toString();
+                System.out.println("FILENAME = " + fileName);
+
+                textFileToDownload = getActivity().getFileStreamPath("temp.txt");
+                textFileToDownload.delete();
+
+                TransferObserver transferObserver = transferUtility.download(
+                        "user-audio-files",     /* The bucket to download from */
+                        fileName,    /* The key for the object to download */
+                        textFileToDownload        /* The file to download the object to */
+                );
+
+                transferTextDownloadObserverListener(transferObserver, v);
+
+
+            }
+        });
+
+
+
+        updateUI();
+
+
+
 
         return view;
+    }
+
+    private void updateUI() {
+
+        LoginActivity.mUser.setAudioFiles(audioFiles);
+        LoginActivity.mUser.setTextFiles(textFiles);
+        audioAdapter.notifyDataSetChanged();
+        textAdapter.notifyDataSetChanged();
+        setListViewHeightBasedOnChildren(audioList);
+        setListViewHeightBasedOnChildren(textList);
+
     }
 
     private void onRecord(boolean start) {
@@ -220,21 +356,19 @@ public class ResponseFragment extends Fragment{
         }
     }
 
-    private void onPlay(boolean start) {
+    private void onPlay(boolean start, File file) {
         if (start) {
-            startPlaying();
+            startPlaying(file);
         } else {
             stopPlaying();
         }
     }
 
-    private void startPlaying() {
+    private void startPlaying(File file) {
         mPlayer = new MediaPlayer();
         try {
-            mPlayer.setDataSource(audioFileToUpload.getAbsolutePath());
-//            mPlayer.setDataSource(Environment.getExternalStorageDirectory()
-//                    .getAbsolutePath() + "/test.mp3");
-//            mPlayer.setDataSource(fd);
+//            mPlayer.setDataSource(audioFileToUpload.getAbsolutePath());
+            mPlayer.setDataSource(file.getAbsolutePath());
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
@@ -342,8 +476,114 @@ public class ResponseFragment extends Fragment{
 
             @Override
             public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                int percentage = (int) (bytesCurrent/bytesTotal * 100);
-                Log.e("percentage",percentage +"");
+                if (bytesTotal != 0) {
+                    int percentage = (int) (bytesCurrent / bytesTotal * 100);
+                    Log.e("percentage", percentage + "");
+                } else {
+                    System.out.println("TOTAL BYTES = 0");
+                }
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                Log.e("error","error");
+            }
+
+        });
+    }
+
+    /**
+     * For downloading audio
+     * @param transferObserver
+     */
+
+    public void transferAudioDownloadObserverListener(TransferObserver transferObserver){
+
+        transferObserver.setTransferListener(new TransferListener(){
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                Log.e("statechange", state+"");
+
+                if (state == TransferState.COMPLETED) {
+                    mPlayer = new MediaPlayer();
+                    try {
+                        mPlayer.setDataSource(audioFileToDownload.getAbsolutePath());
+                        mPlayer.prepare();
+                        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                System.out.println("DONE PLAYING FILE");
+                                mPlayer.release();
+                                mPlayer = null;
+                            }
+
+                        });
+                        mPlayer.start();
+                    } catch (IOException e) {
+                        Log.e(LOG_TAG, "prepare() failed");
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                if (bytesTotal != 0) {
+                    int percentage = (int) (bytesCurrent / bytesTotal * 100);
+                    Log.e("percentage", percentage + "");
+                } else {
+                    System.out.println("TOTAL BYTES = 0");
+                }
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                Log.e("error","error");
+            }
+
+        });
+    }
+
+    // For text
+    public void transferTextDownloadObserverListener(TransferObserver transferObserver, final View v){
+
+        transferObserver.setTransferListener(new TransferListener(){
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                Log.e("statechange", state+"");
+
+
+                if (state == TransferState.COMPLETED) {
+                    // Open file for reading
+
+                    // Get text of file and use in showPopup
+                    String text = "AAAAAA";
+                    try {
+                        String content = new Scanner(textFileToDownload).useDelimiter("\\Z").next();
+                        System.out.println(content);
+                        text = content;
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    showPopup(v, text);
+                }
+
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                if (bytesTotal != 0) {
+                    int percentage = (int) (bytesCurrent / bytesTotal * 100);
+                    Log.e("percentage", percentage + "");
+                } else {
+                    System.out.println("TOTAL BYTES = 0");
+                }
             }
 
             @Override
@@ -362,10 +602,41 @@ public class ResponseFragment extends Fragment{
         @Override
         protected Boolean doInBackground(Void... params) {
 
+            // setup AWS service configuration
+            final CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                    getActivity().getApplicationContext(),
+                    "us-east-1:d4ea7b2f-a140-47a4-b2cc-2b5698e4e9ad", // Identity Pool ID
+                    Regions.US_EAST_1 // Region
+            );
+
+            AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
+            ddbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
+            mapper = new DynamoDBMapper(ddbClient, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
+
+            // Set the user info
+            LoginActivity.mUser.setAudioFiles(audioFiles);
+            LoginActivity.mUser.setTextFiles(textFiles);
 
 
+            try {
+                // Save the user info to the db
+                mapper.batchSave(LoginActivity.mUser);
+            }
+            catch (AmazonServiceException ase) {
+                System.err.println("Could not complete operation");
+                System.err.println("Error Message:  " + ase.getMessage());
+                System.err.println("HTTP Status:    " + ase.getStatusCode());
+                System.err.println("AWS Error Code: " + ase.getErrorCode());
+                System.err.println("Error Type:     " + ase.getErrorType());
+                System.err.println("Request ID:     " + ase.getRequestId());
+
+            } catch (AmazonClientException ace) {
+                System.err.println("Internal error occured communicating with DynamoDB");
+                System.out.println("Error Message:  " + ace.getMessage());
+            }
 
             return true;
+
         }
 
         @Override
@@ -377,7 +648,7 @@ public class ResponseFragment extends Fragment{
             }
 
             // Go back to the main page activity
-            getActivity().onBackPressed();
+//            getActivity().onBackPressed();
         }
 
         @Override
@@ -385,6 +656,74 @@ public class ResponseFragment extends Fragment{
 
         }
 
+
+    }
+
+    public static void setListViewHeightBasedOnChildren(final ListView listView) {
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                ListAdapter listAdapter = listView.getAdapter();
+                if (listAdapter == null) {
+                    return;
+                }
+                int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();
+                int listWidth = listView.getMeasuredWidth();
+                for (int i = 0; i < listAdapter.getCount(); i++) {
+                    View listItem = listAdapter.getView(i, null, listView);
+                    listItem.measure(
+                            View.MeasureSpec.makeMeasureSpec(listWidth, View.MeasureSpec.EXACTLY),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+
+                    totalHeight += listItem.getMeasuredHeight();
+                    Log.d("listItemHeight" + listItem.getMeasuredHeight(), "___________");
+                }
+                ViewGroup.LayoutParams params = listView.getLayoutParams();
+                params.height = (int) ((totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1))));
+                listView.setLayoutParams(params);
+                listView.requestLayout();
+
+            }
+        });
+    }
+
+    public void showPopup(View anchorView, String text) {
+
+        System.out.println("IN SHOW POPUP");
+
+        View popupView = getActivity().getLayoutInflater().inflate(R.layout.fragment_text, null);
+
+        PopupWindow popupWindow = new PopupWindow(popupView,
+                AppBarLayout.LayoutParams.WRAP_CONTENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
+
+        // Example: If you have a TextView inside `popup_layout.xml`
+        TextView tv = (TextView) popupView.findViewById(R.id.pop_up);
+
+        tv.setText(text);
+
+        // Initialize more widgets from `popup_layout.xml`
+
+
+        // If the PopupWindow should be focusable
+        popupWindow.setFocusable(true);
+
+        // If you need the PopupWindow to dismiss when when touched outside
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+
+        int location[] = new int[2];
+
+        // Get the View's(the one that was clicked in the Fragment) location
+        anchorView.getLocationOnScreen(location);
+
+        // Using location, the PopupWindow will be displayed right under anchorView
+        popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY,
+                location[0], location[1] + anchorView.getHeight());
+
+//        popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, anchorView.getWidth()/2, anchorView.getHeight()/2);
+
+
+        System.out.println("END SHOW POPUP");
 
     }
 

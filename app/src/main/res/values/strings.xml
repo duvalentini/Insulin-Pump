@@ -21,6 +21,8 @@
     <string name="audio_responses">Audio Response:</string>
     <string name="text_responses">Text Response:</string>
     <string name="prompt_text_response">How did you do?</string>
+    <string name="previous_audio_responses">My Recordings:</string>
+    <string name="previous_text_responses">My Text Responses:</string>
 
 
     <string name="action_log_in">Log in</string>
