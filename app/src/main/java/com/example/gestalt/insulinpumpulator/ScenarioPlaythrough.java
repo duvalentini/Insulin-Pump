@@ -1,5 +1,6 @@
 package com.example.gestalt.insulinpumpulator;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -89,12 +90,13 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
             optionList.setAdapter(optionsAdapter);
             optionList.setOnItemClickListener(this);
         } else {
-            String[] responseOptions = {"Write a reply", "Record a message", "Skip"};
-
-            ArrayAdapter<String> optionsAdapter = new ArrayAdapter<>(this.getBaseContext(), R.layout.scenario_item, responseOptions);
-            ListView optionList = (ListView) findViewById(R.id.optionList);
-            optionList.setAdapter(optionsAdapter);
-            optionList.setOnItemClickListener(this);
+            results();
+//            String[] responseOptions = {"Write a reply", "Record a message", "Skip"};
+//
+//            ArrayAdapter<String> optionsAdapter = new ArrayAdapter<>(this.getBaseContext(), R.layout.scenario_item, responseOptions);
+//            ListView optionList = (ListView) findViewById(R.id.optionList);
+//            optionList.setAdapter(optionsAdapter);
+//            optionList.setOnItemClickListener(this);
         }
     }
 
@@ -118,5 +120,11 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void results() {
+        Intent resultsIntent = new Intent(this, ResultsActivity.class);
+        resultsIntent.putExtra("_playerScore", _playerScore);
+        startActivity(resultsIntent);
     }
 }

@@ -42,6 +42,8 @@
 
         <activity android:name=".S3Activity"/>
 
+        <activity android:name=".ResultsActivity" />
+
         <activity
             android:name=".ScenarioPlaythrough"
             android:configChanges="orientation|keyboardHidden|screenSize"
