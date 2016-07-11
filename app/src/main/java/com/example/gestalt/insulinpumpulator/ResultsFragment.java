@@ -30,7 +30,7 @@ public class ResultsFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_results, container, false);
 
         resultsText = (TextView) view.findViewById(R.id.results_text);
-        resultsText.setText("Score: " + ResultsActivity._playerScore);
+        resultsText.setText("Score: " + ScenarioPlaythrough._playerScore);
 
         responseButton = (Button) view.findViewById(R.id.results_to_response);
         responseButton.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +38,7 @@ public class ResultsFragment extends Fragment{
             public void onClick(View v) {
                 ResponseFragment newResponse = new ResponseFragment();
 
-                ((ResultsActivity) getActivity()).swapFragment(newResponse);
+                ((MainPageActivity) getActivity()).swapFragment(newResponse);
                 System.out.println("Response Selected");
             }
         });
@@ -47,8 +47,8 @@ public class ResultsFragment extends Fragment{
         mainmenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent scenarioIntent = new Intent(v.getContext(), MainPageActivity.class);
-                v.getContext().startActivity(scenarioIntent);
+                MainPageNavButtons fragment = new MainPageNavButtons();
+                ((MainPageActivity) getActivity()).swapFragment(fragment);
             }
         });
 

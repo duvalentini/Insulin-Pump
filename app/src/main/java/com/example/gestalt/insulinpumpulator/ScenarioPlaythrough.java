@@ -25,7 +25,7 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
 
     private int _currentSceneIndex = 0;
     private JSONArray _sceneOptions;
-    private int _playerScore = 0;
+    public static int _playerScore;
     private String _fileName;
 
     private class OptionListEntry {
@@ -50,6 +50,8 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        _playerScore = 0;
 
         setContentView(R.layout.activity_scenario_playthrough);
         ActionBar actionBar = getSupportActionBar();
@@ -123,8 +125,8 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
     }
 
     public void results() {
-        Intent resultsIntent = new Intent(this, ResultsActivity.class);
-        resultsIntent.putExtra("_playerScore", _playerScore);
+        MainPageActivity.resultsBool = true;
+        Intent resultsIntent = new Intent(this, MainPageActivity.class);
         startActivity(resultsIntent);
     }
 }
