@@ -63,7 +63,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 parent = p;
                 pump = p.pump;
                 con = c;
-                menuName = (c.getResources().getString(R.string.bwizard));
+                menuName = ("Enter BG");
                 current =0;
                 enterField=0;
                 subMenus = new ArrayList<AInsulinPumpMenu>();
@@ -100,9 +100,12 @@ class BolusMenu extends AInsulinPumpMenu{
                     enterField -=5;
                 }
             }
-
             @Override
-            public AInsulinPumpMenu enter(){
+            public String getMenuName(){
+                return menuName+" :"+enterField;
+            }
+            @Override
+            public AInsulinPumpMenu confirm(){
                 pump.setBolasBG((int)enterField);
                 return subMenus.get(0);
             }
@@ -116,6 +119,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     current =0;
                     enterField =0;
                     subMenus = new ArrayList<AInsulinPumpMenu>();
+                    subMenus.add(new EmptyMenu(p,c));
                 }
                 @Override
                 public String getMenuName(){
@@ -143,7 +147,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 }
 
                 @Override
-                public AInsulinPumpMenu enter() {
+                public AInsulinPumpMenu confirm() {
                     pump.setGramsCarbs((int)enterField);
                     pump.bolasWiz();
                     return pump.getTopMenu();
@@ -217,7 +221,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 }
 
                 @Override
-                public AInsulinPumpMenu enter() {
+                public AInsulinPumpMenu confirm() {
                     pump.setBolusUnits(enterField/3.0);
                     pump.manualBolas();
                     return pump.getTopMenu();
@@ -429,7 +433,7 @@ class SuspendMenu extends AInsulinPumpMenu{
             menuName = (con.getResources().getString(R.string.suspend));
         }
         @Override
-        public AInsulinPumpMenu enter(){
+        public AInsulinPumpMenu confirm(){
             pump.suspend();
             if(pump.isSuspended()){
                 menuName = con.getResources().getString(R.string.suspended);
@@ -583,7 +587,7 @@ class BasalMenu extends AInsulinPumpMenu{
                 }
             }
             @Override
-            public AInsulinPumpMenu enter(){
+            public AInsulinPumpMenu confirm(){
                 pump.setBasalDuration(enterField);
                 return subMenus.get(0);
             }
@@ -618,7 +622,7 @@ class BasalMenu extends AInsulinPumpMenu{
                     }
                 }
                 @Override
-                public AInsulinPumpMenu enter(){
+                public AInsulinPumpMenu confirm(){
                     pump.setBasalPercent((int)enterField);
                     pump.activateTempBasal();
                     return pump.getTopMenu();

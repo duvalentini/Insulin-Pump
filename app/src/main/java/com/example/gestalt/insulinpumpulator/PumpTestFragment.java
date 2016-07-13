@@ -78,6 +78,7 @@ public class PumpTestFragment extends Fragment {
                 System.out.println("Enter Pressed");
                 pump.confirm();
                 menuName.setText(pump.getMenuName());
+
                 subMenuNames= pump.getSubMenuNames();
                 setMenuNames(subMenu1, subMenu2, subMenu3);
 
@@ -95,12 +96,22 @@ public class PumpTestFragment extends Fragment {
 
             }
         });
+        Button test = (Button) view.findViewById(R.id.testingButton);//*************
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pump.testFormula();
+
+            }
+        });
+
 
 
         return view;
     }
 
     private void setMenuNames(TextView one, TextView two, TextView three){
+        menuName.setText(pump.getMenuName());
         int current = pump.getSubCurrent();
         int top;
         int bottom;

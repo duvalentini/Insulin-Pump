@@ -72,9 +72,12 @@ public abstract class AInsulinPump {
         boolean addInsulin = false;
         //recalculate blood glucose, active insulin and foodGrams
         //does not include basal rate at this moment.
-        bloodGlucose = bloodGlucose +(trueInsulinFactor*(activeInsulin*(1-Math.pow(2.0,(minutes/60)/INHL))/(Math.log10(2)/INHL)) + (trueCarbFactor*(foodgrams*(1-Math.pow(2.0,(minutes/60)*2.5))/(Math.log10(2)*2.5))));//does not include basal rate
-        foodgrams = (foodgrams*(Math.pow(2.0,(minutes/60)*2.5)));
-        activeInsulin = (activeInsulin*(Math.pow(2.0,(minutes/60)/INHL)));
+        bloodGlucose = bloodGlucose -(trueInsulinFactor*(activeInsulin*((1-Math.pow(2.0,(minutes/(-60.0))/INHL))/(Math.log10(2)/INHL))) + (trueCarbFactor*(foodgrams*(1-Math.pow(2.0,(minutes/(-60.0))*2.5))/(Math.log10(2)*2.5))));//does not include basal rate
+        //
+        foodgrams = (foodgrams*(Math.pow(2.0,(minutes/(-60.0))/.4)));
+        activeInsulin = (activeInsulin*(Math.pow(2.0,(minutes/(-60.0))/INHL)));
+
+
 
         if(timeSinceBolas<30){
             addInsulin = true;
@@ -83,16 +86,14 @@ public abstract class AInsulinPump {
                 addedInsulin =0;
             }
             else{//else, calculate the amount needed to add and subtract what is added and update variables
-                activeInsulin += (addedInsulin*(minutes/(30-timeSinceBolas)));
-                addedInsulin -=((addedInsulin*(minutes/(30-timeSinceBolas))));//subtract what was added
+                activeInsulin += (addedInsulin*(minutes/(30.0-timeSinceBolas)));
+                addedInsulin -=((addedInsulin*(minutes/(30.0-timeSinceBolas))));//subtract what was added
             }
 
         }
         timeSinceBolas+=minutes;//increase the amount of time since the last bolus, since time passed.
 
-        if(!addInsulin){//if no added insulin, calc half life
-            activeInsulin = activeInsulin*(Math.pow(.5,(minutes/INHL)));
-        }
+
 
 
     }
@@ -137,6 +138,10 @@ public abstract class AInsulinPump {
         if(temp!=null){
             currentMenu = temp;
         }
+        else {
+            currentMenu = topMenu;
+            System.out.println("null object returned in confirm.");
+        }
     }
     public void back(){
         AInsulinPumpMenu alpha = currentMenu.back();
@@ -156,9 +161,11 @@ public abstract class AInsulinPump {
 
     public ArrayList<String> getSubMenuNames(){
         ArrayList<String> names = new ArrayList<String>();
-        ArrayList<AInsulinPumpMenu> subs = currentMenu.getSubMenus();
-        for(int i=0;i<subs.size();i++){
-            names.add(subs.get(i).getMenuName());
+        if(names!=null) {
+            ArrayList<AInsulinPumpMenu> subs = currentMenu.getSubMenus();
+            for (int i = 0; i < subs.size(); i++) {
+                names.add(subs.get(i).getMenuName());
+            }
         }
         return names;
     }
