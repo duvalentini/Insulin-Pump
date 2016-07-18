@@ -205,7 +205,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         System.out.println("STATUS CODE = " + statusCode);
 
         if (result.isSuccess()) {
-            Toast.makeText(getApplicationContext(), "USER WAS SUCCESSFULLY SIGNED IN :)", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "You are now logged in!", Toast.LENGTH_LONG).show();
 
             ////////////////////// CALL NEW TASK HERE
             mGoogleAuthTask = new GoogleLoginTask(result);

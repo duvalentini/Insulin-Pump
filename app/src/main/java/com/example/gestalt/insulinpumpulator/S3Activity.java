@@ -27,13 +27,13 @@ import java.io.OutputStreamWriter;
 
 public class S3Activity extends AppCompatActivity {
 
-    File fileToUpload;
-    File fileToDownload;
-    AmazonS3 s3;
-    TransferUtility transferUtility;
+    private File fileToUpload;
+    private File fileToDownload;
+    private AmazonS3 s3;
+    private TransferUtility transferUtility;
 
-    Button upload;
-    Button download;
+    private Button upload;
+    private Button download;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +147,7 @@ public class S3Activity extends AppCompatActivity {
                 fileToUpload       /* The file where the data to upload exists */
         );
 
-        System.out.println("");
+        System.out.println("IN SET FILE TO UPLOAD");
 
 
         transferObserverListener(transferObserver);
@@ -165,7 +165,9 @@ public class S3Activity extends AppCompatActivity {
                 fileToDownload        /* The file to download the object to */
         );
 
-        transferObserverListener(transferObserver);
+        System.out.println("IN SET FILE TO DOWNLOAD");
+
+//        transferObserverListener(transferObserver);
 
     }
 
@@ -177,13 +179,14 @@ public class S3Activity extends AppCompatActivity {
      * @param transferObserver
      */
 
-    public void transferObserverListener(TransferObserver transferObserver){
+    public void transferObserverListener(final TransferObserver transferObserver){
 
         transferObserver.setTransferListener(new TransferListener(){
 
             @Override
             public void onStateChanged(int id, TransferState state) {
                 Log.e("statechange", state+"");
+
             }
 
             @Override

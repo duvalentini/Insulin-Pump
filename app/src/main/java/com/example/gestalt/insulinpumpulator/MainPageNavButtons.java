@@ -110,13 +110,18 @@ public class MainPageNavButtons extends Fragment {
         accountInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //not working yet
-                //Switch fragment out
-                //System.out.println("Account info pressed");
-                Intent myIntent = new Intent(getActivity(), S3Activity.class);
-                startActivity(myIntent);
-                getActivity().finish();
                 System.out.println("Account info pressed");
+
+                ResponseFragment newFragment = new ResponseFragment();
+
+                ((MainPageActivity) getActivity()).swapFragment(newFragment);
+
+//                Intent myIntent = new Intent(getActivity(), S3Activity.class);
+//                startActivity(myIntent);
+//                // TODO: don't finish the activity, it should stay in the background
+//                getActivity().finish();
+//                System.out.println("Account info pressed");
+
             }
         });
 

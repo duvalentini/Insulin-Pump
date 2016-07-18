@@ -1,5 +1,6 @@
 package com.example.gestalt.insulinpumpulator;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +25,7 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
 
     private int _currentSceneIndex = 0;
     private JSONArray _sceneOptions;
-    private int _playerScore = 0;
+    public static int _playerScore;
     private String _fileName;
 
     private class OptionListEntry {
@@ -49,6 +50,8 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        _playerScore = 0;
 
         setContentView(R.layout.activity_scenario_playthrough);
         ActionBar actionBar = getSupportActionBar();
@@ -89,12 +92,13 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
             optionList.setAdapter(optionsAdapter);
             optionList.setOnItemClickListener(this);
         } else {
-            String[] responseOptions = {"Write a reply", "Record a message", "Skip"};
-
-            ArrayAdapter<String> optionsAdapter = new ArrayAdapter<>(this.getBaseContext(), R.layout.scenario_item, responseOptions);
-            ListView optionList = (ListView) findViewById(R.id.optionList);
-            optionList.setAdapter(optionsAdapter);
-            optionList.setOnItemClickListener(this);
+            results();
+//            String[] responseOptions = {"Write a reply", "Record a message", "Skip"};
+//
+//            ArrayAdapter<String> optionsAdapter = new ArrayAdapter<>(this.getBaseContext(), R.layout.scenario_item, responseOptions);
+//            ListView optionList = (ListView) findViewById(R.id.optionList);
+//            optionList.setAdapter(optionsAdapter);
+//            optionList.setOnItemClickListener(this);
         }
     }
 
@@ -118,5 +122,11 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void results() {
+        MainPageActivity.resultsBool = true;
+        Intent resultsIntent = new Intent(this, MainPageActivity.class);
+        startActivity(resultsIntent);
     }
 }

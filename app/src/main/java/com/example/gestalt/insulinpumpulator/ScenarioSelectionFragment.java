@@ -41,5 +41,6 @@ public class ScenarioSelectionFragment extends Fragment implements AdapterView.O
         Intent scenarioIntent = new Intent(view.getContext(), ScenarioPlaythrough.class);
         scenarioIntent.putExtra("config", scenario.getConfig().toString());
         view.getContext().startActivity(scenarioIntent);
+        getActivity().finish();
     }
 }
