@@ -11,6 +11,7 @@ public abstract class AInsulinPump {
         return topMenu;
     }
     protected AInsulinPumpMenu currentMenu;
+    protected ArrayList<Double> basalRates;
     protected double ICR;//insulin carb ratio
     protected double ISEN;//insulin Sensitivity
     protected int lowGluc;//low glucose level

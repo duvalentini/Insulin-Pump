@@ -3,6 +3,8 @@ package com.example.gestalt.insulinpumpulator;
 import android.content.Context;
 import android.provider.Settings;
 
+import java.util.ArrayList;
+
 /**
  * Created by Joshua on 6/18/2016.
  */
@@ -24,7 +26,7 @@ public class MedtronicPump extends AInsulinPump {
         trueInsulinFactor = (ISEN / INHL *Math.log10(2.0))/(1.0-Math.pow(2.0,-AIT/INHL));
         trueCarbFactor = (bloodSugarCarbRatio *2.5 *Math.log10(2)/(1.0-Math.pow(2.0,-2.5)));
     }
-    public MedtronicPump(int carbRatio, int sensitive, int lowGC, int highGC, int active, Context c){
+    public MedtronicPump(int carbRatio, int sensitive, int lowGC, int highGC, int active, ArrayList<Double> basals, Context c){
             ICR = carbRatio;
             ISEN = sensitive;
             lowGluc = lowGC;
@@ -35,6 +37,7 @@ public class MedtronicPump extends AInsulinPump {
             suspended = false;
             topMenu = new MedtronicMainMenu(this, c);
             currentMenu = topMenu;
+        basalRates = basals;
         bloodGlucose = 110;
         bloodSugarCarbRatio = ISEN/ICR;
         trueInsulinFactor = (ISEN / INHL *Math.log10(2.0))/(1.0-Math.pow(2.0,-AIT/INHL));
