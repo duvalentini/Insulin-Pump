@@ -112,6 +112,7 @@ public class PumpTestFragment extends Fragment {
 
     private void setMenuNames(TextView one, TextView two, TextView three){
         menuName.setText(pump.getMenuName());
+        subMenuNames= pump.getSubMenuNames();
         int current = pump.getSubCurrent();
         int top;
         int bottom;

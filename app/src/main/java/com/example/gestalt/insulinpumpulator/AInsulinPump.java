@@ -20,6 +20,7 @@ public abstract class AInsulinPump {
     protected double INHL;//insulin half life
     //temp basal settings
     protected boolean tempB;
+
     protected int tempBasalPercent;
     protected double tempBasalDuration;
     public void setBasalPercent(int a){
@@ -63,11 +64,19 @@ public abstract class AInsulinPump {
 
     protected boolean suspended;
 
+
     public void eatFood(int grams){
         foodgrams+= grams;
     }
+    public void setBloodGlucose(int bg){
+        bloodGlucose = (double)bg;
+    }
     public void vomit(){
         foodgrams =0;
+    }
+    public boolean exercising = false;
+    public void exercise(){
+        exercising = !exercising;
     }
     public void passTime(int minutes){
         boolean addInsulin = false;
@@ -79,9 +88,25 @@ public abstract class AInsulinPump {
         activeInsulin = (activeInsulin*(Math.pow(2.0,(minutes/(-60.0))/INHL)));
 
 
+        if(!suspended){
+            if(tempB){
+                bloodGlucose -= (minutes/6.0)*tempBasalPercent;
+                tempBasalDuration -= minutes/60.0;
+                if(tempBasalDuration<0){
+                    tempB = false;
+                }
+            }
+            else{
+                bloodGlucose -= minutes/6.0;
+            }
+
+        }
+        if(exercising){
+            bloodGlucose -= minutes/6.0;
+        }
 
         if(timeSinceBolas<30){
-            addInsulin = true;
+
             if(minutes>(30-timeSinceBolas)){//if time passed greater than total time for insulin to be added, dump all left
                 activeInsulin += addedInsulin;
                 addedInsulin =0;

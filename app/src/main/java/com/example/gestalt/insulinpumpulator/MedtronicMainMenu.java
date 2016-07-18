@@ -68,6 +68,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 enterField=0;
                 subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new EnterFood(this,c));
+                subMenus.add(new EmptyMenu(this,c,"Blood Glucose : "+enterField+" mg/dl"));
             }
 
             @Override
@@ -84,6 +85,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 else{
                     enterField+=5;
                 }
+                ((EmptyMenu)subMenus.get(1)).setName("Blood Glucose : "+enterField+" mg/dl");
             }
             @Override
             public void down(){
@@ -99,11 +101,9 @@ class BolusMenu extends AInsulinPumpMenu{
                 else{
                     enterField -=5;
                 }
+                ((EmptyMenu)subMenus.get(1)).setName("Blood Glucose : "+enterField+" mg/dl");
             }
-            @Override
-            public String getMenuName(){
-                return menuName+" :"+enterField;
-            }
+
             @Override
             public AInsulinPumpMenu confirm(){
                 pump.setBolasBG((int)enterField);
@@ -119,11 +119,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     current =0;
                     enterField =0;
                     subMenus = new ArrayList<AInsulinPumpMenu>();
-                    subMenus.add(new EmptyMenu(p,c));
-                }
-                @Override
-                public String getMenuName(){
-                    return menuName +" : "+enterField;
+                    subMenus.add(new EmptyMenu(p,c,"Food Eaten : "+enterField+"grams"));
                 }
 
                 @Override
@@ -134,6 +130,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     else{
                         enterField -=3;
                     }
+                    ((EmptyMenu)subMenus.get(0)).setName("Blood Glucose : "+enterField+" mg/dl");
                 }
 
                 @Override
@@ -144,6 +141,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     else{
                         enterField +=3;
                     }
+                    ((EmptyMenu)subMenus.get(0)).setName("Blood Glucose : "+enterField+" mg/dl");
                 }
 
                 @Override
@@ -190,15 +188,11 @@ class BolusMenu extends AInsulinPumpMenu{
                     enterField=0;
                     subMenus = new ArrayList<AInsulinPumpMenu>();
                     subMenus.add(new EmptyMenu(this,c));
+                    ((EmptyMenu)subMenus.get(0)).setName("Insulin : "+enterField+" u");
                 }
                 @Override
                 public double getEnterField(){
                     return enterField/3.0;
-                }
-
-                @Override
-                public String getMenuName(){
-                    return menuName +" : "+getEnterField();
                 }
 
                 @Override
@@ -209,6 +203,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     else{
                         enterField++;
                     }
+                    ((EmptyMenu)subMenus.get(0)).setName("Insulin : "+enterField+" u");
                 }
                 @Override
                 public void down(){
@@ -218,6 +213,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     else{
                         enterField--;
                     }
+                    ((EmptyMenu)subMenus.get(0)).setName("Insulin : "+enterField+" u");
                 }
 
                 @Override
@@ -439,7 +435,7 @@ class SuspendMenu extends AInsulinPumpMenu{
                 menuName = con.getResources().getString(R.string.suspended);
                 return this;
             }
-           else{
+            else{
                 menuName = (con.getResources().getString(R.string.suspend));
                 return pump.getTopMenu();
 
@@ -567,17 +563,16 @@ class BasalMenu extends AInsulinPumpMenu{
                 subMenus = new ArrayList<AInsulinPumpMenu>();
                 subMenus.add(new TempPercent(this,c));
                 enterField=0;
+                subMenus.add(new EmptyMenu(this, c, "time :"+enterField+" hours"));
             }
-            @Override
-            public String getMenuName(){
-                return menuName +" : "+enterField;
-            }
+
             @Override
             public void up(){
                 enterField+=.5;
                 if(enterField>24){
                     enterField=0;
                 }
+                ((EmptyMenu)subMenus.get(1)).setName("time :"+enterField+" hours");
             }
             @Override
             public void down(){
@@ -585,6 +580,7 @@ class BasalMenu extends AInsulinPumpMenu{
                 if(enterField<0){
                     enterField=24;
                 }
+                ((EmptyMenu)subMenus.get(1)).setName("time :"+enterField+" hours");
             }
             @Override
             public AInsulinPumpMenu confirm(){
@@ -600,19 +596,18 @@ class BasalMenu extends AInsulinPumpMenu{
                     menuName = (c.getResources().getString(R.string.settempbasal));
                     current =0;
                     subMenus = new ArrayList<AInsulinPumpMenu>();
-                    subMenus.add(new EmptyMenu(this,c));
                     enterField=100;
+                    subMenus.add(new EmptyMenu(this,c));
+                    ((EmptyMenu)subMenus.get(0)).setName("percent :"+enterField);
                 }
-                @Override
-                public String getMenuName(){
-                    return menuName +" : "+enterField;
-                }
+
                 @Override
                 public void up(){
                     enterField+=5;
                     if(enterField>200){
                         enterField=0;
                     }
+                    ((EmptyMenu)subMenus.get(0)).setName("percent :"+enterField);
                 }
                 @Override
                 public void down(){
@@ -620,6 +615,7 @@ class BasalMenu extends AInsulinPumpMenu{
                     if(enterField<0){
                         enterField=200;
                     }
+                    ((EmptyMenu)subMenus.get(0)).setName("percent :"+enterField);
                 }
                 @Override
                 public AInsulinPumpMenu confirm(){
