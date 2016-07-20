@@ -5,22 +5,23 @@
     >
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/results_text"
         android:layout_gravity="center_vertical"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textSize="100sp"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Response"
         android:id="@+id/results_to_response"
         android:layout_weight="1" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Main Menu"
         android:id="@+id/results_to_main"

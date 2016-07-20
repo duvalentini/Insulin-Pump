@@ -20,9 +20,8 @@ public class ScenarioArgs {
     private static ScenarioArgs[] parseScenarios() {
         List<ScenarioArgs> scenarios = new ArrayList<>();
         try {
-            scenarios.add(new ScenarioArgs(new JSONObject("{\"title\":\"A Day at the Field\",\"fileName\":\"field_day_\",\"sceneOptions\":[[{\"Give points\":200},{\"Give less points\":50},{\"Take points away\":-30},{\"Do nothing\":0}],[{\"Here's a menu\":50},{\"With less options\":200}],[{\"And\":10},{\"Here's\":10},{\"One\":10},{\"With\":10},{\"More\":10}]]}")));
-            scenarios.add(new ScenarioArgs(new JSONObject("{\"title\":\"Camping Trip\",\"fileName\":\"camp_trip_\",\"sceneOptions\":[[{\"These\":20,\"ones\":5},{\"Give different\":-15},{\"Values\":40}],[{\"Here's a level\":50},{\"With less menus\":200}]]}")));
-            scenarios.add(new ScenarioArgs(new JSONObject("{\"title\":\"Space Journey\",\"fileName\":\"space_journey_\",\"sceneOptions\":[[{\"0_o\":200},{\"@_@\":50},{\"(V)(;,,;)(V)\":-30},{\"#_#\":42}]]}")));
+            scenarios.add(new ScenarioArgs(new JSONObject("{\"title\":\"A Day at the Field\",\"fileName\":\"field_day_\",\"sceneOptions\":[[{\"Give points\":200, next_scene: 1},{\"Give less points\":50, next_scene: 1},{\"Take points away\":-30, next_scene: 2},{\"Do nothing\":0, next_scene: 0}],[{\"Here's a menu\":50, next_scene: 2},{\"With less options\":200, next_scene: 3}],[{\"And\":10, next_scene: 3},{\"Here's\":10, next_scene: 3},{\"One\":10, next_scene: 3},{\"With\":10, next_scene: 3},{\"More\":10, next_scene: 3}]]}")));
+            scenarios.add(new ScenarioArgs(new JSONObject("{\"title\":\"Camping Trip\",\"fileName\":\"camp_trip_\",\"sceneOptions\":[[{\"These\":20, next_scene: 0},{\"ones\":5, next_scene: 1},{\"Give different\":-15, next_scene: 1},{\"Values\":40, next_scene: 1}],[{\"Here's a level\":50, next_scene: 2},{\"With less menus\":200, next_scene: 0}]]}")));
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -36,9 +36,8 @@ public class ResultsFragment extends Fragment{
         responseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResponseFragment newResponse = new ResponseFragment();
 
-                ((MainPageActivity) getActivity()).swapFragment(newResponse);
+                ((ScenarioPlaythrough) getActivity()).swapFragment(new ResponseFragment());
                 System.out.println("Response Selected");
             }
         });
@@ -47,11 +46,19 @@ public class ResultsFragment extends Fragment{
         mainmenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainPageNavButtons fragment = new MainPageNavButtons();
-                ((MainPageActivity) getActivity()).swapFragment(fragment);
+
+                Intent intent = new Intent(getActivity(), MainPageActivity.class);
+                startActivity(intent);
+
+                getActivity().finish();
+
+//                MainPageNavButtons fragment = new MainPageNavButtons();
+//                ((ScenarioPlaythrough) getActivity()).swapFragment(fragment);
             }
         });
 
         return view;
     }
+
+
 }
