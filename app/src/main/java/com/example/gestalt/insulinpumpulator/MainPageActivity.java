@@ -13,26 +13,12 @@ public class MainPageActivity extends FragmentActivity implements MainPageNavBut
 
     private String msg = "Android : ";
 
-    //public static int _playerScore;
-
-    public static boolean resultsBool = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
-        if (resultsBool) {
-            // Create a new Fragment to be placed in the activity layout
-            ResultsFragment resultsFragment = new ResultsFragment();
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_section, resultsFragment).commit();
-            resultsBool = false;
-        }
-
-
-        else {
             // Check that the activity is using the layout version with
             // the fragment_container FrameLayout
             if (findViewById(R.id.fragment_section) != null) {
@@ -54,7 +40,7 @@ public class MainPageActivity extends FragmentActivity implements MainPageNavBut
                 // Add the fragment to the 'fragment_container' FrameLayout
                 getSupportFragmentManager().beginTransaction().add(R.id.fragment_section, firstFragment).commit();
             }
-        }
+
     }
 
 

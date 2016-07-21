@@ -1,5 +1,7 @@
 package com.example.gestalt.insulinpumpulator;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.ActionBar;
@@ -21,31 +23,9 @@ import org.json.JSONObject;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class ScenarioPlaythrough extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class ScenarioPlaythrough extends AppCompatActivity {
 
-    private int _currentSceneIndex = 0;
-    private JSONArray _sceneOptions;
     public static int _playerScore;
-    private String _fileName;
-
-    private class OptionListEntry {
-        private String _str;
-        private int _val;
-
-        private OptionListEntry(JSONObject keyValPair) {
-            _str = keyValPair.keys().next(); //guaranteed to work if required to have a single entry
-            _val = keyValPair.optInt(_str);
-        }
-
-        public int getVal() {
-            return _val;
-        }
-
-        @Override
-        public String toString() {
-            return _str;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,57 +39,24 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        JSONObject configJson = null;
-        try {
-            configJson = new JSONObject(getIntent().getStringExtra("config"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        if (findViewById(R.id.fragment_section) != null) {
 
-        _sceneOptions = configJson.optJSONArray("sceneOptions");
-        _fileName = configJson.optString("fileName");
-
-        renderScene();
-    }
-
-    private void renderScene() {
-        if (_currentSceneIndex < _sceneOptions.length()) {
-            ImageView sceneImage = (ImageView) findViewById(R.id.scene_image);
-            Resources resources = getBaseContext().getResources();
-            String sceneImageName = _fileName + _currentSceneIndex;
-            final int resourceId = resources.getIdentifier(sceneImageName, "drawable",
-                    getBaseContext().getPackageName());
-            sceneImage.setImageResource(resourceId);
-
-            JSONArray options = _sceneOptions.optJSONArray(_currentSceneIndex);
-            OptionListEntry[] optionListEntries = new OptionListEntry[options.length()];
-            for (int i = 0; i < optionListEntries.length; i++) {
-                optionListEntries[i] = new OptionListEntry(options.optJSONObject(i));
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
             }
 
-            ArrayAdapter<OptionListEntry> optionsAdapter = new ArrayAdapter<>(this.getBaseContext(), R.layout.scenario_item, optionListEntries);
-            ListView optionList = (ListView) findViewById(R.id.optionList);
-            optionList.setAdapter(optionsAdapter);
-            optionList.setOnItemClickListener(this);
-        } else {
-            results();
-//            String[] responseOptions = {"Write a reply", "Record a message", "Skip"};
-//
-//            ArrayAdapter<String> optionsAdapter = new ArrayAdapter<>(this.getBaseContext(), R.layout.scenario_item, responseOptions);
-//            ListView optionList = (ListView) findViewById(R.id.optionList);
-//            optionList.setAdapter(optionsAdapter);
-//            optionList.setOnItemClickListener(this);
-        }
-    }
+            // Create a new Fragment to be placed in the activity layout
+            ScenarioPlaythroughFragment firstFragment = new ScenarioPlaythroughFragment();
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (_currentSceneIndex < _sceneOptions.length()) {
-            OptionListEntry selectedOption = (OptionListEntry) parent.getItemAtPosition(position);
-            _playerScore += selectedOption.getVal();
-            _currentSceneIndex++;
-            renderScene();
-        } else {
+            // In case this activity was started with special instructions from an
+            // Intent, pass the Intent's extras to the fragment as arguments
+            firstFragment.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_section, firstFragment).commit();
         }
     }
 
@@ -124,9 +71,17 @@ public class ScenarioPlaythrough extends AppCompatActivity implements AdapterVie
         return super.onOptionsItemSelected(item);
     }
 
-    public void results() {
-        MainPageActivity.resultsBool = true;
-        Intent resultsIntent = new Intent(this, MainPageActivity.class);
-        startActivity(resultsIntent);
+    public void swapFragment(Fragment fragment) { //add int containerID to specify which fragment container
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+
+
+        transaction.replace(R.id.fragment_section, fragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 }
