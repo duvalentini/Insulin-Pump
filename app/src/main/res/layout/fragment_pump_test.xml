@@ -1,31 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="wrap_content"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/pump_background"
+        android:src ="@drawable/medpump"
+         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter"
+        android:id="@+id/enterButton"
+        android:layout_below="@+id/downButton"
+        android:layout_toLeftOf="@id/downButton"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Pump Menu"
         android:id="@+id/pumpMenuName"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textSize="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="25dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Submenu1 &lt;"
-        android:id="@+id/subMenu1"
-        android:layout_gravity="center_horizontal" />
 
-    <TextView
-        android:layout_width="match_parent"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="SubMenu2"
-        android:id="@+id/subMenu2"
-        android:layout_gravity="center_horizontal" />
+        android:text="Up"
+        android:id="@+id/upButton"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/pumpMenuName"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Down"
+        android:id="@+id/downButton"
+        android:layout_below="@id/upButton"
+        android:layout_alignParentRight="true"
+         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:id="@+id/backButton"
+        android:layout_toLeftOf="@id/enterButton"
+        android:layout_below="@id/downButton"
+         />
+
+
+
 
     <TextView
         android:layout_width="match_parent"
@@ -33,43 +66,42 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="SubMenu3"
         android:id="@+id/subMenu3"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textSize="16dp"
+        android:layout_below="@+id/subMenu2"
+        android:layout_alignLeft="@+id/subMenu2"
+        />
 
-    <LinearLayout
-        android:orientation="horizontal"
+
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Submenu1 &lt;"
+        android:id="@+id/subMenu1"
+        android:layout_gravity="center_horizontal"
+        android:textSize="16dp"
+        android:layout_below="@id/pumpMenuName"
+        android:layout_alignLeft="@id/pumpMenuName" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Up"
-            android:id="@+id/upButton" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:id="@+id/backButton" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter"
-            android:id="@+id/enterButton" />
-
-    </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Down"
-        android:id="@+id/downButton" />
-
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Submenu2"
+        android:id="@+id/subMenu2"
+        android:layout_gravity="center_horizontal"
+        android:textSize="16dp"
+        android:layout_below="@id/subMenu1"
+        android:layout_alignLeft="@id/subMenu1"
+        />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Test"
-        android:id="@+id/testingButton" />
-</LinearLayout>
+        android:id="@+id/testingButton"
+        android:layout_below="@id/downButton"
+        android:layout_toLeftOf="@id/backButton"/>
+
+</RelativeLayout>
