@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -37,6 +38,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         private int _nextScene;
 
         private OptionListEntry(JSONObject jsonMap) {
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
             Iterator<String> it = jsonMap.keys();
             for (int i = 0; i < 2; i++) {
                 String candidate = it.next();
@@ -48,6 +50,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                     _val = jsonMap.optInt(_str);
                 }
             }
+            System.out.println("BBBBBBBBBBBBBBBBBBBBBB");
         }
 
         public int getVal() {
@@ -60,6 +63,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
         @Override
         public String toString() {
+            System.out.println("CCCCCCCCCCCCCCCCCCCCCC");
             return _str;
         }
     }
@@ -68,7 +72,9 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //Inflate the layout
+        System.out.println("ABOUT TO INFLATE VIEW");
         View frag = inflater.inflate(R.layout.fragment_scernario_playthrough, container, false);
+        System.out.println("VIEW IS INFLATED");
         return frag;
     }
 
@@ -90,6 +96,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         _sceneOptions = configJson.optJSONArray("sceneOptions");
         _fileName = configJson.optString("fileName");
 
+        System.out.println("ABOUT TO CALL RENDER SCENE");
         renderScene();
     }
 
@@ -101,22 +108,37 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                 getContext().getPackageName());
         sceneImage.setImageResource(resourceId);
 
+        System.out.println("ABOUT TO PARSE OPTIONS");
+
         JSONArray options = _sceneOptions.optJSONArray(_currentSceneIndex);
-        OptionListEntry[] optionListEntries = new OptionListEntry[options.length()]; //todo - make this 'length() - 1' if text is required on each scene
-        for (int i = 0; i < optionListEntries.length; i++) {
+        OptionListEntry[] optionListEntries = new OptionListEntry[options.length()-1]; //todo - make this 'length() - 1' if text is required on each scene
+        int nextOptionIndex = 0;
+        for (int i = 0; i < options.length(); i++) {
             JSONObject item = options.optJSONObject(i);
             String text = item.optString("text");
             if (!text.isEmpty()) {
-                //make text field
+                // make text field
+                System.out.println("TEXT IS NOT EMPTY");
+                TextView instructions = (TextView) getActivity().findViewById(R.id.instructions);
+                instructions.setText(text);
             } else {
-                optionListEntries[i] = new OptionListEntry(item);
+                System.out.println("SETTING OPTION TO LIST");
+                optionListEntries[nextOptionIndex] = new OptionListEntry(item);
+                nextOptionIndex++;
             }
         }
 
+        System.out.println("ABOUT TO MAKE LIST ADAPTER");
+
         ArrayAdapter<OptionListEntry> optionsAdapter = new ArrayAdapter<>(getContext(), R.layout.scenario_item, optionListEntries);
+        System.out.println("111111111111111111111111");
         ListView optionList = (ListView) getActivity().findViewById(R.id.optionList);
+        System.out.println("222222222222222222222222");
         optionList.setAdapter(optionsAdapter);
+        System.out.println("333333333333333333333333");
         optionList.setOnItemClickListener(this);
+
+        System.out.println("DONE MAKING LIST ADAPTER");
     }
 
     @Override
