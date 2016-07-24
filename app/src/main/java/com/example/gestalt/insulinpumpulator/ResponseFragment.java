@@ -1,15 +1,19 @@
 package com.example.gestalt.insulinpumpulator;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +53,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.Permission;
 
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
@@ -57,6 +62,7 @@ import java.io.IOException;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.security.Permissions;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,6 +130,13 @@ public class ResponseFragment extends Fragment{
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_response, container, false);
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+
+        }
 
         // Get references to ListViews
         audioList = (ListView) view.findViewById(R.id.audio_list);
@@ -677,7 +690,6 @@ public class ResponseFragment extends Fragment{
 
 
                     totalHeight += listItem.getMeasuredHeight();
-                    Log.d("listItemHeight" + listItem.getMeasuredHeight(), "___________");
                 }
                 ViewGroup.LayoutParams params = listView.getLayoutParams();
                 params.height = (int) ((totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1))));
