@@ -82,7 +82,7 @@ public abstract class AInsulinPump {
         boolean addInsulin = false;
         //recalculate blood glucose, active insulin and foodGrams
         //does not include basal rate at this moment.
-        bloodGlucose = bloodGlucose -(trueInsulinFactor*(activeInsulin*((1-Math.pow(2.0,(minutes/(-60.0))/INHL))/(Math.log10(2)/INHL))) + (trueCarbFactor*(foodgrams*(1-Math.pow(2.0,(minutes/(-60.0))*2.5))/(Math.log10(2)*2.5))));//does not include basal rate
+        bloodGlucose = bloodGlucose -(trueInsulinFactor*(activeInsulin*((1-Math.pow(2.0,(minutes/(-60.0))/INHL))/(Math.log10(2)/INHL))) - (trueCarbFactor*(foodgrams*(1-Math.pow(2.0,(minutes/(-60.0))*2.5))/(Math.log10(2)*2.5))));//does not include basal rate
         //
         foodgrams = (foodgrams*(Math.pow(2.0,(minutes/(-60.0))/.4)));
         activeInsulin = (activeInsulin*(Math.pow(2.0,(minutes/(-60.0))/INHL)));
