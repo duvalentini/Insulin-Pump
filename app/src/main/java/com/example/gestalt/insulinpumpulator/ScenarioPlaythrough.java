@@ -1,12 +1,15 @@
 package com.example.gestalt.insulinpumpulator;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.view.View;
@@ -23,7 +26,8 @@ import org.json.JSONObject;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class ScenarioPlaythrough extends AppCompatActivity {
+//AppCompatActivity
+public class ScenarioPlaythrough extends FragmentActivity {
 
     public static int _playerScore;
     public static MedtronicPump mPump;
@@ -36,10 +40,10 @@ public class ScenarioPlaythrough extends AppCompatActivity {
         mPump = new MedtronicPump(this);
 
         setContentView(R.layout.activity_scenario_playthrough);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
 
         if (findViewById(R.id.fragment_section) != null) {
 
@@ -58,8 +62,21 @@ public class ScenarioPlaythrough extends AppCompatActivity {
             firstFragment.setArguments(getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_section, firstFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_section, firstFragment).addToBackStack(null).commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        super.onCreateOptionsMenu(menu);
+
+        if (getActionBar() != null) {
+            getActionBar().setHomeButtonEnabled(false); // disable the button
+            getActionBar().setDisplayHomeAsUpEnabled(false); // remove the left caret
+            getActionBar().setDisplayShowHomeEnabled(false); // remove the icon
+        }
+
+        return true;
     }
 
     @Override
@@ -67,7 +84,8 @@ public class ScenarioPlaythrough extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             // This ID represents the Home or Up button.
-            NavUtils.navigateUpFromSameTask(this);
+//            NavUtils.navigateUpFromSameTask(this);
+            getSupportFragmentManager().popBackStack();
             return true;
         }
         return super.onOptionsItemSelected(item);

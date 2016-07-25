@@ -121,6 +121,11 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             }
         });
 
+        if (_currentSceneIndex != 0 && _currentSceneIndex != 1) {
+            TextView bg = (TextView) getActivity().findViewById(R.id.bg);
+            bg.setText(String.valueOf(ScenarioPlaythrough.mPump.bloodGlucose) + " mg/dl");
+        }
+
         renderScene();
     }
 
@@ -160,11 +165,11 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         // Do scenario specific things
 
         // Hide the pump on the hypoglycemia scenario
-        if (_fileName.equals("hypoglycemia_")) {
-            mPumpButton.setVisibility(View.GONE);
-        } else {
-            mPumpButton.setVisibility(View.VISIBLE);
-        }
+//        if (_fileName.equals("hypoglycemia_")) {
+//            mPumpButton.setVisibility(View.GONE);
+//        } else {
+//            mPumpButton.setVisibility(View.VISIBLE);
+//        }
 
         if (_currentSceneIndex == 2) {
             mCheckBGButton.setEnabled(true);
