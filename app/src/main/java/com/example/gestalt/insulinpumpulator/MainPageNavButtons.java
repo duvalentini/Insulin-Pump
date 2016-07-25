@@ -136,7 +136,7 @@ public class MainPageNavButtons extends Fragment {
                 System.out.println("Pump Settings pressed");
             }
         });
-        Button testPump = (Button) view.findViewById((R.id.pump_test));
+        /*Button testPump = (Button) view.findViewById((R.id.pump_test));
         testPump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +146,7 @@ public class MainPageNavButtons extends Fragment {
 
                 System.out.println("Pump test pressed");
             }
-        });
+        });*/
 
         return view;
     }

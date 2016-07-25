@@ -38,11 +38,12 @@
         android:id="@+id/bPumpSettings"
         android:layout_weight="1" />
 
-    <Button
+    <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="pump test"
         android:id="@+id/pump_test"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1" />
+        android:layout_weight="1" />-->
+
 </LinearLayout>

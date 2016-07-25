@@ -96,12 +96,12 @@
         android:layout_below="@id/subMenu1"
         android:layout_alignLeft="@id/subMenu1"
         />
-    <Button
+    <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Test"
         android:id="@+id/testingButton"
         android:layout_below="@id/downButton"
-        android:layout_toLeftOf="@id/backButton"/>
+        android:layout_toLeftOf="@id/backButton"/>-->
 
 </RelativeLayout>

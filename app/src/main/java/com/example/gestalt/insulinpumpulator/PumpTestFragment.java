@@ -98,14 +98,14 @@ public class PumpTestFragment extends Fragment {
 
             }
         });
-        Button test = (Button) view.findViewById(R.id.testingButton);//*************
+        /*Button test = (Button) view.findViewById(R.id.testingButton);//*************
         test.setOnClickListener(new View.OnClickListener() {
-            @Override
+           @Override
             public void onClick(View v) {
                 pump.testFormula();
 
             }
-        });
+        });*/
 
 
 
