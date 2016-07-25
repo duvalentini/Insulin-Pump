@@ -23,6 +23,9 @@
     <string name="prompt_text_response">How did you do?</string>
     <string name="previous_audio_responses">My Recordings:</string>
     <string name="previous_text_responses">My Text Responses:</string>
+    <string name="pump_button_text">Pump</string>
+    <string name="check_bg_text">Check/Update BG:</string>
+    <string name="question_mark">\?</string>
 
 
     <string name="action_log_in">Log in</string>

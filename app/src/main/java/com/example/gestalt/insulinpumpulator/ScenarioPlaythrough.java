@@ -26,12 +26,14 @@ import org.json.JSONObject;
 public class ScenarioPlaythrough extends AppCompatActivity {
 
     public static int _playerScore;
+    public static MedtronicPump mPump;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         _playerScore = 0;
+        mPump = new MedtronicPump(this);
 
         setContentView(R.layout.activity_scenario_playthrough);
         ActionBar actionBar = getSupportActionBar();

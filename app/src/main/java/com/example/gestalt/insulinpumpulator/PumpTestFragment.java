@@ -39,7 +39,9 @@ public class PumpTestFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_pump_test, container, false);
 
 
-        pump = new MedtronicPump(getContext());
+        //pump = new MedtronicPump(getContext());
+        pump = ScenarioPlaythrough.mPump;
+
         subMenuNames = pump.getSubMenuNames();
 
         menuName = (TextView) view.findViewById(R.id.pumpMenuName);

@@ -21,10 +21,11 @@ public class MedtronicPump extends AInsulinPump {
         suspended = false;
         topMenu= new MedtronicMainMenu(this,c);
         currentMenu = topMenu;
-        bloodGlucose = 110;
+        bloodGlucose = 90;
         bloodSugarCarbRatio = ISEN/ICR;
         trueInsulinFactor = (ISEN / INHL *Math.log10(2.0))/(1.0-Math.pow(2.0,-AIT/INHL));
         trueCarbFactor = (bloodSugarCarbRatio *2.5 *Math.log10(2)/(1.0-Math.pow(2.0,-2.5)));
+        exercising = false;
     }
     public MedtronicPump(int carbRatio, int sensitive, int lowGC, int highGC, int active, ArrayList<Double> basals, Context c){
             ICR = carbRatio;

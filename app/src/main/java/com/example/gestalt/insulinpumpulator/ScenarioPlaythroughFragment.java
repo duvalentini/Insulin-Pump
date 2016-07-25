@@ -2,14 +2,17 @@ package com.example.gestalt.insulinpumpulator;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +34,8 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
     private String _fileName;
     private static final String NEXT_SCENE = "next_scene";
 
+    private Button mPumpButton;
+    private Button mCheckBGButton;
 
     private class OptionListEntry {
         private String _str;
@@ -38,7 +43,6 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         private int _nextScene;
 
         private OptionListEntry(JSONObject jsonMap) {
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
             Iterator<String> it = jsonMap.keys();
             for (int i = 0; i < 2; i++) {
                 String candidate = it.next();
@@ -50,7 +54,6 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                     _val = jsonMap.optInt(_str);
                 }
             }
-            System.out.println("BBBBBBBBBBBBBBBBBBBBBB");
         }
 
         public int getVal() {
@@ -63,7 +66,6 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
         @Override
         public String toString() {
-            System.out.println("CCCCCCCCCCCCCCCCCCCCCC");
             return _str;
         }
     }
@@ -72,9 +74,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //Inflate the layout
-        System.out.println("ABOUT TO INFLATE VIEW");
         View frag = inflater.inflate(R.layout.fragment_scernario_playthrough, container, false);
-        System.out.println("VIEW IS INFLATED");
         return frag;
     }
 
@@ -96,7 +96,31 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         _sceneOptions = configJson.optJSONArray("sceneOptions");
         _fileName = configJson.optString("fileName");
 
-        System.out.println("ABOUT TO CALL RENDER SCENE");
+        mPumpButton = (Button) view.findViewById(R.id.pump);
+        mPumpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("PUMP PRESSED");
+                // Create a new Fragment to be placed in the activity layout
+                PumpTestFragment fragment = new PumpTestFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.fragment_section, fragment);
+                transaction.commit();
+            }
+        });
+
+        mCheckBGButton = (Button) view.findViewById(R.id.check_bg);
+        mCheckBGButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("CHECK BG PRESSED");
+
+                TextView bg = (TextView) getActivity().findViewById(R.id.bg);
+                bg.setText(String.valueOf(ScenarioPlaythrough.mPump.bloodGlucose) + " mg/dl");
+            }
+        });
+
         renderScene();
     }
 
@@ -108,7 +132,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                 getContext().getPackageName());
         sceneImage.setImageResource(resourceId);
 
-        System.out.println("ABOUT TO PARSE OPTIONS");
+        System.out.println("BG = " + ScenarioPlaythrough.mPump.bloodGlucose);
 
         JSONArray options = _sceneOptions.optJSONArray(_currentSceneIndex);
         OptionListEntry[] optionListEntries = new OptionListEntry[options.length()-1]; //todo - make this 'length() - 1' if text is required on each scene
@@ -118,27 +142,36 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             String text = item.optString("text");
             if (!text.isEmpty()) {
                 // make text field
-                System.out.println("TEXT IS NOT EMPTY");
                 TextView instructions = (TextView) getActivity().findViewById(R.id.instructions);
                 instructions.setText(text);
             } else {
-                System.out.println("SETTING OPTION TO LIST");
                 optionListEntries[nextOptionIndex] = new OptionListEntry(item);
                 nextOptionIndex++;
             }
         }
 
-        System.out.println("ABOUT TO MAKE LIST ADAPTER");
 
         ArrayAdapter<OptionListEntry> optionsAdapter = new ArrayAdapter<>(getContext(), R.layout.scenario_item, optionListEntries);
-        System.out.println("111111111111111111111111");
         ListView optionList = (ListView) getActivity().findViewById(R.id.optionList);
-        System.out.println("222222222222222222222222");
         optionList.setAdapter(optionsAdapter);
-        System.out.println("333333333333333333333333");
         optionList.setOnItemClickListener(this);
 
-        System.out.println("DONE MAKING LIST ADAPTER");
+
+        // Do scenario specific things
+
+        // Hide the pump on the hypoglycemia scenario
+        if (_fileName.equals("hypoglycemia_")) {
+            mPumpButton.setVisibility(View.GONE);
+        } else {
+            mPumpButton.setVisibility(View.VISIBLE);
+        }
+
+        if (_currentSceneIndex == 2) {
+            mCheckBGButton.setEnabled(true);
+        } else {
+            mCheckBGButton.setEnabled(false);
+        }
+
     }
 
     @Override
@@ -147,11 +180,51 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         ScenarioPlaythrough._playerScore += selectedOption.getVal();
         String sign = "+";
         if(selectedOption.getVal() < 0) {
-            sign = "-";
+            sign = "";
         }
-        Toast t = Toast.makeText(getContext(), sign + selectedOption.getVal(), Toast.LENGTH_SHORT);
+        Toast t = Toast.makeText(getContext(), "       " + sign + selectedOption.getVal() + "       ", Toast.LENGTH_SHORT);
+        if (selectedOption.getVal() > 0) {
+            t.getView().setBackgroundColor(Color.GREEN);
+        } else if (selectedOption.getVal() < 0) {
+            t.getView().setBackgroundColor(Color.RED);
+        }
         t.show();
+
+        // Update pump based on choice
+        if (selectedOption._str.equals("Eat 15-20g of carbs")) {
+            ScenarioPlaythrough.mPump.eatFood(18);
+        } else if (selectedOption._str.equals("Eat a lot")) {
+            ScenarioPlaythrough.mPump.eatFood(100);
+        } else if (selectedOption._str.equals("Play outside") || selectedOption._str.equals("Keep playing basketball")) {
+            ScenarioPlaythrough.mPump.exercising = true;
+        } else if (selectedOption._str.equals("Administer glucagon") || selectedOption._str.equals("Call 911")) {
+            ScenarioPlaythrough.mPump.setBloodGlucose(115);
+        }
+        else {
+            ScenarioPlaythrough.mPump.exercising = false;
+        }
+
+
         _currentSceneIndex = selectedOption.getNextScene();
+
+
+        // Go to scenes based on BG
+        if (_fileName.equals("hypoglycemia_") && ScenarioPlaythrough.mPump.bloodGlucose < 70) {
+            _currentSceneIndex = 5;
+        }
+        if (_fileName.equals("hypoglycemia_") && ScenarioPlaythrough.mPump.bloodGlucose < 55 ) {
+            _currentSceneIndex = 6;
+        }
+        // End game when BG is in target range
+        if (_fileName.equals("hypoglycemia_") && ScenarioPlaythrough.mPump.bloodGlucose < 120 && ScenarioPlaythrough.mPump.bloodGlucose > 110) {
+            _currentSceneIndex = 7;
+        }
+
+        // PASS TIME
+        if (_currentSceneIndex == 2 || _currentSceneIndex == 1 || _currentSceneIndex == 0 || _currentSceneIndex == 5) {
+            ScenarioPlaythrough.mPump.passTime(15);
+        }
+
         System.out.println("Next scene index: " + _currentSceneIndex);
         System.out.println("Number of scenes: " + _sceneOptions.length());
         if (_currentSceneIndex < _sceneOptions.length()) {

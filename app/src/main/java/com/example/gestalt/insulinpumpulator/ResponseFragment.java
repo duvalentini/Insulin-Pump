@@ -114,9 +114,6 @@ public class ResponseFragment extends Fragment{
     private DynamoDBMapper mapper;
     private DBTask mDBTask = null;
 
-    private boolean downloading;
-    private CountDownLatch latch;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

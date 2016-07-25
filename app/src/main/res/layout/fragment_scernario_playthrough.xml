@@ -17,12 +17,42 @@
         android:cropToPadding="false"
         android:adjustViewBounds="true" />
 
+    <Button
+        android:id="@+id/pump"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pump_button_text"
+        android:layout_gravity="left"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/check_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_bg_text"
+            android:layout_gravity="fill_vertical"/>
+
+        <TextView
+            android:id="@+id/bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/question_mark"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/instructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="AAA"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
         />
