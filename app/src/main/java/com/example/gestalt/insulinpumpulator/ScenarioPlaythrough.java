@@ -36,7 +36,7 @@ public class ScenarioPlaythrough extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        _playerScore = 0;
+        _playerScore = 1000;
         mPump = new MedtronicPump(this);
 
         setContentView(R.layout.activity_scenario_playthrough);

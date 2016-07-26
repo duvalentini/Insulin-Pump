@@ -117,13 +117,13 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                 System.out.println("CHECK BG PRESSED");
 
                 TextView bg = (TextView) getActivity().findViewById(R.id.bg);
-                bg.setText(String.valueOf(ScenarioPlaythrough.mPump.bloodGlucose) + " mg/dl");
+                bg.setText(((int) ScenarioPlaythrough.mPump.bloodGlucose) + " mg/dl");
             }
         });
 
         if (_currentSceneIndex != 0 && _currentSceneIndex != 1) {
             TextView bg = (TextView) getActivity().findViewById(R.id.bg);
-            bg.setText(String.valueOf(ScenarioPlaythrough.mPump.bloodGlucose) + " mg/dl");
+            bg.setText(((int) ScenarioPlaythrough.mPump.bloodGlucose) + " mg/dl");
         }
 
         renderScene();
@@ -182,18 +182,18 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         OptionListEntry selectedOption = (OptionListEntry) parent.getItemAtPosition(position);
-        ScenarioPlaythrough._playerScore += selectedOption.getVal();
-        String sign = "+";
-        if(selectedOption.getVal() < 0) {
-            sign = "";
-        }
-        Toast t = Toast.makeText(getContext(), "       " + sign + selectedOption.getVal() + "       ", Toast.LENGTH_SHORT);
-        if (selectedOption.getVal() > 0) {
-            t.getView().setBackgroundColor(Color.GREEN);
-        } else if (selectedOption.getVal() < 0) {
-            t.getView().setBackgroundColor(Color.RED);
-        }
-        t.show();
+        ScenarioPlaythrough._playerScore -= 50;
+//        String sign = "+";
+//        if(selectedOption.getVal() < 0) {
+//            sign = "";
+//        }
+//        Toast t = Toast.makeText(getContext(), "       " + sign + selectedOption.getVal() + "       ", Toast.LENGTH_SHORT);
+//        if (selectedOption.getVal() > 0) {
+//            t.getView().setBackgroundColor(Color.GREEN);
+//        } else if (selectedOption.getVal() < 0) {
+//            t.getView().setBackgroundColor(Color.RED);
+//        }
+//        t.show();
 
         // Update pump based on choice
         if (selectedOption._str.equals("Eat 15-20g of carbs")) {
