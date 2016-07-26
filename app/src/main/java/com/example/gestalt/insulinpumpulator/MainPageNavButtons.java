@@ -86,26 +86,26 @@ public class MainPageNavButtons extends Fragment {
             }
         });
 
-        Button connections = (Button) view.findViewById(R.id.bConnections);
-        connections.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Switch fragment out
-
-                System.out.println("Connections pressed");
-            }
-        });
-        Button customize = (Button) view.findViewById(R.id.bCustomize);
-        customize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Create new fragment
-                AvatarSelectionFragment newFragment = new AvatarSelectionFragment();
-
-                ((MainPageActivity) getActivity()).swapFragment(newFragment);
-                System.out.println("Customize pressed");
-            }
-        });
+//        Button connections = (Button) view.findViewById(R.id.bConnections);
+//        connections.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Switch fragment out
+//
+//                System.out.println("Connections pressed");
+//            }
+//        });
+//        Button customize = (Button) view.findViewById(R.id.bCustomize);
+//        customize.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Create new fragment
+//                AvatarSelectionFragment newFragment = new AvatarSelectionFragment();
+//
+//                ((MainPageActivity) getActivity()).swapFragment(newFragment);
+//                System.out.println("Customize pressed");
+//            }
+//        });
         Button accountInfo = (Button) view.findViewById(R.id.bAccountInfo);
         accountInfo.setOnClickListener(new View.OnClickListener() {
             @Override

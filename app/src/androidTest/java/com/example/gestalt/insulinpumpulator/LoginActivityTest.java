@@ -34,11 +34,8 @@ public class LoginActivityTest {
         onView(withId(R.id.main_page_title)).check(matches(isDisplayed()));
         onView(withId(R.id.main_page_title)).check(matches(withText("Welcome!")));
         onView(withId(R.id.insulin_pump_image)).check(matches(isDisplayed()));
-        onView(withId(R.id.bCustomize)).check(matches(isDisplayed()));
         //once text is finalized, check text as well
         onView(withId(R.id.bAccountInfo)).check(matches(isDisplayed()));
-        //once text is finalized, check text as well
-        onView(withId(R.id.bConnections)).check(matches(isDisplayed()));
         //once text is finalized, check text as well
         onView(withId(R.id.scenario_select)).check(matches(isDisplayed()));
         //once text is finalized, check text as well
