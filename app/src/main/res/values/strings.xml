@@ -43,17 +43,10 @@
     <string name="nextpage"> "This takes you to the next activity."</string>
     <string name="button_send"> "send!" </string>
     <string name="scenario_select"> "Scenario Select" </string>
-    <string name="connections"> "Connections"</string>
-    <string name="customization"> "Customization</string>
-    <string name="account_information"> "Account Information</string>
+    <string name="account_information">Responses</string>
     <string name="back">"Logout"</string>
 
     <string name="title_activity_scenario_playthrough">ScenarioPlaythrough</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="boop">Boop</string>
-    <string name="avatar_selection">Avatar Selection</string>
-    <string name="doop">Doop</string>
     <string name="scenario_selection">Scenario Selection</string>
     <string name="back_button_SS">Back</string>
     <string name="example_insulin_pump_image">Example insulin pump image</string>
