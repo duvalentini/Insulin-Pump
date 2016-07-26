@@ -195,6 +195,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         }
         t.show();
 
+        ScenarioPlaythrough.mPump.exercising = false;
         // Update pump based on choice
         if (selectedOption._str.equals("Eat 15-20g of carbs")) {
             ScenarioPlaythrough.mPump.eatFood(18);
@@ -204,9 +205,8 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             ScenarioPlaythrough.mPump.exercising = true;
         } else if (selectedOption._str.equals("Administer glucagon") || selectedOption._str.equals("Call 911")) {
             ScenarioPlaythrough.mPump.setBloodGlucose(115);
-        }
-        else {
-            ScenarioPlaythrough.mPump.exercising = false;
+        } else {
+
         }
 
 
@@ -226,7 +226,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         }
 
         // PASS TIME
-        if (_currentSceneIndex == 2 || _currentSceneIndex == 1 || _currentSceneIndex == 0 || _currentSceneIndex == 5) {
+        if (_currentSceneIndex == 2 || _currentSceneIndex == 1 || _currentSceneIndex == 0 || _currentSceneIndex == 5 || _currentSceneIndex == 6) {
             ScenarioPlaythrough.mPump.passTime(15);
         }
 
