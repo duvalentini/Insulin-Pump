@@ -96,6 +96,18 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         _sceneOptions = configJson.optJSONArray("sceneOptions");
         _fileName = configJson.optString("fileName");
 
+        // TODO: Set initial pump settings based on scenario
+        if (ScenarioPlaythrough.start == true) {
+            if (_fileName.equals("hypoglycemia_")) {
+                ScenarioPlaythrough.mPump.setBloodGlucose(90);
+                ScenarioPlaythrough.mPump.exercising = true;
+            } else if (_fileName.equals("hyperglycemia_")) {
+                ScenarioPlaythrough.mPump.setBloodGlucose(235);
+                //ScenarioPlaythrough.mPump.eatFood(100);
+            }
+            ScenarioPlaythrough.start = false;
+        }
+
         mPumpButton = (Button) view.findViewById(R.id.pump);
         mPumpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +133,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             }
         });
 
+        // TODO: Do I need to modify this for hyper? Why is this here?
         if (_currentSceneIndex != 0 && _currentSceneIndex != 1) {
             TextView bg = (TextView) getActivity().findViewById(R.id.bg);
             bg.setText(((int) ScenarioPlaythrough.mPump.bloodGlucose) + " mg/dl");
@@ -140,7 +153,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         System.out.println("BG = " + ScenarioPlaythrough.mPump.bloodGlucose);
 
         JSONArray options = _sceneOptions.optJSONArray(_currentSceneIndex);
-        OptionListEntry[] optionListEntries = new OptionListEntry[options.length()-1]; //todo - make this 'length() - 1' if text is required on each scene
+        OptionListEntry[] optionListEntries = new OptionListEntry[options.length()-1];
         int nextOptionIndex = 0;
         for (int i = 0; i < options.length(); i++) {
             JSONObject item = options.optJSONObject(i);
@@ -171,10 +184,20 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 //            mPumpButton.setVisibility(View.VISIBLE);
 //        }
 
-        if (_currentSceneIndex == 2) {
-            mCheckBGButton.setEnabled(true);
-        } else {
-            mCheckBGButton.setEnabled(false);
+        // TODO: Enable on scenes 5 and 6, possibly others (maybe all?)
+
+        if (_fileName.equals("hypoglycemia_")) {
+            if (_currentSceneIndex == 2 || _currentSceneIndex == 5 || _currentSceneIndex == 6) {
+                mCheckBGButton.setEnabled(true);
+            } else {
+                mCheckBGButton.setEnabled(false);
+            }
+        } else if (_fileName.equals("hyperglycemia_")) {
+            if (_currentSceneIndex == 2 || _currentSceneIndex == 3 || _currentSceneIndex == 5 || _currentSceneIndex == 6) {
+                mCheckBGButton.setEnabled(true);
+            } else {
+                mCheckBGButton.setEnabled(false);
+            }
         }
 
     }
@@ -195,6 +218,8 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 //        }
 //        t.show();
 
+        // TODO: Add choices from hyper? I don't think there are any new ones
+
         ScenarioPlaythrough.mPump.exercising = false;
         // Update pump based on choice
         if (selectedOption._str.equals("Eat 15-20g of carbs")) {
@@ -212,23 +237,47 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
         _currentSceneIndex = selectedOption.getNextScene();
 
+        // TODO: Split up this section for hyper and hypo (one if for each)
+        // TODO: have everything for each one internally
 
+        // TODO: Change end values to what Eileen said
         // Go to scenes based on BG
-        if (_fileName.equals("hypoglycemia_") && ScenarioPlaythrough.mPump.bloodGlucose < 70) {
-            _currentSceneIndex = 5;
-        }
-        if (_fileName.equals("hypoglycemia_") && ScenarioPlaythrough.mPump.bloodGlucose < 55 ) {
-            _currentSceneIndex = 6;
-        }
-        // End game when BG is in target range
-        if (_fileName.equals("hypoglycemia_") && ScenarioPlaythrough.mPump.bloodGlucose < 120 && ScenarioPlaythrough.mPump.bloodGlucose > 110) {
-            _currentSceneIndex = 7;
+
+        if (_fileName.equals("hypoglycemia_")) {
+            if (ScenarioPlaythrough.mPump.bloodGlucose < 70) {
+                _currentSceneIndex = 5;
+            }
+            if (ScenarioPlaythrough.mPump.bloodGlucose < 55 ) {
+                _currentSceneIndex = 6;
+            }
+            // End game when BG is in target range
+            if (ScenarioPlaythrough.mPump.bloodGlucose > 100 && ScenarioPlaythrough.mPump.bloodGlucose < 120) {
+                _currentSceneIndex = 7;
+            }
+            // PASS TIME
+            if (_currentSceneIndex == 2 || _currentSceneIndex == 1 || _currentSceneIndex == 0 || _currentSceneIndex == 5 || _currentSceneIndex == 6) {
+                ScenarioPlaythrough.mPump.passTime(15);
+            }
+        } else if (_fileName.equals("hyperglycemia_")) {
+            if (ScenarioPlaythrough.mPump.bloodGlucose < 70) {
+                _currentSceneIndex = 5;
+            }
+            if (ScenarioPlaythrough.mPump.bloodGlucose < 55 ) {
+                _currentSceneIndex = 6;
+            }
+            // End game when BG is in target range
+            if (ScenarioPlaythrough.mPump.bloodGlucose > 130 && ScenarioPlaythrough.mPump.bloodGlucose < 160) {
+                _currentSceneIndex = 7;
+            }
+            // PASS TIME
+            if (_currentSceneIndex == 3) {
+                ScenarioPlaythrough.mPump.passTime(60);
+            } else if (_currentSceneIndex == 5 ||_currentSceneIndex == 6) {
+                ScenarioPlaythrough.mPump.passTime(15);
+            }
         }
 
-        // PASS TIME
-        if (_currentSceneIndex == 2 || _currentSceneIndex == 1 || _currentSceneIndex == 0 || _currentSceneIndex == 5 || _currentSceneIndex == 6) {
-            ScenarioPlaythrough.mPump.passTime(15);
-        }
+
 
         System.out.println("Next scene index: " + _currentSceneIndex);
         System.out.println("Number of scenes: " + _sceneOptions.length());

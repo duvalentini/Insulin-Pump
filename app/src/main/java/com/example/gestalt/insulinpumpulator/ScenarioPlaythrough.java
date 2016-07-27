@@ -31,6 +31,7 @@ public class ScenarioPlaythrough extends FragmentActivity {
 
     public static int _playerScore;
     public static MedtronicPump mPump;
+    public static boolean start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class ScenarioPlaythrough extends FragmentActivity {
 
         _playerScore = 1000;
         mPump = new MedtronicPump(this);
+        start = true;
 
         setContentView(R.layout.activity_scenario_playthrough);
 //        ActionBar actionBar = getSupportActionBar();
