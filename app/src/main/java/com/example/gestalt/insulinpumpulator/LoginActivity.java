@@ -963,6 +963,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 mUser = new User();
             }
 
+            if (mUser == null) {
+                mUser = new User();
+            }
+
             // Set the user info
             mUser.setIdentityID(identityId);
             mUser.setEmail(acct.getEmail());
