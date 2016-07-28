@@ -15,7 +15,7 @@ public class MedtronicPump extends AInsulinPump {
         ISEN = 30;
         lowGluc = 70;
         highGluc = 130;
-        AIT = 3;
+        AIT = 3.25;
         tempB = false;
         INHL = (AIT-.5)/5;
         suspended = false;

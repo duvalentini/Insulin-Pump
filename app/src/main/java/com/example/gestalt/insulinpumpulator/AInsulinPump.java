@@ -61,7 +61,8 @@ public abstract class AInsulinPump {
     protected double trueInsulinFactor;
     protected double bloodSugarCarbRatio;
     //end blood glucose settings
-
+    protected double insulinDelay =30;
+    protected double insulinActivate = 30;
     protected boolean suspended;
 
 
@@ -79,7 +80,7 @@ public abstract class AInsulinPump {
         exercising = !exercising;
     }
     public void passTime(int minutes){
-        boolean addInsulin = false;
+
         //recalculate blood glucose, active insulin and foodGrams
         //does not include basal rate at this moment.
         bloodGlucose = bloodGlucose -(trueInsulinFactor*(activeInsulin*((1-Math.pow(2.0,(minutes/(-60.0))/INHL))/(Math.log10(2)/INHL))) - (trueCarbFactor*(foodgrams*(1-Math.pow(2.0,(minutes/(-60.0))*2.5))/(Math.log10(2)*2.5))));//does not include basal rate
@@ -105,16 +106,23 @@ public abstract class AInsulinPump {
             bloodGlucose -= minutes/6.0;
         }
 
-        if(timeSinceBolas<30){
+        if(timeSinceBolas<insulinActivate+insulinDelay){//if added insulin hasn't taken complete effect yet
+            double activeDelay = insulinDelay-timeSinceBolas;
 
-            if(minutes>(30-timeSinceBolas)){//if time passed greater than total time for insulin to be added, dump all left
-                activeInsulin += addedInsulin;
-                addedInsulin =0;
+            if (activeDelay<0){
+                activeDelay =0;
             }
-            else{//else, calculate the amount needed to add and subtract what is added and update variables
-                activeInsulin += (addedInsulin*(minutes/(30.0-timeSinceBolas)));
-                addedInsulin -=((addedInsulin*(minutes/(30.0-timeSinceBolas))));//subtract what was added
+            double nonDelay = minutes-activeDelay;
+            double amountAdded = (minutes-activeDelay)/insulinActivate;
+            if(amountAdded>1){
+                amountAdded=1;
             }
+            double insulinToAdd = amountAdded*addedInsulin;
+            addedInsulin = (1-amountAdded)*addedInsulin;
+
+            bloodGlucose = bloodGlucose +(trueInsulinFactor*((insulinToAdd)*((1-Math.pow(2.0,(nonDelay)/(-60.0))/INHL))/(Math.log10(2)/INHL)));
+            activeInsulin = (activeInsulin+(insulinToAdd)*(Math.pow(2.0,((nonDelay)/(-60.0))/INHL)));
+
 
         }
         timeSinceBolas+=minutes;//increase the amount of time since the last bolus, since time passed.
