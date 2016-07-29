@@ -120,8 +120,8 @@ public abstract class AInsulinPump {
             double insulinToAdd = amountAdded*addedInsulin;
             addedInsulin = (1-amountAdded)*addedInsulin;
 
-            bloodGlucose = bloodGlucose +(trueInsulinFactor*((insulinToAdd)*((1-Math.pow(2.0,(nonDelay)/(-60.0))/INHL))/(Math.log10(2)/INHL)));
-            activeInsulin = (activeInsulin+(insulinToAdd)*(Math.pow(2.0,((nonDelay)/(-60.0))/INHL)));
+            bloodGlucose = bloodGlucose +(trueInsulinFactor*((insulinToAdd)*((1-Math.pow(2.0,(nonDelay/2)/(-60.0))/INHL))/(Math.log10(2)/INHL)));
+            activeInsulin = (activeInsulin+(insulinToAdd)*(Math.pow(2.0,((nonDelay/2)/(-60.0))/INHL)));
 
 
         }
