@@ -130,7 +130,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     else{
                         enterField -=3;
                     }
-                    ((EmptyMenu)subMenus.get(0)).setName("Blood Glucose : "+enterField+" mg/dl");
+                    ((EmptyMenu)subMenus.get(0)).setName("Food Eaten : "+enterField+" g");
                 }
 
                 @Override
@@ -141,7 +141,7 @@ class BolusMenu extends AInsulinPumpMenu{
                     else{
                         enterField +=3;
                     }
-                    ((EmptyMenu)subMenus.get(0)).setName("Blood Glucose : "+enterField+" mg/dl");
+                    ((EmptyMenu)subMenus.get(0)).setName("Food Eaten : "+enterField+" g");
                 }
 
                 @Override
