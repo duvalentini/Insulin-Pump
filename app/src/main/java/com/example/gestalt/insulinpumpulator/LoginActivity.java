@@ -186,8 +186,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        System.out.println("REQUEST CODE = " + requestCode);
-        System.out.println("RC_SIGN_IN = " + RC_SIGN_IN);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -207,22 +205,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (result.isSuccess()) {
             Toast.makeText(getApplicationContext(), "You are now logged in!", Toast.LENGTH_LONG).show();
 
-            ////////////////////// CALL NEW TASK HERE
+            acct = result.getSignInAccount();
+            // CALL ASYNC TASK HERE
             mGoogleAuthTask = new GoogleLoginTask(result);
             mGoogleAuthTask.execute((Void) null);
 
-//            Intent myIntent = new Intent(this, MainPageActivity.class);
-//            this.startActivity(myIntent);
 
-            /////// TOOK OUT CODE HERE /////////////////
-
-
-
-            //updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
             Toast.makeText(getApplicationContext(), "USER WAS NOT SUCCESSFULLY SIGNED IN :(", Toast.LENGTH_LONG).show();
-            //updateUI(false);
+
         }
     }
 
@@ -234,7 +226,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
 
         signInManager = SignInManager.getInstance(this);
-
         signInManager.setResultsHandler(this, new SignInResultsHandler());
 
         // START ///////////////////////
@@ -243,8 +234,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
-                //.requestIdToken(getString(R.string.client_id))
-                //.requestIdToken("581753661381-u3929pfgi7k6joscs713djtiiou76im9.apps.googleusercontent.com")
                 .requestIdToken("581753661381-5b3ge2pr10avvdbl7lfhf5k64h6cl9ht.apps.googleusercontent.com")
                 .build();
 
@@ -265,31 +254,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-/*
-        // Initialize sign-in buttons.
-        googleOnClickListener =
-                signInManager.initializeSignInButton(GoogleSignInProvider.class, findViewById(R.id.g_login_button));
-
-        if (googleOnClickListener != null) {
-            // if the onClick listener was null, initializeSignInButton will have removed the view.
-            this.findViewById(R.id.g_login_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    final Activity thisActivity = LoginActivity.this;
-                    if (ContextCompat.checkSelfPermission(thisActivity,
-                            Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(LoginActivity.this,
-                                new String[]{Manifest.permission.GET_ACCOUNTS},
-                                GET_ACCOUNTS_PERMISSION_REQUEST_CODE);
-                        return;
-                    }
-
-                    // call the Google onClick listener.
-                    googleOnClickListener.onClick(view);
-                }
-            });
-        }
-*/
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -635,29 +599,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
-    /////////////////////////////////////////////////////////////////////////
     public class GoogleLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        //private final String mEmail;
-        //private final String mPassword;
         private final GoogleSignInResult mResult;
 
         GoogleLoginTask(GoogleSignInResult result) {
-            //mEmail = email;
-            //mPassword = password;
             mResult = result;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-            //////////////////////////////////////////////
-
-            // Signed in successfully, show authenticated UI.
-//            GoogleSignInAccount acct = mResult.getSignInAccount();
-            //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-//            Toast.makeText(getApplicationContext(), "USER WAS SUCCESSFULLY SIGNED IN :)", Toast.LENGTH_LONG).show();
 
             // Initialize the Amazon Cognito credentials provider
             final CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
@@ -672,57 +624,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
             GooglePlayServicesUtil.getRemoteContext(getApplicationContext());
-            //AccountManager am = AccountManager.get(this);
-            AccountManager am = AccountManager.get(getApplicationContext());
-            //com.google.android.gms.plus.Account[] accounts = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-            android.accounts.Account[] accounts = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-            try {
-                //String token = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
-                //        "audience:server:client_id:581753661381-u3929pfgi7k6joscs713djtiiou76im9.apps.googleusercontent.com");
-
-                //String token = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
-                //        "audience:server:client_id:581753661381-323vpsrvnijvnbsku6882g0sjf89jnr1.apps.googleusercontent.com");
-
-                //String token = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
-                //        "audience:server:client_id:960858442806248e063b18bd87fd4d8e8d8a4434");
-
-                String xxxtoken = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
-                        "audience:server:client_id:581753661381-5b3ge2pr10avvdbl7lfhf5k64h6cl9ht.apps.googleusercontent.com");
 
 
-                System.out.println("ACCOUNTS[0] = " + accounts[0]);
-                System.out.println("CONTEXT = " + getApplicationContext());
-
-                //String xxxtoken = GoogleAuthUtil.getToken(getApplicationContext(), accounts[0],
-                //        "audience:server:client_id:581753661381-u3v67daj80ktje5nhvsd6nuqc36363i7.apps.googleusercontent.com");
 
                 acct = mResult.getSignInAccount();
                 String token = acct.getIdToken();
                 System.out.println("ID Token: " + token);
 
-                System.out.println("JUST GOT THE TOKEN = " + xxxtoken);
-
-                System.out.println("NAME = " + acct.getDisplayName());
-
-
-
                 Map<String, String> logins = new HashMap<String, String>();
                 logins.put("accounts.google.com", token);
-                //credentialsProvider.refresh();
                 credentialsProvider.setLogins(logins);
-                System.out.println("CREDENTIALS PROVIDER = " + credentialsProvider);
-                System.out.println("LOGINS = " + logins);
 
-                // seems right
                 String cachedID = credentialsProvider.getCachedIdentityId();
-                System.out.println("CACHED_IDENTITY_ID = " + cachedID);
                 identityId = credentialsProvider.getIdentityId();
-                System.out.println("IDENTITY_ID = " + identityId);
 
 
-                ///////////////////////////////////////////////////////////////////
-                //// COGNITO
-
+                //// COGNITO *User Pool* Stuff ////
 
                 // setup AWS service configuration. Choosing default configuration
                 ClientConfiguration clientConfiguration = new ClientConfiguration();
@@ -780,7 +697,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 String email = acct.getEmail();
                 String id = email.substring(0, email.indexOf('@'));
-                System.out.println("COGNITOOOOOOOO ID = " + id);
 
 
                 // Sign up this user
@@ -874,18 +790,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // TODO: At this point you should save this identifier so you won’t
                 // have to make this call the next time a user connects
 
-                System.out.println("XXXXXXXXXXXXXXXX");
-            }
-            catch (UserRecoverableAuthException e) {
-                System.out.println("AAAAAAAAAAAAAAAAAAAA");
-//                startActivityForResult(e.getIntent(), 888);
-                e.printStackTrace();
-            } catch (GoogleAuthException | IOException e) {
-                System.out.println("BBBBBBBBBBBBBBBBBBBB");
-                e.printStackTrace();
-            }
-
-            // TODO: register the new account here.
 
             return true;
         }
