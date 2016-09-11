@@ -9,7 +9,7 @@
 package com.amazonaws.mobile;
 
 import com.amazonaws.regions.Regions;
-
+//Test: Garrett
 /**
  * This class defines constants for the developer's resource
  * identifiers and API keys. It should be kept private.
