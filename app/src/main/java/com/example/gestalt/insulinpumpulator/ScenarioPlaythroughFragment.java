@@ -250,9 +250,20 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             if (ScenarioPlaythrough.mPump.bloodGlucose < 55 ) {
                 _currentSceneIndex = 6;
             }
+            //set score to zero for failure
+            if (ScenarioPlaythrough.mPump.bloodGlucose < 0 ) {
+                _currentSceneIndex = 7;
+                ScenarioPlaythrough._playerScore = 0;
+            }
             // End game when BG is in target range
             if (ScenarioPlaythrough.mPump.bloodGlucose > 100 && ScenarioPlaythrough.mPump.bloodGlucose < 120) {
                 _currentSceneIndex = 7;
+
+            }
+            //set score to zero for failure
+            if (ScenarioPlaythrough.mPump.bloodGlucose > 300) {
+                _currentSceneIndex = 7;
+                ScenarioPlaythrough._playerScore = 0;
             }
             // PASS TIME
             if (_currentSceneIndex == 2 || _currentSceneIndex == 1 || _currentSceneIndex == 0 || _currentSceneIndex == 5 || _currentSceneIndex == 6) {
@@ -268,6 +279,10 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             // End game when BG is in target range
             if (ScenarioPlaythrough.mPump.bloodGlucose > 130 && ScenarioPlaythrough.mPump.bloodGlucose < 160) {
                 _currentSceneIndex = 7;
+            }
+            if (ScenarioPlaythrough.mPump.bloodGlucose > 300) {
+                _currentSceneIndex = 7;
+                ScenarioPlaythrough._playerScore = 0;
             }
             // PASS TIME
             if (_currentSceneIndex == 3) {
