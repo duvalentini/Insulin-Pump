@@ -9,6 +9,7 @@
 package com.amazonaws.mobile;
 
 import com.amazonaws.regions.Regions;
+
 //Test: Garrett test
 /**
  * This class defines constants for the developer's resource

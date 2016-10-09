@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -190,13 +192,13 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             if (_currentSceneIndex == 2 || _currentSceneIndex == 5 || _currentSceneIndex == 6) {
                 mCheckBGButton.setEnabled(true);
             } else {
-                mCheckBGButton.setEnabled(false);
+                mCheckBGButton.setEnabled(true);
             }
         } else if (_fileName.equals("hyperglycemia_")) {
             if (_currentSceneIndex == 2 || _currentSceneIndex == 3 || _currentSceneIndex == 5 || _currentSceneIndex == 6) {
                 mCheckBGButton.setEnabled(true);
             } else {
-                mCheckBGButton.setEnabled(false);
+                mCheckBGButton.setEnabled(true);
             }
         }
 
@@ -254,6 +256,8 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             if (ScenarioPlaythrough.mPump.bloodGlucose < 0 ) {
                 _currentSceneIndex = 7;
                 ScenarioPlaythrough._playerScore = 0;
+
+
             }
             // End game when BG is in target range
             if (ScenarioPlaythrough.mPump.bloodGlucose > 100 && ScenarioPlaythrough.mPump.bloodGlucose < 120) {
