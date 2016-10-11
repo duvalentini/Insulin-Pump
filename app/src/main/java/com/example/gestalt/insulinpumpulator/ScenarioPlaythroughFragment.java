@@ -35,9 +35,11 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
     private JSONArray _sceneOptions;
     private String _fileName;
     private static final String NEXT_SCENE = "next_scene";
+    private final static String LOG_TAG = ScenarioPlaythroughFragment.class.getSimpleName();
 
     private Button mPumpButton;
     private Button mCheckBGButton;
+    private Button mQuitButton;
 
     private class OptionListEntry {
         private String _str;
@@ -132,6 +134,18 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
                 TextView bg = (TextView) getActivity().findViewById(R.id.bg);
                 bg.setText(((int) ScenarioPlaythrough.mPump.bloodGlucose) + " mg/dl");
+            }
+        });
+
+        mQuitButton = (Button) view.findViewById(R.id.quit);
+        mQuitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("QUIT PRESSED");
+                Intent i = new Intent(v.getContext(), MainPageActivity.class);
+                getActivity().finish();
+                Log.d(LOG_TAG, "Launching Main Activity...");
+                v.getContext().startActivity(i);
             }
         });
 

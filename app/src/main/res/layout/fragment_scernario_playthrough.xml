@@ -4,7 +4,6 @@
     android:layout_height="match_parent">
 
 
-
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="200dp"
@@ -63,5 +62,11 @@
         android:id="@+id/optionList"
         android:layout_gravity="bottom|center_horizontal"
         android:choiceMode="singleChoice" />
+
+    <Button
+        android:text="@string/quit_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/quit"/>
 
 </LinearLayout>
