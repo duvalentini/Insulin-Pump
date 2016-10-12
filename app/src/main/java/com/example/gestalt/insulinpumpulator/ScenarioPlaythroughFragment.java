@@ -232,6 +232,8 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             ScenarioPlaythrough.mPump.exercising = true;
         } else if (selectedOption._str.equals("Administer glucagon") || selectedOption._str.equals("Call 911")) {
             ScenarioPlaythrough.mPump.setBloodGlucose(115);
+        } else if (selectedOption._str.equals("Take a drink of water")) {
+            ScenarioPlaythrough.mPump.eatFood(-10);
         } else {
 
         }
