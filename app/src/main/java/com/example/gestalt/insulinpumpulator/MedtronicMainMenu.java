@@ -316,7 +316,7 @@ class BolusMenu extends AInsulinPumpMenu{
             subMenus.add(new DualOff(this,c));
 
         }
-        public class DualOn extends AInsulinPumpMenu{
+        class DualOn extends AInsulinPumpMenu{
             public DualOn(AInsulinPumpMenu p, Context c){
                 parent = p;
                 pump = p.pump;
@@ -327,7 +327,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
-        public class DualOff extends AInsulinPumpMenu{
+        class DualOff extends AInsulinPumpMenu{
             public DualOff(AInsulinPumpMenu p, Context c){
                 parent = p;
                 pump = p.pump;

@@ -30,6 +30,10 @@ android {
             storePassword 'android'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+    }
 }
 
 dependencies {
