@@ -57,7 +57,4 @@ public abstract class AInsulinPumpMenu {
     public int getCurrent(){
         return current;
     }
-
-
-
 }
