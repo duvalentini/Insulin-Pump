@@ -34,6 +34,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
     private int _currentSceneIndex = 0;
     private JSONArray _sceneOptions;
     private String _fileName;
+    private String _title;
     private static final String NEXT_SCENE = "next_scene";
     private final static String LOG_TAG = ScenarioPlaythroughFragment.class.getSimpleName();
 
@@ -99,6 +100,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
         _sceneOptions = configJson.optJSONArray("sceneOptions");
         _fileName = configJson.optString("fileName");
+        _title = configJson.optString("title");
 
         // TODO: Set initial pump settings based on scenario
         if (ScenarioPlaythrough.start == true) {
@@ -107,6 +109,9 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                 ScenarioPlaythrough.mPump.exercising = true;
             } else if (_fileName.equals("hyperglycemia_")) {
                 ScenarioPlaythrough.mPump.setBloodGlucose(235);
+                if(_title.equals("Scenario3") ){
+                    ScenarioPlaythrough.mPump.setBloodGlucose(275);
+                }
                 //ScenarioPlaythrough.mPump.eatFood(100);
             }
             ScenarioPlaythrough.start = false;
