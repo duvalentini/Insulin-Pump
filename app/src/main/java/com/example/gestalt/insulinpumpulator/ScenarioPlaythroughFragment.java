@@ -226,7 +226,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         OptionListEntry selectedOption = (OptionListEntry) parent.getItemAtPosition(position);
-        ScenarioPlaythrough._playerScore -= 50;
+
 //        String sign = "+";
 //        if(selectedOption.getVal() < 0) {
 //            sign = "";
@@ -242,11 +242,42 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         // TODO: Add choices from hyper? I don't think there are any new ones
 
         ScenarioPlaythrough.mPump.exercising = false;
+        if (_fileName.equals("hypoglycemia_")) {
+            if (selectedOption._str.equals("Eat 15-20g of carbs")) {
+                ScenarioPlaythrough._playerScore += 25;
+            } else if (selectedOption._str.equals("Eat a lot")) {
+                ScenarioPlaythrough._playerScore += 50;
+            } else if (selectedOption._str.equals("Play outside") || selectedOption._str.equals("Keep playing basketball")) {
+                ScenarioPlaythrough._playerScore -= 50;
+            } else if (selectedOption._str.equals("Administer glucagon") || selectedOption._str.equals("Call 911")) {
+                ScenarioPlaythrough._playerScore -= 0;
+            } else if (selectedOption._str.equals("Take a drink of water")) {
+                ScenarioPlaythrough._playerScore -= 0;
+            } else {
+
+            }
+        }
+        if (_fileName.equals("hyperglycemia_")) {
+            if (selectedOption._str.equals("Eat 15-20g of carbs")) {
+                ScenarioPlaythrough._playerScore -= 25;
+            } else if (selectedOption._str.equals("Eat a lot")) {
+                ScenarioPlaythrough._playerScore -= 50;
+            } else if (selectedOption._str.equals("Play outside") || selectedOption._str.equals("Keep playing basketball")) {
+                ScenarioPlaythrough._playerScore += 50;
+            } else if (selectedOption._str.equals("Administer glucagon") || selectedOption._str.equals("Call 911")) {
+                ScenarioPlaythrough._playerScore -= 0;
+            } else if (selectedOption._str.equals("Take a drink of water")) {
+                ScenarioPlaythrough._playerScore += 10;
+            } else {
+
+            }
+        }
+
         // Update pump based on choice
         if (selectedOption._str.equals("Eat 15-20g of carbs")) {
             ScenarioPlaythrough.mPump.eatFood(18);
         } else if (selectedOption._str.equals("Eat a lot")) {
-            ScenarioPlaythrough.mPump.eatFood(100);
+            ScenarioPlaythrough.mPump.eatFood(50);
         } else if (selectedOption._str.equals("Play outside") || selectedOption._str.equals("Keep playing basketball")) {
             ScenarioPlaythrough.mPump.exercising = true;
         } else if (selectedOption._str.equals("Administer glucagon") || selectedOption._str.equals("Call 911")) {
