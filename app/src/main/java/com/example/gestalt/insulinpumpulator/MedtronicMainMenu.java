@@ -312,6 +312,7 @@ class BolusMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.dualsquarebolus));
             subMenus = new ArrayList<AInsulinPumpMenu>();
+            current = 0;
             subMenus.add(new DualOn(this,c));
             subMenus.add(new DualOff(this,c));
 

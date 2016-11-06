@@ -21,6 +21,10 @@ public abstract class AInsulinPumpMenu {
     }
 
    public AInsulinPumpMenu confirm(){
+       AInsulinPumpMenu curr = subMenus.get(current);
+       if(curr instanceof EmptyMenu) {
+           return this;
+       }
        return subMenus.get(current);
    }
 
