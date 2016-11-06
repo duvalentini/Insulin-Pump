@@ -43,8 +43,6 @@ public class MedtronicPump extends AInsulinPump {
         bloodSugarCarbRatio = ISEN/ICR;
         trueInsulinFactor = (ISEN / INHL *Math.log10(2.0))/(1.0-Math.pow(2.0,-AIT/INHL));
         trueCarbFactor = (bloodSugarCarbRatio *2.5 *Math.log10(2)/(1-Math.pow(2.0,-2.5)));
-
-
     }
 
     public void testFormula(){

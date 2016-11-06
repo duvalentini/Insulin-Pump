@@ -10,7 +10,8 @@
         android:text="@string/scenario_selection"
         android:id="@+id/title"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
 
     <ListView
         android:layout_width="match_parent"
@@ -18,5 +19,36 @@
         android:id="@+id/scenario_list"
         android:choiceMode="singleChoice"
         android:smoothScrollbar="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/pump_select"
+        android:id="@+id/title2"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RadioButton
+            android:text="@string/omnipod_name"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton1"
+            android:layout_width="wrap_content"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="@string/medtronic_pump_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton2"
+            android:layout_weight="1" />
+
+    </RadioGroup>
 
 </LinearLayout>
