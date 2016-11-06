@@ -283,7 +283,13 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         } else if (selectedOption._str.equals("Administer glucagon") || selectedOption._str.equals("Call 911")) {
             ScenarioPlaythrough.mPump.setBloodGlucose(115);
         } else if (selectedOption._str.equals("Take a drink of water")) {
-            ScenarioPlaythrough.mPump.eatFood(-10);
+            if (ScenarioPlaythrough.mPump.bloodGlucose > 250 && ScenarioPlaythrough.mPump.bloodGlucose < 450) {
+                ScenarioPlaythrough.mPump.eatFood(-5);
+            }
+            else
+            {
+                ScenarioPlaythrough.mPump.eatFood(0);
+            }
         } else {
 
         }
@@ -297,7 +303,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         // TODO: Change end values to what Eileen said
         // Go to scenes based on BG
 
-        if (_fileName.equals("hypoglycemia_")) {
+        if (_fileName.equals("Hypoglycemia")) {
             if (ScenarioPlaythrough.mPump.bloodGlucose < 70) {
                 _currentSceneIndex = 5;
             }
@@ -317,7 +323,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
             }
             //set score to zero for failure
-            if (ScenarioPlaythrough.mPump.bloodGlucose > 300) {
+            if (ScenarioPlaythrough.mPump.bloodGlucose > 450) {
                 _currentSceneIndex = 7;
                 ScenarioPlaythrough._playerScore = 0;
             }
@@ -325,7 +331,30 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             if (_currentSceneIndex == 2 || _currentSceneIndex == 1 || _currentSceneIndex == 0 || _currentSceneIndex == 5 || _currentSceneIndex == 6) {
                 ScenarioPlaythrough.mPump.passTime(15);
             }
-        } else if (_fileName.equals("hyperglycemia_")) {
+        } else if (_title.equals("Hyperglycemia")) {
+            if (ScenarioPlaythrough.mPump.bloodGlucose < 70) {
+                _currentSceneIndex = 5;
+            }
+            if (ScenarioPlaythrough.mPump.bloodGlucose < 55 ) {
+                _currentSceneIndex = 6;
+            }
+
+            // End game when BG is in target range
+            if (ScenarioPlaythrough.mPump.bloodGlucose > 130 && ScenarioPlaythrough.mPump.bloodGlucose < 160) {
+                _currentSceneIndex = 7;
+            }
+
+            if (ScenarioPlaythrough.mPump.bloodGlucose >= 450) {
+                _currentSceneIndex = 7;
+                ScenarioPlaythrough._playerScore = 0;
+            }
+            // PASS TIME
+            if (_currentSceneIndex == 3) {
+                ScenarioPlaythrough.mPump.passTime(60);
+            } else if (_currentSceneIndex == 5 ||_currentSceneIndex == 6) {
+                ScenarioPlaythrough.mPump.passTime(15);
+            }
+        }else if (_title.equals("Scenario3")){
             if (ScenarioPlaythrough.mPump.bloodGlucose < 70) {
                 _currentSceneIndex = 5;
             }
@@ -333,11 +362,11 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                 _currentSceneIndex = 6;
             }
             // End game when BG is in target range
-            if (ScenarioPlaythrough.mPump.bloodGlucose > 130 && ScenarioPlaythrough.mPump.bloodGlucose < 160) {
-                _currentSceneIndex = 7;
+            if (ScenarioPlaythrough.mPump.bloodGlucose <250 ) {
+                _currentSceneIndex = 8;
             }
-            if (ScenarioPlaythrough.mPump.bloodGlucose > 300) {
-                _currentSceneIndex = 7;
+            if (ScenarioPlaythrough.mPump.bloodGlucose > 450) {
+                _currentSceneIndex = 8;
                 ScenarioPlaythrough._playerScore = 0;
             }
             // PASS TIME
