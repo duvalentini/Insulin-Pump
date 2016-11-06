@@ -37,7 +37,7 @@ public class ScenarioPlaythrough extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        _playerScore = 1000;
+        _playerScore = 500;
         mPump = new MedtronicPump(this);
         start = true;
 
