@@ -312,11 +312,12 @@ class BolusMenu extends AInsulinPumpMenu{
             con = c;
             menuName = (c.getResources().getString(R.string.dualsquarebolus));
             subMenus = new ArrayList<AInsulinPumpMenu>();
+            current = 0;
             subMenus.add(new DualOn(this,c));
             subMenus.add(new DualOff(this,c));
 
         }
-        public class DualOn extends AInsulinPumpMenu{
+        class DualOn extends AInsulinPumpMenu{
             public DualOn(AInsulinPumpMenu p, Context c){
                 parent = p;
                 pump = p.pump;
@@ -327,7 +328,7 @@ class BolusMenu extends AInsulinPumpMenu{
                 subMenus.add(new EmptyMenu(this,c));
             }
         }
-        public class DualOff extends AInsulinPumpMenu{
+        class DualOff extends AInsulinPumpMenu{
             public DualOff(AInsulinPumpMenu p, Context c){
                 parent = p;
                 pump = p.pump;
@@ -417,37 +418,18 @@ class SuspendMenu extends AInsulinPumpMenu{
         current =0;
         menuName = (c.getResources().getString(R.string.suspend));
         subMenus = new ArrayList<AInsulinPumpMenu>();
-        subMenus.add(new SuspendConfirm(this,c));
+        subMenus.add(new EmptyMenu(this,c,"Suspend"));
     }
-    class SuspendConfirm extends AInsulinPumpMenu{
-        public SuspendConfirm(AInsulinPumpMenu p, Context c){
-            parent =p;
-            pump = p.pump;
-            con = c;
-            current =0;
-            subMenus = new ArrayList<AInsulinPumpMenu>();
-            menuName = (con.getResources().getString(R.string.suspend));
-        }
-        @Override
-        public AInsulinPumpMenu confirm(){
-            pump.suspend();
-            if(pump.isSuspended()){
-                menuName = con.getResources().getString(R.string.suspended);
-                return this;
-            }
-            else{
-                menuName = (con.getResources().getString(R.string.suspend));
-                return pump.getTopMenu();
 
-            }
-        }
-        @Override
-        public void up(){
-
-        }
-        @Override
-        public void down(){
-
+    @Override
+    public AInsulinPumpMenu confirm() {
+        pump.suspend();
+        if(pump.isSuspended()) {
+            ((EmptyMenu)subMenus.get(0)).setName("Pump Suspended");
+            return this;
+        } else {
+            ((EmptyMenu)subMenus.get(0)).setName("Suspend");
+            return this;
         }
     }
 
