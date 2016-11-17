@@ -17,9 +17,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
-
-
 public class PumpTestFragment extends Fragment {
 
     private LinearLayout mLayout;
@@ -40,7 +37,7 @@ public class PumpTestFragment extends Fragment {
 
 
         //pump = new MedtronicPump(getContext());
-        pump = ScenarioPlaythrough.mPump;
+        pump = (MedtronicPump) ScenarioPlaythrough.mPump;
 
         subMenuNames = pump.getSubMenuNames();
 
