@@ -304,7 +304,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
         // TODO: Change end values to what Eileen said
         // Go to scenes based on BG
 
-        if (_fileName.equals("Scenario1")) {
+        if (_title.equals("Scenario1")) {
             if (ScenarioPlaythrough.mPump.bloodGlucose < 70) {
                 _currentSceneIndex = 5;
             }
@@ -381,7 +381,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             }
 
             if (ScenarioPlaythrough.mPump.bloodGlucose > 450) {
-                _currentSceneIndex = 8;
+                _currentSceneIndex = 12;
                 ScenarioPlaythrough._playerScore = 0;
             }
             // PASS TIME
