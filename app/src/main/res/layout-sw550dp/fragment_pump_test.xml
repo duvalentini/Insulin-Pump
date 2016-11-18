@@ -6,12 +6,12 @@
     android:weightSum="1"
     >
     <ImageView
-        android:layout_width="wrap_content"
         android:layout_height="300dp"
         android:id="@+id/pump_background"
         android:src ="@drawable/medpump"
         android:layout_weight ="1"
-        />
+        android:layout_width="600dp"
+        android:layout_centerHorizontal="true"/>
     <Button
         android:layout_width="120dp"
         android:layout_height="60dp"
@@ -28,10 +28,11 @@
         android:text="Pump Menu"
         android:id="@+id/pumpMenuName"
         android:layout_gravity="center_horizontal"
-        android:textSize="24dp"
-        android:layout_alignParentTop="true"
+        android:textSize="24sp"
+        android:layout_alignLeft="@id/pump_background"
         android:layout_marginLeft="120dp"
-        android:layout_marginTop="50dp" />
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="35dp" />
 
 
     <Button
@@ -39,7 +40,8 @@
         android:layout_height="60dp"
         android:text="Up"
         android:id="@+id/upButton"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@id/pump_background"
+        android:layout_alignEnd="@id/pump_background"
         android:layout_below="@id/pumpMenuName"
         />
 
@@ -49,7 +51,8 @@
         android:text="Down"
         android:id="@+id/downButton"
         android:layout_below="@id/upButton"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@id/pump_background"
+        android:layout_alignEnd="@id/pump_background"
         />
 
     <Button

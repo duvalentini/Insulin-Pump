@@ -27,6 +27,12 @@ public class OmniPodPumpFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pump_test_omnipod, container, false);
+
+        pump = (OmniPodPump) ScenarioPlaythrough.mPump;
+
+        subMenuNames = pump.getSubMenuNames();
+
+
         return view;
     }
 }

@@ -11,70 +11,108 @@
     <ImageView
         android:layout_width="300dp"
         android:id="@+id/pump_background"
-        android:src ="@drawable/screen1"
+        android:src ="@drawable/omnipod"
         android:layout_weight ="1"
-        android:layout_height="300dp"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_height="500dp" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:id="@+id/left_button"
+        android:layout_width="70dp"
+        android:layout_alignLeft="@id/pump_background"
+        android:layout_marginLeft="37dp"
+        android:layout_alignStart="@id/pump_background"
+        android:layout_marginStart="37dp"
+        android:layout_alignBottom="@id/pump_background"
+        android:layout_marginBottom="85dp"/>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:id="@+id/middle_button"
+        android:layout_width="70dp"
+        android:layout_alignBaseline="@+id/left_button"
+        android:layout_alignBottom="@+id/left_button"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:layout_width="70dp"
-        android:layout_below="@+id/pump_background"
-        android:layout_toLeftOf="@+id/button3"
-        android:layout_toStartOf="@+id/button3" />
-
-    <Button
-        android:layout_height="wrap_content"
-        android:id="@+id/button3"
-        android:layout_width="70dp"
-        android:layout_below="@+id/pump_background"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_height="wrap_content"
-        android:id="@+id/button4"
-        android:layout_width="70dp"
-        android:layout_below="@+id/pump_background"
-        android:layout_toRightOf="@+id/button3"
-        android:layout_toEndOf="@+id/button3"
-        android:layout_alignBottom="@+id/button3" />
+        android:id="@+id/right_button"
+        android:layout_width="72dp"
+        android:layout_alignBaseline="@+id/middle_button"
+        android:layout_alignBottom="@+id/middle_button"
+        android:layout_alignRight="@+id/pump_background"
+        android:layout_marginRight="37dp"
+        android:layout_alignEnd="@+id/pump_background"
+        android:layout_marginEnd="35dp"/>
 
     <Button
         android:text="@string/up_arrow"
         android:layout_height="wrap_content"
-        android:id="@+id/button5"
-        android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp"
-        android:layout_width="30dp" />
+        android:id="@+id/up_button"
+        android:layout_width="30dp"
+        android:layout_below="@+id/middle_button"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:text="@string/down_arrow"
         android:layout_height="wrap_content"
-        android:id="@+id/button6"
-        android:layout_below="@+id/button5"
-        android:layout_centerHorizontal="true"
-        android:layout_width="30dp" />
+        android:id="@+id/down_button"
+        android:layout_width="30dp"
+        android:layout_below="@id/up_button"
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
         app:srcCompat="@android:drawable/ic_media_pause"
-        android:layout_marginBottom="17dp"
-        android:id="@+id/imageButton"
+        android:id="@+id/home_button"
         android:layout_height="50dp"
-        android:layout_alignBottom="@+id/button6"
-        android:layout_toLeftOf="@+id/button5"
-        android:layout_toStartOf="@+id/button5" />
+        android:layout_alignBottom="@+id/pump_background"
+        android:layout_toLeftOf="@+id/up_button"
+        android:layout_toStartOf="@+id/up_button"
+        android:layout_marginBottom="11dp" />
 
     <Button
         android:text="@string/question_mark"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/button8"
-        android:layout_alignTop="@+id/imageButton"
-        android:layout_toRightOf="@+id/button5"
-        android:layout_toEndOf="@+id/button5" />
+        android:id="@+id/help_button"
+        android:layout_alignBottom="@+id/home_button"
+        android:layout_toRightOf="@+id/up_button"
+        android:layout_toEndOf="@+id/up_button" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/left_button"
+        android:layout_toLeftOf="@+id/middle_button"
+        android:layout_toStartOf="@+id/middle_button"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/left_text" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/left_text"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/center_text" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/center_text"
+        android:layout_toRightOf="@+id/middle_button"
+        android:layout_toEndOf="@+id/middle_button"
+        android:id="@+id/right_text" />
+
+    <ListView
+        android:layout_width="190dp"
+        android:layout_height="215dp"
+        android:layout_above="@+id/left_text"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
