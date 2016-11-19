@@ -1,5 +1,7 @@
 package com.example.gestalt.insulinpumpulator;
 
+import java.util.ArrayList;
+
 /**
  * Created by Alex on 11/6/2016.
  */
@@ -9,15 +11,24 @@ public class OmniPodMenu extends AInsulinPumpMenu {
     protected String button2Text;
     protected String button3Text;
 
-    public AInsulinPumpMenu button1() {
-        return back();
+    public ArrayList<String> getButtonText() {
+        ArrayList<String> text = new ArrayList<String>();
+        text.add(button1Text);
+        text.add(button2Text);
+        text.add(button3Text);
+
+        return text;
     }
 
-    public AInsulinPumpMenu button2() {
+    public OmniPodMenu button1() {
+        return (OmniPodMenu)back();
+    }
+
+    public OmniPodMenu button2() {
         return this;
     }
 
-    public AInsulinPumpMenu button3() {
-        return confirm();
+    public OmniPodMenu button3() {
+        return (OmniPodMenu)confirm();
     }
 }

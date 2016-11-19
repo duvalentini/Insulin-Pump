@@ -12,7 +12,6 @@
         android:layout_width="300dp"
         android:id="@+id/pump_background"
         android:src ="@drawable/omnipod"
-        android:layout_weight ="1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_height="500dp" />
@@ -63,16 +62,6 @@
         android:layout_below="@id/up_button"
         android:layout_centerHorizontal="true" />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        app:srcCompat="@android:drawable/ic_media_pause"
-        android:id="@+id/home_button"
-        android:layout_height="50dp"
-        android:layout_alignBottom="@+id/pump_background"
-        android:layout_toLeftOf="@+id/up_button"
-        android:layout_toStartOf="@+id/up_button"
-        android:layout_marginBottom="11dp" />
-
     <Button
         android:text="@string/question_mark"
         android:layout_width="50dp"
@@ -82,9 +71,21 @@
         android:layout_toRightOf="@+id/up_button"
         android:layout_toEndOf="@+id/up_button" />
 
+    <ImageButton
+        android:layout_width="50dp"
+        android:src="@drawable/home"
+        android:id="@+id/home_button"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+        android:layout_alignBottom="@+id/pump_background"
+        android:layout_toLeftOf="@+id/up_button"
+        android:layout_toStartOf="@+id/up_button"
+        android:layout_marginBottom="11dp" />
+
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
+        android:text="@string/question_mark"
+        android:gravity="center_horizontal"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/left_button"
         android:layout_toLeftOf="@+id/middle_button"
@@ -93,16 +94,18 @@
         android:id="@+id/left_text" />
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
+        android:text="@string/question_mark"
+        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/left_text"
         android:layout_centerHorizontal="true"
-        android:id="@+id/center_text" />
+        android:id="@+id/center_text"
+        android:layout_width="60dp" />
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
+        android:text="@string/question_mark"
+        android:gravity="center_horizontal"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/center_text"
         android:layout_toRightOf="@+id/middle_button"
@@ -111,8 +114,20 @@
 
     <ListView
         android:layout_width="190dp"
-        android:layout_height="215dp"
-        android:layout_above="@+id/left_text"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="215sp"
+        android:layout_alignTop="@id/pump_background"
+        android:layout_marginTop="100sp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/menu_list" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/menu_list"
+        android:layout_alignLeft="@+id/menu_list"
+        android:layout_alignStart="@+id/menu_list"
+        android:layout_marginBottom="11dp"
+        android:id="@+id/textView2" />
 
 </RelativeLayout>

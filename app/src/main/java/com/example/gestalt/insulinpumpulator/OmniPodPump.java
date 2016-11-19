@@ -43,4 +43,30 @@ public class OmniPodPump extends AInsulinPump {
         trueInsulinFactor = (ISEN / INHL *Math.log10(2.0))/(1.0-Math.pow(2.0,-AIT/INHL));
         trueCarbFactor = (bloodSugarCarbRatio *2.5 *Math.log10(2)/(1-Math.pow(2.0,-2.5)));
     }
+
+    public void home() {
+        currentMenu = topMenu;
+    }
+
+
+    public void button1() {
+        OmniPodMenu temp = ((OmniPodMenu)currentMenu).button1();
+        if(temp!=null){
+            currentMenu = temp;
+        }
+    }
+
+    public void button2() {
+        OmniPodMenu temp = ((OmniPodMenu)currentMenu).button2();
+        if(temp!=null){
+            currentMenu = temp;
+        }
+    }
+
+    public void button3() {
+        OmniPodMenu temp = ((OmniPodMenu)currentMenu).button3();
+        if(temp!=null){
+            currentMenu = temp;
+        }
+    }
 }
