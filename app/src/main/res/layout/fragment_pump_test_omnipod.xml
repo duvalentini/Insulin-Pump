@@ -9,28 +9,29 @@
 
 
     <ImageView
-        android:layout_width="300dp"
+        android:contentDescription="@string/omnipod_name"
+        android:layout_width="300sp"
         android:id="@+id/pump_background"
         android:src ="@drawable/omnipod"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_height="500dp" />
+        android:layout_height="500sp" />
 
     <Button
         android:layout_height="wrap_content"
         android:id="@+id/left_button"
-        android:layout_width="70dp"
+        android:layout_width="70sp"
         android:layout_alignLeft="@id/pump_background"
-        android:layout_marginLeft="37dp"
+        android:layout_marginLeft="37sp"
         android:layout_alignStart="@id/pump_background"
-        android:layout_marginStart="37dp"
+        android:layout_marginStart="37sp"
         android:layout_alignBottom="@id/pump_background"
-        android:layout_marginBottom="85dp"/>
+        android:layout_marginBottom="85sp"/>
 
     <Button
         android:layout_height="wrap_content"
         android:id="@+id/middle_button"
-        android:layout_width="70dp"
+        android:layout_width="70sp"
         android:layout_alignBaseline="@+id/left_button"
         android:layout_alignBottom="@+id/left_button"
         android:layout_centerHorizontal="true" />
@@ -38,19 +39,19 @@
     <Button
         android:layout_height="wrap_content"
         android:id="@+id/right_button"
-        android:layout_width="72dp"
+        android:layout_width="72sp"
         android:layout_alignBaseline="@+id/middle_button"
         android:layout_alignBottom="@+id/middle_button"
         android:layout_alignRight="@+id/pump_background"
-        android:layout_marginRight="37dp"
+        android:layout_marginRight="37sp"
         android:layout_alignEnd="@+id/pump_background"
-        android:layout_marginEnd="35dp"/>
+        android:layout_marginEnd="35sp"/>
 
     <Button
         android:text="@string/up_arrow"
         android:layout_height="wrap_content"
         android:id="@+id/up_button"
-        android:layout_width="30dp"
+        android:layout_width="30sp"
         android:layout_below="@+id/middle_button"
         android:layout_centerHorizontal="true" />
 
@@ -58,39 +59,39 @@
         android:text="@string/down_arrow"
         android:layout_height="wrap_content"
         android:id="@+id/down_button"
-        android:layout_width="30dp"
+        android:layout_width="30sp"
         android:layout_below="@id/up_button"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:text="@string/question_mark"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
         android:id="@+id/help_button"
         android:layout_alignBottom="@+id/home_button"
         android:layout_toRightOf="@+id/up_button"
         android:layout_toEndOf="@+id/up_button" />
 
     <ImageButton
-        android:layout_width="50dp"
+        android:layout_width="50sp"
         android:src="@drawable/home"
         android:id="@+id/home_button"
-        android:layout_height="50dp"
+        android:layout_height="50sp"
         android:scaleType="fitCenter"
         android:layout_alignBottom="@+id/pump_background"
         android:layout_toLeftOf="@+id/up_button"
         android:layout_toStartOf="@+id/up_button"
-        android:layout_marginBottom="11dp" />
+        android:layout_marginBottom="11sp" />
 
     <TextView
         android:text="@string/question_mark"
         android:gravity="center_horizontal"
-        android:layout_width="60dp"
+        android:layout_width="60sp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/left_button"
         android:layout_toLeftOf="@+id/middle_button"
         android:layout_toStartOf="@+id/middle_button"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="30sp"
         android:id="@+id/left_text" />
 
     <TextView
@@ -100,12 +101,12 @@
         android:layout_alignBottom="@+id/left_text"
         android:layout_centerHorizontal="true"
         android:id="@+id/center_text"
-        android:layout_width="60dp" />
+        android:layout_width="60sp" />
 
     <TextView
         android:text="@string/question_mark"
         android:gravity="center_horizontal"
-        android:layout_width="60dp"
+        android:layout_width="60sp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/center_text"
         android:layout_toRightOf="@+id/middle_button"
@@ -113,7 +114,7 @@
         android:id="@+id/right_text" />
 
     <ListView
-        android:layout_width="190dp"
+        android:layout_width="190sp"
         android:layout_height="215sp"
         android:layout_alignTop="@id/pump_background"
         android:layout_marginTop="100sp"
@@ -127,7 +128,7 @@
         android:layout_above="@+id/menu_list"
         android:layout_alignLeft="@+id/menu_list"
         android:layout_alignStart="@+id/menu_list"
-        android:layout_marginBottom="11dp"
+        android:layout_marginBottom="11sp"
         android:id="@+id/textView2" />
 
 </RelativeLayout>
