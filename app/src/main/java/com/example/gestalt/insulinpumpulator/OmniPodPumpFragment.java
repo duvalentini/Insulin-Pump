@@ -70,7 +70,7 @@ public class OmniPodPumpFragment extends Fragment {
             public void onClick(View v) {
                 System.out.println("Up pressed");
                 pump.up();
-                updateHighlight();
+                updateText();
             }
         });
 
@@ -80,7 +80,7 @@ public class OmniPodPumpFragment extends Fragment {
             public void onClick(View v) {
                 System.out.println("Down Pressed");
                 pump.down();
-                updateHighlight();
+                updateText();
             }
         });
 

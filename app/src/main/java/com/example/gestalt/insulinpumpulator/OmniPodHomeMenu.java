@@ -234,7 +234,7 @@ class OmniBolusMenu extends OmniPodMenu {
             parent = p;
             pump = p.pump;
             con = c;
-            current = -2;
+            current = -1;
             subMenus = new ArrayList<AInsulinPumpMenu>();
             subMenus.add(new EmptyMenu(this, c, "Suggested Bolus: " + ((OmniPodPump)pump).getBolusUnits()));
             subMenus.add(new EmptyMenu(this, c, "BG: " + ((OmniPodPump) pump).getBolusBG() + " mg/dl"));
