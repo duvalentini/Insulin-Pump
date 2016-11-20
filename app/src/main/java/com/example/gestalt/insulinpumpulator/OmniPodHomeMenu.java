@@ -247,12 +247,20 @@ class OmniBolusMenu extends OmniPodMenu {
         }
 
         @Override
+        public String getInputText() {
+            return enterField + inputSuffix;
+        }
+
+        @Override
         public void down() {
             if(enterField < 0){
                 enterField = 0;
             }
             else{
                 enterField -= 0.05;
+
+                int rounded20 = (int)Math.round(enterField*20);
+                enterField = (double)(rounded20 / 20);
             }
         }
 
@@ -263,6 +271,9 @@ class OmniBolusMenu extends OmniPodMenu {
             }
             else{
                 enterField +=0.05;
+
+                int rounded20 = (int)Math.round(enterField*20);
+                enterField = (double)(rounded20 / 20);
             }
         }
 

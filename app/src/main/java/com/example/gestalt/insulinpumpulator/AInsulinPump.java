@@ -151,6 +151,9 @@ public abstract class AInsulinPump {
             total += gramsCarbs/ICR;
         }
 
+        int rounded20 = (int)Math.round(total*20);
+        total = (double)(rounded20 / 20);
+
         return total;
     }
     public void bolasWiz(){

@@ -107,10 +107,14 @@ public class OmniPodPump extends AInsulinPump {
 
         int rounded20 = (int)Math.round(total*20);
         total = (double)(rounded20 / 20);
+
         return total;
     }
 
     public void bolasWiz(double total){
+        int rounded20 = (int)Math.round(total*20);
+        total = (double)(rounded20 / 20);
+
         addedInsulin+=total;
         timeSinceBolas=0;
 
