@@ -110,7 +110,8 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             } else if (_fileName.equals("hyperglycemia_")) {
                 ScenarioPlaythrough.mPump.setBloodGlucose(235);
                 if(_title.equals("Scenario3") ){
-                    ScenarioPlaythrough.mPump.setBloodGlucose(275);
+                    //(Math.random()*101)+250
+                    ScenarioPlaythrough.mPump.setBloodGlucose((int)(Math.random()*101)+250);
                 }
                 //ScenarioPlaythrough.mPump.eatFood(100);
             }
@@ -363,17 +364,55 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             }
             // End game when BG is in target range
             if (ScenarioPlaythrough.mPump.bloodGlucose <250 ) {
-                _currentSceneIndex = 10;
+                _currentSceneIndex = 24; //win
             }
-            if (selectedOption._str.equals("Check ketones") && ScenarioPlaythrough.mPump.bloodGlucose>250) {
+            if (selectedOption._str.equals("Check ketones") && ScenarioPlaythrough.mPump.bloodGlucose>300) {
                 _currentSceneIndex = 9;
             }
+            if (selectedOption._str.equals("Check your ketones")){
+               if (ScenarioPlaythrough.mPump.bloodGlucose>300){
+                   _currentSceneIndex = 12;
+               }
+                else{
+                   _currentSceneIndex = 15;
+               }
+            }
+            if (selectedOption._str.equals("Drink some water, and then wait 1 hour")){
+              //  ScenarioPlaythrough.mPump.bloodGlucose = 280;
+                if(ScenarioPlaythrough.mPump.bloodGlucose>300){
+                    _currentSceneIndex = 8;
+                }else{
+                    _currentSceneIndex = 14;
+                }
+            }
+            if (selectedOption._str.equals("Drink some water and wait 1 hour")){
+                 // ScenarioPlaythrough.mPump.bloodGlucose = 240;
+                if(ScenarioPlaythrough.mPump.bloodGlucose<250){
+                    _currentSceneIndex = 14;
+                }
+                else{
+                    _currentSceneIndex = 17;
+                }
+            }
+            if (selectedOption._str.equals("Check blood sugar")){
+
+                if(ScenarioPlaythrough.mPump.bloodGlucose<250){
+                    _currentSceneIndex = 14;
+                }
+                else{
+                    //_currentSceneIndex = 17; what do you do if it still is over 250?
+                }
+            }
+            if (selectedOption._str.equals("Next")){
+                _currentSceneIndex = 24;
+            }
             if (selectedOption._str.equals("Proceed to ED") || selectedOption._str.equals("Start DKA protocol")) {
-                _currentSceneIndex = 12;
                 ScenarioPlaythrough._playerScore = 0;
+                _currentSceneIndex = 24;
+
             }
             if (selectedOption._str.equals("Do nothing and wait 1 hour") && ScenarioPlaythrough.mPump.bloodGlucose<250) {
-                _currentSceneIndex = 12;
+                _currentSceneIndex = 14;
 
             }
             if (selectedOption._str.equals("Bolus again and wait 1 hour") && ScenarioPlaythrough.mPump.bloodGlucose>250) {
@@ -381,8 +420,9 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             }
 
             if (ScenarioPlaythrough.mPump.bloodGlucose > 450) {
-                _currentSceneIndex = 12;
                 ScenarioPlaythrough._playerScore = 0;
+                _currentSceneIndex = 24;
+
             }
             // PASS TIME
             if (_currentSceneIndex == 3) {
