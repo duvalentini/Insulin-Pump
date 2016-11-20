@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class MedtronicPump extends AInsulinPump {
 
     public MedtronicPump(Context c){
+        con = c;
         ICR = 15;
         ISEN = 30;
         lowGluc = 70;
@@ -28,16 +29,17 @@ public class MedtronicPump extends AInsulinPump {
         exercising = false;
     }
     public MedtronicPump(int carbRatio, int sensitive, int lowGC, int highGC, int active, ArrayList<Double> basals, Context c){
-            ICR = carbRatio;
-            ISEN = sensitive;
-            lowGluc = lowGC;
-            highGluc = highGC;
-            AIT = active;
-            tempB = false;
-            INHL = (AIT-.5)/5;
-            suspended = false;
-            topMenu = new MedtronicMainMenu(this, c);
-            currentMenu = topMenu;
+        con = c;
+        ICR = carbRatio;
+        ISEN = sensitive;
+        lowGluc = lowGC;
+        highGluc = highGC;
+        AIT = active;
+        tempB = false;
+        INHL = (AIT-.5)/5;
+        suspended = false;
+        topMenu = new MedtronicMainMenu(this, c);
+        currentMenu = topMenu;
         basalRates = basals;
         bloodGlucose = 110;
         bloodSugarCarbRatio = ISEN/ICR;

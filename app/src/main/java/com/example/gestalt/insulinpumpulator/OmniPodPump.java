@@ -1,6 +1,7 @@
 package com.example.gestalt.insulinpumpulator;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -9,7 +10,11 @@ import java.util.ArrayList;
  */
 
 public class OmniPodPump extends AInsulinPump {
+    protected boolean useBG;
+    protected boolean useCarbs;
+
     public OmniPodPump(Context c){
+        con = c;
         ICR = 15;
         ISEN = 30;
         lowGluc = 70;
@@ -27,6 +32,7 @@ public class OmniPodPump extends AInsulinPump {
         exercising = false;
     }
     public OmniPodPump(int carbRatio, int sensitive, int lowGC, int highGC, int active, ArrayList<Double> basals, Context c){
+        con = c;
         ICR = carbRatio;
         ISEN = sensitive;
         lowGluc = lowGC;
@@ -69,4 +75,46 @@ public class OmniPodPump extends AInsulinPump {
             currentMenu = temp;
         }
     }
+
+    public void setBolusBG(int i, boolean b) {
+        bolasBG = i;
+        useBG = b;
+    }
+
+    public int getBolusBG() {
+        return bolasBG;
+    }
+
+    public void setGramsCarbs(int i, boolean b) {
+        gramsCarbs = i;
+        useCarbs = b;
+    }
+
+    public int getGramsCarbs() {
+        return gramsCarbs;
+    }
+
+    @Override
+    public double getBolusUnits() {
+        //bolas wiz settings
+        double total=0;
+        if(bolasBG-highGluc>0 && useBG){
+            total += (bolasBG-highGluc)/ISEN;
+        }
+        if(gramsCarbs>0 && useCarbs){
+            total += gramsCarbs/ICR;
+        }
+
+        int rounded20 = (int)Math.round(total*20);
+        total = (double)(rounded20 / 20);
+        return total;
+    }
+
+    public void bolasWiz(double total){
+        addedInsulin+=total;
+        timeSinceBolas=0;
+
+        Toast.makeText(con, "Bolas successful with " + total + " units.", Toast.LENGTH_LONG).show();
+    }
+
 }

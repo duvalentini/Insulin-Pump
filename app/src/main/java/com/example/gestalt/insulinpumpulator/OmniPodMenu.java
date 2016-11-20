@@ -10,6 +10,7 @@ public class OmniPodMenu extends AInsulinPumpMenu {
     protected String button1Text;
     protected String button2Text;
     protected String button3Text;
+    protected String inputSuffix;
 
     public ArrayList<String> getButtonText() {
         ArrayList<String> text = new ArrayList<String>();
@@ -18,6 +19,10 @@ public class OmniPodMenu extends AInsulinPumpMenu {
         text.add(button3Text);
 
         return text;
+    }
+
+    public String getInputText() {
+        return (int)enterField + inputSuffix;
     }
 
     public OmniPodMenu button1() {

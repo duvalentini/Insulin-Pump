@@ -28,6 +28,7 @@ public class OmniPodPumpFragment extends Fragment {
     private TextView leftText;
     private TextView centerText;
     private TextView rightText;
+    private TextView inputText;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -59,9 +60,9 @@ public class OmniPodPumpFragment extends Fragment {
         leftText = (TextView) view.findViewById(R.id.left_text);
         centerText = (TextView) view.findViewById(R.id.center_text);
         rightText = (TextView) view.findViewById(R.id.right_text);
+        inputText = (TextView) view.findViewById(R.id.input_field);
 
         updateText();
-        updateHighlight();
 
         Button up = (Button) view.findViewById(R.id.up_button);
         up.setOnClickListener(new View.OnClickListener() {
@@ -129,17 +130,28 @@ public class OmniPodPumpFragment extends Fragment {
 
     private void updateHighlight() {
         ((ArrayAdapter<String>)itemList.getAdapter()).notifyDataSetChanged();
+        OmniPodMenu m = (OmniPodMenu)pump.currentMenu;
+        if(m.current == -1) {
+            inputText.setBackgroundResource(R.color.colorPrimary);
+        } else {
+            inputText.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     private void updateText() {
         subMenuNames.removeAll(subMenuNames);
         subMenuNames.addAll(pump.getSubMenuNames());
-        ((ArrayAdapter<String>)itemList.getAdapter()).notifyDataSetChanged();
         OmniPodMenu menu = (OmniPodMenu) pump.currentMenu;
         ArrayList<String> buttonText = menu.getButtonText();
         leftText.setText(buttonText.get(0));
         centerText.setText(buttonText.get(1));
         rightText.setText(buttonText.get(2));
+
+        if(menu.current == -1) {
+            inputText.setText(menu.getInputText());
+        } else {
+            inputText.setText(" ");
+        }
 
         updateHighlight();
     }
