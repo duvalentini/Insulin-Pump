@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 
 public class OmniPodPump extends AInsulinPump {
-    protected boolean useBG;
-    protected boolean useCarbs;
+    public boolean useBG;
+    public boolean useCarbs;
 
     public OmniPodPump(Context c){
         con = c;
@@ -106,19 +106,19 @@ public class OmniPodPump extends AInsulinPump {
         }
 
         int rounded20 = (int)Math.round(total*20);
-        total = (double)(rounded20 / 20);
+        total = (double)rounded20 / 20;
 
         return total;
     }
 
     public void bolasWiz(double total){
         int rounded20 = (int)Math.round(total*20);
-        total = (double)(rounded20 / 20);
+        total = (double)rounded20 / 20;
 
         addedInsulin+=total;
         timeSinceBolas=0;
 
-        Toast.makeText(con, "Bolas successful with " + total + " units.", Toast.LENGTH_LONG).show();
+        Toast.makeText(con, "Bolus successful with " + total + " units.", Toast.LENGTH_LONG).show();
     }
 
 }

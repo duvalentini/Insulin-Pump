@@ -152,7 +152,7 @@ public abstract class AInsulinPump {
         }
 
         int rounded20 = (int)Math.round(total*20);
-        total = (double)(rounded20 / 20);
+        total = (double)rounded20 / 20;
 
         return total;
     }
@@ -161,7 +161,7 @@ public abstract class AInsulinPump {
         addedInsulin+=total;
         timeSinceBolas=0;
 
-        Toast.makeText(con, "Bolas successful with " + total + " units.", Toast.LENGTH_LONG).show();
+        Toast.makeText(con, "Bolus successful with " + total + " units.", Toast.LENGTH_LONG).show();
     }
 
     public AInsulinPump(){

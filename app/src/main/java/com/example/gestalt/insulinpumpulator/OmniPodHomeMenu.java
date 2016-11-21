@@ -38,12 +38,21 @@ class OmniStatusMenu extends OmniPodMenu {
         parent = p;
         pump = p.pump;
         con = c;
-        current = -1;
+        current = -2;
         subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new EmptyMenu(this, c, "We're sorry, this menu is not yet implemented."));
         button1Text = "Back";
         button2Text = " ";
         button3Text = " ";
+    }
+
+    @Override
+    public void up() {
+        return;
+    }
+    @Override
+    public void down(){
+        return;
     }
 
     @Override
@@ -61,6 +70,7 @@ class OmniBolusMenu extends OmniPodMenu {
         menuName = c.getString(R.string.bolus);
         subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new EmptyMenu(this, c, "Enter current BG."));
+        subMenus.add(new EmptyMenu(this, c, " "));
         subMenus.add(new EmptyMenu(this, c, " "));
         subMenus.add(new EmptyMenu(this, c, " "));
         subMenus.add(new EmptyMenu(this, c, " "));
@@ -260,7 +270,7 @@ class OmniBolusMenu extends OmniPodMenu {
                 enterField -= 0.05;
 
                 int rounded20 = (int)Math.round(enterField*20);
-                enterField = (double)(rounded20 / 20);
+                enterField = (double)rounded20 / 20;
             }
         }
 
@@ -273,7 +283,7 @@ class OmniBolusMenu extends OmniPodMenu {
                 enterField +=0.05;
 
                 int rounded20 = (int)Math.round(enterField*20);
-                enterField = (double)(rounded20 / 20);
+                enterField = (double)rounded20 / 20;
             }
         }
 
