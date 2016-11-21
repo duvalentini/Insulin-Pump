@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <TextView
         android:layout_width="wrap_content"
@@ -10,13 +11,47 @@
         android:text="@string/scenario_selection"
         android:id="@+id/title"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/scenario_list"
         android:choiceMode="singleChoice"
         android:smoothScrollbar="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/pump_select"
+        android:id="@+id/title2"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        android:checkedButton="@+id/medtronic_select"
+        android:id="@+id/pump_select">
+
+        <RadioButton
+            android:text="@string/medtronic_pump_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/medtronic_select"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="@string/omnipod_name"
+            android:layout_height="wrap_content"
+            android:id="@+id/omnipod_select"
+            android:layout_width="wrap_content"
+            android:layout_weight="1" />
+
+    </RadioGroup>
 
 </LinearLayout>

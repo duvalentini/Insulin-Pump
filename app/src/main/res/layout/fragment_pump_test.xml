@@ -21,6 +21,7 @@
         android:id="@+id/enterButton"
         android:layout_below="@+id/downButton"
         android:layout_toLeftOf="@id/downButton"
+        android:layout_toStartOf="@id/downButton"
         />
     <TextView
         android:layout_width="match_parent"
@@ -40,7 +41,8 @@
         android:layout_height="wrap_content"
         android:text="Up"
         android:id="@+id/upButton"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@id/pump_background"
+        android:layout_alignEnd="@id/pump_background"
         android:layout_below="@id/pumpMenuName"
         />
 
@@ -50,7 +52,8 @@
         android:text="Down"
         android:id="@+id/downButton"
         android:layout_below="@id/upButton"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@id/pump_background"
+        android:layout_alignEnd="@id/pump_background"
          />
 
     <Button
@@ -59,6 +62,7 @@
         android:text="Back"
         android:id="@+id/backButton"
         android:layout_toLeftOf="@id/enterButton"
+        android:layout_toStartOf="@id/enterButton"
         android:layout_below="@id/downButton"
          />
 

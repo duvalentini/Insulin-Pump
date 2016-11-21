@@ -30,7 +30,7 @@ import org.json.JSONObject;
 public class ScenarioPlaythrough extends FragmentActivity {
 
     public static int _playerScore;
-    public static MedtronicPump mPump;
+    public static AInsulinPump mPump;
     public static boolean start;
 
     @Override
@@ -38,7 +38,12 @@ public class ScenarioPlaythrough extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         _playerScore = 500;
-        mPump = new MedtronicPump(this);
+        int selectedPump = getIntent().getExtras().getInt("pump");
+        if(selectedPump == R.string.medtronic_pump_name) {
+            mPump = new MedtronicPump(this);
+        } else if(selectedPump == R.string.omnipod_name) {
+            mPump = new OmniPodPump(this);
+        }
         start = true;
 
         setContentView(R.layout.activity_scenario_playthrough);
