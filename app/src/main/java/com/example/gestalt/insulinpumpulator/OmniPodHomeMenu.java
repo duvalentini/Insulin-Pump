@@ -66,13 +66,22 @@ class OmniMoreActionsMenu extends OmniPodMenu {
         parent = p;
         pump = p.pump;
         con = c;
-        current = -1;
+        current = -2;
         menuName = "More Actions";
         subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new EmptyMenu(this, c, "We're sorry, this menu is not yet implemented."));
         button1Text = "Back";
         button2Text = " ";
         button3Text = " ";
+    }
+
+    @Override
+    public void up() {
+        return;
+    }
+    @Override
+    public void down(){
+        return;
     }
 
     @Override
@@ -86,13 +95,22 @@ class OmniTempBasalMenu extends OmniPodMenu {
         parent = p;
         pump = p.pump;
         con = c;
-        current = -1;
+        current = -2;
         menuName = "Temp Basal";
         subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new EmptyMenu(this, c, "We're sorry, this menu is not yet implemented."));
         button1Text = "Back";
         button2Text = " ";
         button3Text = " ";
+    }
+
+    @Override
+    public void up() {
+        return;
+    }
+    @Override
+    public void down(){
+        return;
     }
 
     @Override
@@ -106,13 +124,22 @@ class OmniMyRecordsMenu extends OmniPodMenu {
         parent = p;
         pump = p.pump;
         con = c;
-        current = -1;
+        current = -2;
         menuName = "My Records";
         subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new EmptyMenu(this, c, "We're sorry, this menu is not yet implemented."));
         button1Text = "Back";
         button2Text = " ";
         button3Text = " ";
+    }
+
+    @Override
+    public void up() {
+        return;
+    }
+    @Override
+    public void down(){
+        return;
     }
 
     @Override
@@ -126,13 +153,22 @@ class OmniSettingsMenu extends OmniPodMenu {
         parent = p;
         pump = p.pump;
         con = c;
-        current = -1;
+        current = -2;
         menuName = "Settings";
         subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new EmptyMenu(this, c, "We're sorry, this menu is not yet implemented."));
         button1Text = "Back";
         button2Text = " ";
         button3Text = " ";
+    }
+
+    @Override
+    public void up() {
+        return;
+    }
+    @Override
+    public void down(){
+        return;
     }
 
     @Override
@@ -146,13 +182,22 @@ class OmniSuspendMenu extends OmniPodMenu {
         parent = p;
         pump = p.pump;
         con = c;
-        current = -1;
+        current = -2;
         menuName = "Suspend";
         subMenus = new ArrayList<AInsulinPumpMenu>();
         subMenus.add(new EmptyMenu(this, c, "We're sorry, this menu is not yet implemented."));
         button1Text = "Back";
         button2Text = " ";
         button3Text = " ";
+    }
+
+    @Override
+    public void up() {
+        return;
+    }
+    @Override
+    public void down(){
+        return;
     }
 
     @Override
