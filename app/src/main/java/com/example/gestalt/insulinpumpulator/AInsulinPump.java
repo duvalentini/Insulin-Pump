@@ -1,11 +1,15 @@
 package com.example.gestalt.insulinpumpulator;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 /**
  * Created by Joshua on 6/18/2016.
  */
 public abstract class AInsulinPump {
+    protected Context con;
     protected AInsulinPumpMenu topMenu;
     public AInsulinPumpMenu getTopMenu(){
         return topMenu;
@@ -136,7 +140,8 @@ public abstract class AInsulinPump {
         addedInsulin +=manualBolusUnits;
         timeSinceBolas =0;
     }
-    public void bolasWiz(){
+
+    public double getBolusUnits() {
         //bolas wiz settings
         double total=0;
         if(bolasBG-highGluc>0){
@@ -145,15 +150,25 @@ public abstract class AInsulinPump {
         if(gramsCarbs>0){
             total += gramsCarbs/ICR;
         }
+
+        int rounded20 = (int)Math.round(total*20);
+        total = (double)(rounded20 / 20);
+
+        return total;
+    }
+    public void bolasWiz(){
+        double total = getBolusUnits();
         addedInsulin+=total;
         timeSinceBolas=0;
 
+        Toast.makeText(con, "Bolas successful with " + total + " units.", Toast.LENGTH_LONG).show();
     }
 
     public AInsulinPump(){
 
     }
-    public AInsulinPump(int carbRatio, int sensitive, int lowGC, int highGC, int active){
+    public AInsulinPump(int carbRatio, int sensitive, int lowGC, int highGC, int active, Context c){
+        con = c;
         ICR = carbRatio;
         ISEN = sensitive;
         lowGluc = lowGC;

@@ -49,6 +49,10 @@
 
     <string name="title_activity_scenario_playthrough">ScenarioPlaythrough</string>
     <string name="scenario_selection">Scenario Selection</string>
+    <string name="omnipod_name">OmniPod</string>
+    <string name="pump_select">Pump Selection</string>
+    <string name="medtronic_pump_name">MedTronic</string>
+
     <string name="back_button_SS">Back</string>
     <string name="example_insulin_pump_image">Example insulin pump image</string>
     <string name="main_page_title">Welcome!</string>
@@ -155,5 +159,7 @@
     <string name="addid">Add ID</string>
     <string name="deleteid">Delete ID</string>
     <string name="reviewid">Review ID</string>
+    <string name="up_arrow">^</string>
+    <string name="down_arrow">v</string>
 
 </resources>
