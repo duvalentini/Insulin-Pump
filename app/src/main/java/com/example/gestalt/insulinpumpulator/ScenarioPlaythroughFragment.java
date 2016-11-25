@@ -124,7 +124,12 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             public void onClick(View v) {
                 System.out.println("PUMP PRESSED");
                 // Create a new Fragment to be placed in the activity layout
-                PumpTestFragment fragment = new PumpTestFragment();
+                Fragment fragment = null;
+                if(ScenarioPlaythrough.mPump instanceof MedtronicPump) {
+                    fragment = new PumpTestFragment();
+                } else if (ScenarioPlaythrough.mPump instanceof OmniPodPump) {
+                    fragment = new OmniPodPumpFragment();
+                }
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.fragment_section, fragment);
