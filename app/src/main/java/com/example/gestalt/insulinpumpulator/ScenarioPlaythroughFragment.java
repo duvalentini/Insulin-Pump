@@ -417,7 +417,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
             }
             if (selectedOption._str.equals("Do nothing and wait 1 hour")){
-
+                ScenarioPlaythrough.mPump.passTime(60);
                 if(ScenarioPlaythrough.mPump.bloodGlucose<250){
                     _currentSceneIndex = 14;
                 }else{
@@ -426,6 +426,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
             }
             if (selectedOption._str.equals("Bolus again and wait 1 hour")){
+                ScenarioPlaythrough.mPump.passTime(60);
                 if(ScenarioPlaythrough.mPump.bloodGlucose>250){
                     _currentSceneIndex = 8;
                 }else{
