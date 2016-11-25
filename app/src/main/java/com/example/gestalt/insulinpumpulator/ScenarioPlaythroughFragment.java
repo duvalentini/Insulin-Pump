@@ -267,7 +267,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                 ScenarioPlaythrough._playerScore += 50;
             } else if (selectedOption._str.equals("Administer glucagon") || selectedOption._str.equals("Call 911")) {
                 ScenarioPlaythrough._playerScore -= 0;
-            } else if (selectedOption._str.equals("Take a drink of water")) {
+            } else if (selectedOption._str.equals("Take a drink of water") || selectedOption._str.equals("Drink some water, and then wait 1 hour") || selectedOption._str.equals("Drink some water and wait 1 hour")) {
                 ScenarioPlaythrough._playerScore += 10;
             }
             else {
@@ -284,7 +284,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
             ScenarioPlaythrough.mPump.exercising = true;
         } else if (selectedOption._str.equals("Administer glucagon") || selectedOption._str.equals("Call 911")) {
             ScenarioPlaythrough.mPump.setBloodGlucose(115);
-        } else if (selectedOption._str.equals("Take a drink of water")) {
+        } else if (selectedOption._str.equals("Take a drink of water") || selectedOption._str.equals("Drink some water, and then wait 1 hour") || selectedOption._str.equals("Drink some water and wait 1 hour")) {
             if (ScenarioPlaythrough.mPump.bloodGlucose > 250 && ScenarioPlaythrough.mPump.bloodGlucose < 450) {
                 ScenarioPlaythrough.mPump.eatFood(-5);
             }
@@ -400,7 +400,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                     _currentSceneIndex = 14;
                 }
                 else{
-                    //_currentSceneIndex = 17; what do you do if it still is over 250?
+                    _currentSceneIndex = 17; //what do you do if it still is over 250?
                 }
             }
             if (selectedOption._str.equals("Next")){
@@ -411,13 +411,24 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
                 _currentSceneIndex = 24;
 
             }
-            if (selectedOption._str.equals("Do nothing and wait 1 hour") && ScenarioPlaythrough.mPump.bloodGlucose<250) {
-                _currentSceneIndex = 14;
+            if (selectedOption._str.equals("Do nothing and wait 1 hour")){
+
+                if(ScenarioPlaythrough.mPump.bloodGlucose<250){
+                    _currentSceneIndex = 14;
+                }else{
+                    _currentSceneIndex = 11;
+                }
 
             }
-            if (selectedOption._str.equals("Bolus again and wait 1 hour") && ScenarioPlaythrough.mPump.bloodGlucose>250) {
-                _currentSceneIndex = 8;
+            if (selectedOption._str.equals("Bolus again and wait 1 hour")){
+                if(ScenarioPlaythrough.mPump.bloodGlucose>250){
+                    _currentSceneIndex = 8;
+                }else{
+                    _currentSceneIndex = 14;
+                }
             }
+
+
 
             if (ScenarioPlaythrough.mPump.bloodGlucose > 450) {
                 ScenarioPlaythrough._playerScore = 0;
@@ -425,7 +436,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
             }
             // PASS TIME
-            if (_currentSceneIndex == 3) {
+            if (_currentSceneIndex == 3 || selectedOption._str.equals("Bolus again and wait 1 hour")|| selectedOption._str.equals("Do nothing and wait 1 hour") || selectedOption._str.equals("Drink some water and wait 1 hour") || selectedOption._str.equals("Drink some water, and then wait 1 hour")|| selectedOption._str.equals("Change pump site and bolus(use pump)")) {
                 ScenarioPlaythrough.mPump.passTime(60);
             } else if (_currentSceneIndex == 5 ||_currentSceneIndex == 6) {
                 ScenarioPlaythrough.mPump.passTime(15);
