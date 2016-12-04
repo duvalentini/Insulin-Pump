@@ -442,7 +442,7 @@ public class ScenarioPlaythroughFragment extends Fragment implements AdapterView
 
             }
             // PASS TIME
-            if (_currentSceneIndex == 3 || selectedOption._str.equals("Bolus again and wait 1 hour")|| selectedOption._str.equals("Do nothing and wait 1 hour") || selectedOption._str.equals("Drink some water and wait 1 hour") || selectedOption._str.equals("Drink some water, and then wait 1 hour")|| selectedOption._str.equals("Change pump site and bolus(use pump)")) {
+            if (_currentSceneIndex == 3 || selectedOption._str.equals("Drink some water and wait 1 hour") || selectedOption._str.equals("Drink some water, and then wait 1 hour")|| selectedOption._str.equals("Change pump site and bolus(use pump)")) {
                 ScenarioPlaythrough.mPump.passTime(60);
             } else if (_currentSceneIndex == 5 ||_currentSceneIndex == 6) {
                 ScenarioPlaythrough.mPump.passTime(15);
